@@ -1,0 +1,7 @@
+.DS_Store
+*.o
+*.dSYM
+*.a
+.depend
+.depend.bak
+lem-in
