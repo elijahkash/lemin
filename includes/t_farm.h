@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 12:46:05 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/07 13:42:06 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct	s_farm
 {
 	int		ants;
 	t_darr	rooms;
+	int		*size;
 	char	*mtrx;
 	int		start;
 	int		end;

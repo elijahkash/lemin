@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 13:00:00 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/07 13:39:16 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,7 @@
 
 int		solve(t_farm farm)
 {
+	if (farm.way_count == 0)
+		return (1);
 	return (0);
 }

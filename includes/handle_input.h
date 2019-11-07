@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:55:57 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 12:58:25 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/07 14:56:23 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 # define HANDLE_INPUT_H
 
 # include <t_farm.h>
+
+# define ANTS 1
+# define ROOMS 2
+# define TUBES 4
+# define START 8
+# define END 16
+# define ERRSTATE 1024
 
 int		handle_input(t_farm *farm);
 
