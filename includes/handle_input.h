@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lemin.h                                            :+:      :+:    :+:   */
+/*   handle_input.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/06 16:19:39 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 11:01:12 by mtrisha          ###   ########.fr       */
+/*   Created: 2019/11/07 12:55:57 by mtrisha           #+#    #+#             */
+/*   Updated: 2019/11/07 12:58:25 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEMIN_H
-# define LEMIN_H
+#ifndef HANDLE_INPUT_H
+# define HANDLE_INPUT_H
 
-void	lemin(void);
+# include <t_farm.h>
+
+int		handle_input(t_farm *farm);
 
 #endif

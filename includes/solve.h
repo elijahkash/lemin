@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lemin.h                                            :+:      :+:    :+:   */
+/*   solve.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/06 16:19:39 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 11:01:12 by mtrisha          ###   ########.fr       */
+/*   Created: 2019/11/07 12:56:31 by mtrisha           #+#    #+#             */
+/*   Updated: 2019/11/07 12:58:59 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEMIN_H
-# define LEMIN_H
+#ifndef SOLVE_H
+# define SOLVE_H
 
-void	lemin(void);
+# include <t_farm.h>
+
+int		solve(t_farm farm);
 
 #endif
