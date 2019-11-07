@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 13:42:06 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/07 19:41:37 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ typedef struct	s_farm
 {
 	int		ants;
 	t_darr	rooms;
-	int		*size;
+	size_t	*size; //TODO: optim
 	char	*mtrx;
 	int		start;
 	int		end;
 	int		way_count;
 }				t_farm;
-//TODO: max - int rooms
 
 void			farm_init(t_farm *farm);
 void			mtrx_init(t_farm *farm);
 char			mtrx(t_farm farm, int i, int j);
+void			mtrx_set(t_farm farm, int i, int j, char c);
 
 #endif

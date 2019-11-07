@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:20:37 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 14:28:21 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/07 20:11:58 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ void	lemin(void)
 		ft_printf("There's no ants!\n");
 	else if (!*farm.size)
 		ft_printf("There's no rooms!\n");
-	else if (!(farm.start * farm.end))
+	else if (farm.start == -1 || farm.end == -1)
 		ft_printf("There's no start/end room!\n");
 	else if (farm.mtrx == NULL)
 		ft_printf("There's no tubes!\n");
-	if (ret || !(farm.ants * *farm.size * farm.start * farm.end) || !farm.mtrx)
+	if (ret || !(farm.ants * *farm.size) || farm.start == -1 || farm.end == -1
+			|| !farm.mtrx)
 		return ;
 	ret = solve(farm);
 	if (ret)
@@ -44,12 +45,12 @@ void	lemin(void)
 	int i;
 	int j;
 	i = 0;
-	while (i < *farm.size)
+	while (i < (int)*farm.size)
 	{
 		j = 0;
 		ft_printf("%s\t", *(char **)darr(farm.rooms, i));
-		while (j < *farm.size)
-			ft_printf("%d ", mtrx(farm, i, j));
+		while (j < (int)*farm.size)
+			ft_printf("%d ", mtrx(farm, i, j++));
 		ft_printf("\n");
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 13:45:29 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/07 17:44:15 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,18 @@ char			mtrx(t_farm farm, int i, int j)
 	return (farm.mtrx[summ(*farm.size - i, *farm.size) + j - i - 1]);
 }
 
+void			mtrx_set(t_farm farm, int i, int j, char c)
+{
+	if (i == j)
+		return ;
+	if (i > j)
+		ft_swap(&i, &j, sizeof(int));
+	farm.mtrx[summ(*farm.size - i, *farm.size) + j - i - 1] = c;
+	return ;
+}
+
 void			mtrx_init(t_farm *farm)
 {
-	farm->mtrx = (char *)ft_malloc(sizeof(char) * summ(1, *farm->size));
+	farm->mtrx = (char *)ft_memalloc(sizeof(char) * summ(1, *farm->size));
 }
 
