@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 20:34:31 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/08 14:26:57 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ static int		set_farm_se(t_farm *farm)
 	size_t	i;
 
 	i = 0;
-	while (i < *farm->size)
+	while (i < farm->size)
 	{
 		if (*(char **)darr(farm->rooms, i) == g_start)
 			farm->start = i;
 		if (*(char **)darr(farm->rooms, i) == g_end)
 			farm->end = i;
-		if (i < *farm->size - 1 && !ft_strcmp(*(char **)darr(farm->rooms, i),
+		if (i < farm->size - 1 && !ft_strcmp(*(char **)darr(farm->rooms, i),
 											*(char **)darr(farm->rooms, i + 1)))
 			return (1);
 		i++;
@@ -70,7 +70,7 @@ static int		read_tube(int state, char *line, t_farm *farm)
 		if (i * j == 0)
 			state |= ERRSTATE;
 		if (i != j)
-			mtrx_set(*farm, i - 1, j - 1, 1);
+			mtrx_set(*farm, i - 1, j - 1);
 	}
 	else
 		state |= ERRSTATE;
@@ -93,7 +93,7 @@ static int		read_room(int state, char *line, t_farm *farm)
 			return (state | ERRSTATE);
 		return(read_tube((state & ~ROOMS) | TUBES, line, farm));
 	}
-	if (*farm->size == INT_MAX)
+	if (farm->size == INT_MAX)
 		state |= ERRSTATE;
 	else if (words[0] && words[1] && words[2] && !words[3])
 	{
@@ -103,6 +103,7 @@ static int		read_room(int state, char *line, t_farm *farm)
 		else
 		{
 			darr_add_str(farm->rooms, words[0]);
+			farm->size++;
 			if (state & START)
 				g_start = *(char **)darr_top(farm->rooms);
 			if (state & END)
