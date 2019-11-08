@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/08 16:21:26 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/08 17:31:12 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,21 @@ static int		mtrx_find(t_farm farm, int i, int j)
 	int bot;
 	int top;
 	int res;
+	int tmp;
 
 	start = summ(farm.size - i, farm.size) + i;
 	bot = 1;
-	top = farm.mtrx[start];
-	if (!top)
+	if (!(top = farm.mtrx[start]))
 		return (0);
 	while (bot < top)
 	{
-		res = farm.mtrx[start + bot + (top - bot) / 2] - j;
-		if (!res)
-			return (bot + (top - bot) / 2);
+		tmp =  (top - bot) / 2;
+		if (!(res = farm.mtrx[start + bot + tmp] - j))
+			return (bot + tmp);
 		if (res < 0)
-			bot += (top - bot) / 2 + 1;
-		if (res > 0)
-			top = bot + (top - bot) / 2 - 1;
+			bot += tmp + 1;
+		else
+			top = bot + tmp - 1;
 	}
 	res = farm.mtrx[start + top] - j;
 	return (res ? top * -1 : top);
@@ -67,15 +67,14 @@ char			mtrx(t_farm farm, int i, int j)
 		return (farm.mtrx[summ(farm.size - i, farm.size) + i]);
 	if (i > j)
 		ft_swap(&i, &j, sizeof(int));
-	res = mtrx_find(farm, i, j);
-	return (res > 0 ? 1 : 0);
+	;
+	return (((res = mtrx_find(farm, i, j)) > 0) ? 1 : 0);
 }
 
 void			mtrx_set(t_farm farm, int i, int j)
 {
 	int res;
 	int tmp;
-
 
 	if (i == j)
 		return ;
@@ -84,12 +83,11 @@ void			mtrx_set(t_farm farm, int i, int j)
 	if ((res = mtrx_find(farm, i, j)) > 0)
 		return ;
 	tmp = summ(farm.size - i, farm.size) + i;
-	res *= -1;
-	if (!res)
+	if (!(res *= -1))
 		res = 1;
 	else
 		res = (farm.mtrx[tmp + res] < j) ? res + 1: res;
-	if (farm.mtrx[tmp] && /*res + j < (int)farm.size - 1 && */res < farm.mtrx [tmp] + 1)
+	if (farm.mtrx[tmp] && res < farm.mtrx [tmp] + 1)
 		ft_memmove(farm.mtrx + tmp + res + 1, farm.mtrx + tmp + res,
 					sizeof(int) * (farm.mtrx[tmp] - (res - 1)));
 	farm.mtrx[tmp + res] = j;
