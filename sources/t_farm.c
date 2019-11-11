@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/08 17:31:12 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/11 16:15:30 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,87 +17,73 @@ void			farm_init(t_farm *farm)
 	farm->ants = 0;
 	farm->end = -1;
 	farm->start = -1;
-	farm->way_count = 0;
+	farm->mtrx_len = 0;
 	farm->mtrx = NULL;
 	darr_init(&(farm->rooms), sizeof(char *), 128);
 	farm->size = 0;
 }
 
-static int		summ(int a, int b)
+inline int		mtrx(t_farm farm, int i, int j)
 {
-	int res;
-
-	res = 0;
-	while (a < b)
-		res += a++;
-	return (res);
+	return (GETBIT(farm.mtrx[i * farm.mtrx_len + 1 + j / sizeof(__uint64_t)],
+					sizeof(__uint64_t) - (j % sizeof(__uint64_t))));
 }
 
-static int		mtrx_find(t_farm farm, int i, int j)
+inline int		mtrx_getcon(t_farm farm, int i)
 {
-	int start;
-	int bot;
-	int top;
-	int res;
-	int tmp;
-
-	start = summ(farm.size - i, farm.size) + i;
-	bot = 1;
-	if (!(top = farm.mtrx[start]))
-		return (0);
-	while (bot < top)
-	{
-		tmp =  (top - bot) / 2;
-		if (!(res = farm.mtrx[start + bot + tmp] - j))
-			return (bot + tmp);
-		if (res < 0)
-			bot += tmp + 1;
-		else
-			top = bot + tmp - 1;
-	}
-	res = farm.mtrx[start + top] - j;
-	return (res ? top * -1 : top);
-}
-
-char			mtrx(t_farm farm, int i, int j)
-{
-	int res;
-
-	if (i == j)
-		return (farm.mtrx[summ(farm.size - i, farm.size) + i]);
-	if (i > j)
-		ft_swap(&i, &j, sizeof(int));
-	;
-	return (((res = mtrx_find(farm, i, j)) > 0) ? 1 : 0);
+	return ((int)farm.mtrx[i * farm.mtrx_len]);
 }
 
 void			mtrx_set(t_farm farm, int i, int j)
 {
-	int res;
-	int tmp;
-
+	//TODO: optimiz calc
 	if (i == j)
 		return ;
-	if (i > j)
-		ft_swap(&i, &j, sizeof(int));
-	if ((res = mtrx_find(farm, i, j)) > 0)
-		return ;
-	tmp = summ(farm.size - i, farm.size) + i;
-	if (!(res *= -1))
-		res = 1;
-	else
-		res = (farm.mtrx[tmp + res] < j) ? res + 1: res;
-	if (farm.mtrx[tmp] && res < farm.mtrx [tmp] + 1)
-		ft_memmove(farm.mtrx + tmp + res + 1, farm.mtrx + tmp + res,
-					sizeof(int) * (farm.mtrx[tmp] - (res - 1)));
-	farm.mtrx[tmp + res] = j;
-	farm.mtrx[tmp]++;
+	if (!GETBIT(farm.mtrx[i * farm.mtrx_len + 1 + j / sizeof(__uint64_t)],
+					sizeof(__uint64_t) - (j % sizeof(__uint64_t))))
+		farm.mtrx[i * farm.mtrx_len]++;
+	farm.mtrx[i * farm.mtrx_len + 1 + j / sizeof(__uint64_t)] = SETBIT(
+		farm.mtrx[i * farm.mtrx_len + 1 + j / sizeof(__uint64_t)],
+		sizeof(__uint64_t) - (j % sizeof(__uint64_t)));
+	if (!GETBIT(farm.mtrx[j * farm.mtrx_len + 1 + i / sizeof(__uint64_t)],
+					sizeof(__uint64_t) - (i % sizeof(__uint64_t))))
+		farm.mtrx[j * farm.mtrx_len]++;
+	farm.mtrx[j * farm.mtrx_len + 1 + i / sizeof(__uint64_t)] = SETBIT(
+		farm.mtrx[j * farm.mtrx_len + 1 + i / sizeof(__uint64_t)],
+		sizeof(__uint64_t) - (i % sizeof(__uint64_t)));
 	return ;
 }
 
 void			mtrx_init(t_farm *farm)
 {
-	farm->mtrx = (int *)ft_memalloc(sizeof(int) * (summ(1, farm->size) +
-													farm->size));
+	farm->mtrx_len = farm->size / (8 * sizeof(__uint64_t));
+	farm->mtrx_len += (farm->size % (8 * sizeof(__uint64_t))) ? 2 : 1;
+	farm->mtrx = (__uint64_t *)ft_memalloc(sizeof(__uint64_t) *
+												farm->size * farm->mtrx_len);
 }
 
+void			iter_init(t_iter *newiter, t_farm farm, int i)
+{
+	//newiter = (t_iter *)ft_malloc(sizeof(t_iter));
+	newiter->row = i;
+	newiter->next = 0;
+	newiter->i = 1;
+	newiter->curitem = farm.mtrx[i * farm.mtrx_len + 1];
+	newiter->least = farm.mtrx[i * farm.mtrx_len];
+}
+
+int				next(t_iter *iter, t_farm farm)
+{
+	__uint64_t res;
+
+	if (!iter->least)
+		return (-1);
+	while (!iter->curitem)
+		iter->curitem = farm.mtrx[iter->row * farm.mtrx_len + ++(iter->i)];
+	iter->least--;
+	res = iter->curitem;
+	asm("bsrq\t%1, %0" : "=r" (res) , "+rm" (res));
+	iter->curitem = RESETBIT(iter->curitem, res + 1);
+	return (iter->next = sizeof(__uint64_t) * 8 * (iter->i - 1) +
+							8 * (res / 8 + 1) - (int)res - 1);
+}

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:20:37 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/08 13:20:30 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/11 16:16:32 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,39 @@ void	lemin(void)
 	while (i < (int)farm.size)
 	{
 		j = 0;
-		ft_printf("%s\t", *(char **)darr(farm.rooms, i));
+		ft_printf("%s\t%d\t", *(char **)darr(farm.rooms, i),
+								mtrx_getcon(farm, i));
 		while (j < (int)farm.size)
-			ft_printf("%d ", mtrx(farm, i, j++));
+			ft_printf("%d", mtrx(farm, i, j++));
+		ft_printf("\n");
+		i++;
+	}
+
+	ft_printf("\n");
+
+	// int i;
+	// int j;
+	t_iter iter;
+	int k;
+	i = 0;
+	while (i < (int)farm.size)
+	{
+		j = 0;
+		ft_printf("%s\t%d\t", *(char **)darr(farm.rooms, i),
+								mtrx_getcon(farm, i));
+		iter_init(&iter, farm, i);
+		k = next(&iter, farm);
+		while (j < (int)farm.size)
+		{
+			if (j == k)
+			{
+				ft_printf("1");
+				k = next(&iter, farm);
+			}
+			else
+				ft_printf("0");
+			j++;
+		}
 		ft_printf("\n");
 		i++;
 	}

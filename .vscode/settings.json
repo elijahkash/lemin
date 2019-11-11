@@ -1,5 +1,6 @@
 {
 	"files.associations": {
-		"ft_dyn_arr.h": "c"
+		"ft_dyn_arr.h": "c",
+		"iterator": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/08 14:26:57 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/11 13:01:53 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ static int		set_farm_se(t_farm *farm)
 	i = 0;
 	while (i < farm->size)
 	{
-		if (*(char **)darr(farm->rooms, i) == g_start)
-			farm->start = i;
-		if (*(char **)darr(farm->rooms, i) == g_end)
-			farm->end = i;
+		farm->start = (*(char **)darr(farm->rooms, i) == g_start) ?
+						i : farm->start;
+		farm->end = (*(char **)darr(farm->rooms, i) == g_end) ?
+						i : farm->end;
 		if (i < farm->size - 1 && !ft_strcmp(*(char **)darr(farm->rooms, i),
 											*(char **)darr(farm->rooms, i + 1)))
 			return (1);
@@ -67,10 +67,8 @@ static int		read_tube(int state, char *line, t_farm *farm)
 	{
 		i = (int)darr_flfind_i(farm->rooms, &words[0], ft_scmp);
 		j = (int)darr_flfind_i(farm->rooms, &words[1], ft_scmp);
-		if (i * j == 0)
-			state |= ERRSTATE;
-		if (i != j)
-			mtrx_set(*farm, i - 1, j - 1);
+		state |= (i * j == 0) ? ERRSTATE : 0;
+		mtrx_set(*farm, i - 1, j - 1);
 	}
 	else
 		state |= ERRSTATE;
@@ -85,31 +83,21 @@ static int		read_room(int state, char *line, t_farm *farm)
 	words = ft_strsplit(line, ' ');
 	if (words[0] && !words[1])
 	{
-		ft_free(*words);
-		ft_free(words);
 		mtrx_init(farm);
 		darr_sort(farm->rooms, ft_scmp, ft_qsort);
-		if (set_farm_se(farm))
-			return (state | ERRSTATE);
-		return(read_tube((state & ~ROOMS) | TUBES, line, farm));
+		state = (set_farm_se(farm)) ? (state | ERRSTATE) :
+										(state & ~ROOMS) | TUBES;
 	}
-	if (farm->size == INT_MAX)
-		state |= ERRSTATE;
 	else if (words[0] && words[1] && words[2] && !words[3])
 	{
 		if (ft_strchr(words[1], '-') || words[1][0] == 'L' ||
 			*ft_skip_atoi(words[1]) || *ft_skip_atoi(words[2]))
 			state |= ERRSTATE;
-		else
-		{
-			darr_add_str(farm->rooms, words[0]);
-			farm->size++;
-			if (state & START)
-				g_start = *(char **)darr_top(farm->rooms);
-			if (state & END)
-				g_end = *(char **)darr_top(farm->rooms);
-			state &= ~(START | END);
-		}
+		darr_add_str(farm->rooms, words[0]);
+		farm->size++;
+		g_start = (state & START) ? *(char **)darr_top(farm->rooms) : g_start;
+		g_end = (state & END) ? *(char **)darr_top(farm->rooms) : g_end;
+		state &= ~(START | END);
 	}
 	else
 		state |= ERRSTATE;
@@ -129,10 +117,8 @@ static int		handle_line(char *line, t_farm *farm)
 		state = read_ants(state, line, farm);
 	else if (state & ROOMS)
 		state = read_room(state, line, farm);
-	else if (state & TUBES)
+	if (!(state & ERRSTATE) && state & TUBES)
 		state = read_tube(state, line, farm);
-	else
-		ft_printf("SHIT\n");
 	if (state & ERRSTATE)
 		return (1);
 	return (0);
@@ -156,7 +142,7 @@ int				handle_input(t_farm *farm)
 		ft_free(line);
 		if (ret)
 			return (1);
-	}//TODO way_count
+	}
 	ft_free(line);
 	return (0);
 }
