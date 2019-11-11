@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/11 19:29:35 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/11 21:33:46 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,19 @@ inline int		mtrx_getcon(t_farm farm, int i)
 
 void			mtrx_set(t_farm farm, int i, int j)
 {
-	//TODO: optimiz calc
+	register int	pos;
+	register int	bit;
+
 	if (i == j)
 		return ;
-	if (!GETBIT_LLU(farm.mtrx[i * farm.mtrx_len + 1 + j / 64], j % 64))
-		farm.mtrx[i * farm.mtrx_len]++;
-	farm.mtrx[i * farm.mtrx_len + 1 + j / 64] =
-		SETBIT_LLU(farm.mtrx[i * farm.mtrx_len + 1 + j / 64], j % 64);
-	if (!GETBIT_LLU(farm.mtrx[j * farm.mtrx_len + 1 + i / 64], i % 64))
-		farm.mtrx[j * farm.mtrx_len]++;
-	farm.mtrx[j * farm.mtrx_len + 1 + i / 64] =
-		SETBIT_LLU(farm.mtrx[j * farm.mtrx_len + 1 + i / 64], i % 64);
+	pos = i * farm.mtrx_len + 1 + j / 64;
+	bit = j % 64;
+	farm.mtrx[i * farm.mtrx_len] += (!GETBIT_LLU(farm.mtrx[pos], bit));
+	farm.mtrx[pos] = SETBIT_LLU(farm.mtrx[pos], bit);
+	pos = j * farm.mtrx_len + 1 + i / 64;
+	bit = i % 64;
+	farm.mtrx[j * farm.mtrx_len] += (!GETBIT_LLU(farm.mtrx[pos], bit));
+	farm.mtrx[pos] = SETBIT_LLU(farm.mtrx[pos], bit);
 	return ;
 }
 
@@ -59,7 +61,6 @@ void			mtrx_init(t_farm *farm)
 void			iter_init(t_iter *newiter, t_farm farm, int i)
 {
 	newiter->row = i;
-	newiter->next = 0;
 	newiter->i = 1;
 	newiter->curitem = farm.mtrx[i * farm.mtrx_len + 1];
 	newiter->least = farm.mtrx[i * farm.mtrx_len];
@@ -67,16 +68,15 @@ void			iter_init(t_iter *newiter, t_farm farm, int i)
 
 int				next(t_iter *iter, t_farm farm)
 {
-	__uint64_t res;
+	register __uint64_t tmp;
 
 	if (!iter->least)
 		return (-1);
 	while (!iter->curitem)
 		iter->curitem = farm.mtrx[iter->row * farm.mtrx_len + ++(iter->i)];
 	iter->least--;
-	res = iter->curitem;
-	asm("bsrq\t%1, %0" : "=r" (res) , "+rm" (res));
-	iter->curitem = RESETBIT_LLU(iter->curitem, res);
-	return ((iter->next = 64 * (iter->i - 1) +
-							(int)res));
+	tmp = iter->curitem;
+	asm("bsrq\t%1, %0" : "=r" (tmp) , "+rm" (tmp));
+	iter->curitem = RESETBIT_LLU(iter->curitem, tmp);
+	return (64 * (iter->i - 1) + (int)tmp);
 }

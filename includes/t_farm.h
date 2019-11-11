@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/11 15:26:14 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/11 21:02:16 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct	s_iterator
 	int			i;
 	__uint64_t	curitem;
 	int			least;
-	int			next;
 }				t_iter;
 
 void			iter_init(t_iter *newiter, t_farm farm, int i);
