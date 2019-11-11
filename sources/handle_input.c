@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/11 13:01:53 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/11 19:11:09 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,7 @@ int				handle_input(t_farm *farm)
 	{
 		if (ret < 0 || !line)
 		{
-			if (line)
-				ft_free(line);
+			ft_memdel((void **)&line);
 			return (1);
 		}
 		ret = handle_line(line, farm);
