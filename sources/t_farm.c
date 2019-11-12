@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/12 11:54:50 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/12 12:33:00 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ inline int		mtrx_getcon(t_farm farm, int i)
 	return ((int)farm.mtrx[i * farm.mtrx_len]);
 }
 
-void			mtrx_set(t_farm farm, int i, int j)
+inline void		mtrx_set(t_farm farm, int i, int j)
 {
 	register int	pos;
 	register int	bit;
@@ -45,13 +45,13 @@ void			mtrx_set(t_farm farm, int i, int j)
 	return ;
 }
 
-void			mtrx_init(t_farm *restrict farm)
+inline void		mtrx_init(t_farm *restrict farm)
 {
 	farm->mtrx_len = farm->size / 64 + (farm->size % 64) ? 2 : 1;
 	farm->mtrx = (__uint64_t *)ft_memalloc(8 * farm->size * farm->mtrx_len);
 }
 
-void			iter_init(t_iter *restrict newiter, t_farm farm, register int i)
+inline void		iter_init(t_iter *restrict newiter, t_farm farm, register int i)
 {
 	newiter->row = i;
 	newiter->i = 1;

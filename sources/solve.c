@@ -6,14 +6,16 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/11 13:38:24 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/12 12:16:01 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <solve.h>
 
+//TODO: del dead ends???
+
 int		solve(t_farm farm)
 {
-	//TODO: del typici
+
 	return (farm.size * 0);
 }
