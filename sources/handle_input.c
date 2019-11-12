@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/11 19:11:09 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/12 12:10:27 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,12 @@ static int		read_tube(int state, char *line, t_farm *farm)
 	{
 		i = (int)darr_flfind_i(farm->rooms, &words[0], ft_scmp);
 		j = (int)darr_flfind_i(farm->rooms, &words[1], ft_scmp);
-		state |= (i * j == 0) ? ERRSTATE : 0;
-		mtrx_set(*farm, i - 1, j - 1);
+		state |= (i-- * j-- == 0) ? ERRSTATE : 0;
+		if (i != j)
+		{
+			mtrx_set(*farm, i, j);
+			mtrx_set(*farm, j, i);
+		}
 	}
 	else
 		state |= ERRSTATE;
@@ -119,9 +123,7 @@ static int		handle_line(char *line, t_farm *farm)
 		state = read_room(state, line, farm);
 	if (!(state & ERRSTATE) && state & TUBES)
 		state = read_tube(state, line, farm);
-	if (state & ERRSTATE)
-		return (1);
-	return (0);
+	return ((state & ERRSTATE));
 }
 
 int				handle_input(t_farm *farm)

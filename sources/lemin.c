@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:20:37 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/11 21:06:14 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/12 11:46:00 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,36 +42,36 @@ void	lemin(void)
 
 
 
-	// int i;
-	// int j;
-	// i = 0;
-	// while (i < (int)farm.size)
-	// {
-	// 	j = 0;
-	// 	ft_printf("%s\t%d\t", *(char **)darr(farm.rooms, i),
-	// 							mtrx_getcon(farm, i));
-	// 	while (j < (int)farm.size)
-	// 		ft_printf("%d ", mtrx(farm, i, j++));
-	// 	ft_printf("\n");
-	// 	i++;
-	// }
+	int i;
+	int j;
+	i = 0;
+	while (i < (int)farm.size)
+	{
+		j = 0;
+		ft_printf("%s\t%d\t", *(char **)darr(farm.rooms, i),
+								mtrx_getcon(farm, i));
+		while (j < (int)farm.size)
+			ft_printf("%d ", mtrx(farm, i, j++));
+		ft_printf("\n");
+		i++;
+	}
 
-	// ft_printf("\n");
+	ft_printf("\n");
 
 
-	// t_iter iter;
-	// int k;
-	// i = 0;
-	// while (i < (int)farm.size)
-	// {
-	// 	ft_printf("%s\t%d\t", *(char **)darr(farm.rooms, i),
-	// 							mtrx_getcon(farm, i));
-	// 	iter_init(&iter, farm, i);
-	// 	while ((k = next(&iter, farm)) > 0)
-	// 		ft_printf("%d ", k);
-	// 	ft_printf("\n");
-	// 	i++;
-	// }
+	t_iter iter;
+	int k;
+	i = 0;
+	while (i < (int)farm.size)
+	{
+		ft_printf("%s\t%d\t", *(char **)darr(farm.rooms, i),
+								mtrx_getcon(farm, i));
+		iter_init(&iter, farm, i);
+		while ((k = next(&iter, farm)) >= 0)
+			ft_printf("%d ", k);
+		ft_printf("\n");
+		i++;
+	}
 
 
 
