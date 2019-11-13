@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/12 12:33:00 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/13 20:44:21 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,56 +17,77 @@ void			farm_init(t_farm *restrict farm)
 	farm->ants = 0;
 	farm->end = -1;
 	farm->start = -1;
-	farm->mtrx_len = 0;
-	farm->mtrx = NULL;
+	farm->bcmtrx.mtrx_len = 0;
+	farm->bcmtrx.mtrx = NULL;
+	farm->work_graph = NULL;
 	darr_init(&(farm->rooms), sizeof(char *), 128);
-	farm->size = 0;
 }
 
-inline int		mtrx(t_farm farm, int i, int j)
+inline int		mtrx(t_farm *restrict farm, int i, int j)
 {
-	return (GETBIT_LLU(farm.mtrx[i * farm.mtrx_len + 1 + j / 64], j % 64));
+	return (GETBIT_LLU(
+		farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len + 1 + j / 64], j % 64));
 }
 
-inline int		mtrx_getcon(t_farm farm, int i)
+inline int		mtrx_getcon(t_farm *restrict farm, int i)
 {
-	return ((int)farm.mtrx[i * farm.mtrx_len]);
+	return ((int)farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len]);
 }
 
-inline void		mtrx_set(t_farm farm, int i, int j)
+inline void		mtrx_set(t_farm *restrict farm, int i, int j)
 {
 	register int	pos;
 	register int	bit;
 
-	pos = i * farm.mtrx_len + 1 + j / 64;
+	pos = i * farm->bcmtrx.mtrx_len + 1 + j / 64;
 	bit = j % 64;
-	farm.mtrx[i * farm.mtrx_len] += (!GETBIT_LLU(farm.mtrx[pos], bit));
-	farm.mtrx[pos] = SETBIT_LLU(farm.mtrx[pos], bit);
+	farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len] +=
+		(!GETBIT_LLU(farm->bcmtrx.mtrx[pos], bit));
+	farm->bcmtrx.mtrx[pos] = SETBIT_LLU(farm->bcmtrx.mtrx[pos], bit);
+	return ;
+}
+
+inline void		mtrx_reset(t_farm *restrict farm, int i, int j)
+{
+	register int	pos;
+	register int	bit;
+
+	pos = i * farm->bcmtrx.mtrx_len + 1 + j / 64;
+	bit = j % 64;
+	farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len] -=
+		(GETBIT_LLU(farm->bcmtrx.mtrx[pos], bit));
+	farm->bcmtrx.mtrx[pos] = RESETBIT_LLU(farm->bcmtrx.mtrx[pos], bit);
 	return ;
 }
 
 inline void		mtrx_init(t_farm *restrict farm)
 {
-	farm->mtrx_len = farm->size / 64 + (farm->size % 64) ? 2 : 1;
-	farm->mtrx = (__uint64_t *)ft_memalloc(8 * farm->size * farm->mtrx_len);
+	register int size;
+
+	size = (int)*farm->rooms.curlen;
+	farm->bcmtrx.mtrx_len = (size / 64 + ((size % 64) ? 2 : 1));
+	farm->bcmtrx.mtrx = (__uint64_t *)ft_memalloc(8 * size *
+												farm->bcmtrx.mtrx_len);
 }
 
-inline void		iter_init(t_iter *restrict newiter, t_farm farm, register int i)
+inline void		iter_init(t_iter *restrict newiter, t_farm *restrict farm,
+							register int i)
 {
 	newiter->row = i;
 	newiter->i = 1;
-	newiter->curitem = farm.mtrx[i * farm.mtrx_len + 1];
-	newiter->least = farm.mtrx[i * farm.mtrx_len];
+	newiter->curitem = farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len + 1];
+	newiter->least = farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len];
 }
 
-int				next(t_iter *restrict iter, t_farm farm)
+int				next(t_iter *restrict iter, t_farm *restrict farm)
 {
 	register __uint64_t tmp;
 
 	if (!iter->least)
 		return (-1);
 	while (!iter->curitem)
-		iter->curitem = farm.mtrx[iter->row * farm.mtrx_len + ++(iter->i)];
+		iter->curitem = farm->bcmtrx.mtrx[iter->row * farm->bcmtrx.mtrx_len +
+											++(iter->i)];
 	iter->least--;
 	tmp = iter->curitem;
 	BSR_ASM(tmp);

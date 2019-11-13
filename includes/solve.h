@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:31 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/07 13:42:42 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/13 13:46:02 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include <t_farm.h>
 
-int		solve(t_farm farm);
+int		solve(t_farm *farm);
 
 #endif

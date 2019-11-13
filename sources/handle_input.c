@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/12 12:10:27 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/13 20:44:25 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,29 @@
 static char	*g_start = NULL;
 static char *g_end = NULL;
 
-static int		set_farm_se(t_farm *farm)
+static int		set_farm_se(t_farm *restrict farm)
 {
-	size_t	i;
+	register size_t	i;
+	register size_t size;
 
+	size = (int)*farm->rooms.curlen;
 	i = 0;
-	while (i < farm->size)
+	while (i < size)
 	{
 		farm->start = (*(char **)darr(farm->rooms, i) == g_start) ?
 						i : farm->start;
 		farm->end = (*(char **)darr(farm->rooms, i) == g_end) ?
 						i : farm->end;
-		if (i < farm->size - 1 && !ft_strcmp(*(char **)darr(farm->rooms, i),
-											*(char **)darr(farm->rooms, i + 1)))
+		if (i < size - 1 && !ft_strcmp(*(char **)darr(
+			farm->rooms, i), *(char **)darr(farm->rooms, i + 1)))
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-static int		handle_cmd(int state, char *line, t_farm *farm)
+static int		handle_cmd(int state, char *restrict line,
+							t_farm *restrict farm)
 {
 	if (!ft_strcmp(line, "##start"))
 		state |= (state & (START | END) || farm->start != -1) ? ERRSTATE :
@@ -46,7 +49,7 @@ static int		handle_cmd(int state, char *line, t_farm *farm)
 	return (state + (int)farm * 0);
 }
 
-static int		read_ants(int state, char *line, t_farm *farm)
+static int		read_ants(int state, char *restrict line, t_farm *restrict farm)
 {
 	if (state & (START | END) || ft_isdigit_ws(line))
 		return (state | ERRSTATE);
@@ -56,7 +59,7 @@ static int		read_ants(int state, char *line, t_farm *farm)
 	return (state);
 }
 
-static int		read_tube(int state, char *line, t_farm *farm)
+static int		read_tube(int state, char *restrict line, t_farm *restrict farm)
 {
 	char	**words;
 	int		i;
@@ -70,8 +73,8 @@ static int		read_tube(int state, char *line, t_farm *farm)
 		state |= (i-- * j-- == 0) ? ERRSTATE : 0;
 		if (i != j)
 		{
-			mtrx_set(*farm, i, j);
-			mtrx_set(*farm, j, i);
+			mtrx_set(farm, i, j);
+			mtrx_set(farm, j, i);
 		}
 	}
 	else
@@ -80,7 +83,7 @@ static int		read_tube(int state, char *line, t_farm *farm)
 	return (state);
 }
 
-static int		read_room(int state, char *line, t_farm *farm)
+static int		read_room(int state, char *restrict line, t_farm *restrict farm)
 {
 	char **words;
 
@@ -98,7 +101,6 @@ static int		read_room(int state, char *line, t_farm *farm)
 			*ft_skip_atoi(words[1]) || *ft_skip_atoi(words[2]))
 			state |= ERRSTATE;
 		darr_add_str(farm->rooms, words[0]);
-		farm->size++;
 		g_start = (state & START) ? *(char **)darr_top(farm->rooms) : g_start;
 		g_end = (state & END) ? *(char **)darr_top(farm->rooms) : g_end;
 		state &= ~(START | END);
@@ -109,7 +111,7 @@ static int		read_room(int state, char *line, t_farm *farm)
 	return (state);
 }
 
-static int		handle_line(char *line, t_farm *farm)
+static int		handle_line(char *restrict line, t_farm *restrict farm)
 {
 	static int state = ANTS;
 
@@ -126,7 +128,7 @@ static int		handle_line(char *line, t_farm *farm)
 	return ((state & ERRSTATE));
 }
 
-int				handle_input(t_farm *farm)
+int				handle_input(t_farm *restrict farm)
 {
 	int		ret;
 	char	*line;
