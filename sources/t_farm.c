@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/13 20:44:21 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/13 21:18:57 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void			farm_init(t_farm *restrict farm)
 	farm->start = -1;
 	farm->bcmtrx.mtrx_len = 0;
 	farm->bcmtrx.mtrx = NULL;
-	farm->work_graph = NULL;
+	farm->work_graph.mem = NULL;
+	farm->work_graph.size = 0;
 	darr_init(&(farm->rooms), sizeof(char *), 128);
 }
 

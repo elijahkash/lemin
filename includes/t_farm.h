@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/13 20:44:29 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/13 21:18:27 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,24 @@ typedef struct	s_graph_item
 	int		state;
 }				t_graph_item;
 
+typedef struct	s_connect
+{
+	int		dst;
+	int		weight;
+}				t_connect;
+
+typedef struct	s_work_graph
+{
+	void	*mem;
+	int		size;
+}				t_work_graph;
+
 typedef struct	s_farm
 {
 	int					ants;
 	t_darr				rooms;
 	t_bit_connect_mtrx	bcmtrx;
-	void				*work_graph;
+	t_work_graph		work_graph;
 	int					start;
 	int					end;
 }				t_farm;
