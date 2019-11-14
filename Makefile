@@ -6,12 +6,12 @@
 #    By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/19 15:35:23 by mtrisha           #+#    #+#              #
-#    Updated: 2019/11/07 13:23:37 by mtrisha          ###   ########.fr        #
+#    Updated: 2019/11/14 16:27:55 by mtrisha          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
-SOURCES = main.c lemin.c t_farm.c handle_input.c solve.c
+SOURCES = main.c lemin.c t_farm.c handle_input.c solve.c prepare_work_graph.c
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror

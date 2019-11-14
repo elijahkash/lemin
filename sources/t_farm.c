@@ -6,13 +6,13 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/13 21:18:57 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/14 18:22:35 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <t_farm.h>
 
-void			farm_init(t_farm *restrict farm)
+void		farm_init(t_farm *farm)
 {
 	farm->ants = 0;
 	farm->end = -1;
@@ -21,21 +21,21 @@ void			farm_init(t_farm *restrict farm)
 	farm->bcmtrx.mtrx = NULL;
 	farm->work_graph.mem = NULL;
 	farm->work_graph.size = 0;
-	darr_init(&(farm->rooms), sizeof(char *), 128);
+	darr_init(&(farm->rooms), PTR_SIZE, 128);
 }
 
-inline int		mtrx(t_farm *restrict farm, int i, int j)
+int			mtrx(t_farm *farm, int i, int j)
 {
 	return (GETBIT_LLU(
 		farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len + 1 + j / 64], j % 64));
 }
 
-inline int		mtrx_getcon(t_farm *restrict farm, int i)
+int		mtrx_getcon(t_farm *farm, int i)
 {
 	return ((int)farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len]);
 }
 
-inline void		mtrx_set(t_farm *restrict farm, int i, int j)
+void		mtrx_set(t_farm *farm, int i, int j)
 {
 	register int	pos;
 	register int	bit;
@@ -48,7 +48,7 @@ inline void		mtrx_set(t_farm *restrict farm, int i, int j)
 	return ;
 }
 
-inline void		mtrx_reset(t_farm *restrict farm, int i, int j)
+void		mtrx_reset(t_farm *farm, int i, int j)
 {
 	register int	pos;
 	register int	bit;
@@ -61,7 +61,7 @@ inline void		mtrx_reset(t_farm *restrict farm, int i, int j)
 	return ;
 }
 
-inline void		mtrx_init(t_farm *restrict farm)
+void		mtrx_init(t_farm *farm)
 {
 	register int size;
 
@@ -71,8 +71,7 @@ inline void		mtrx_init(t_farm *restrict farm)
 												farm->bcmtrx.mtrx_len);
 }
 
-inline void		iter_init(t_iter *restrict newiter, t_farm *restrict farm,
-							register int i)
+void		mtrx_iter_init(t_mtrx_iter *newiter, t_farm *farm, int i)
 {
 	newiter->row = i;
 	newiter->i = 1;
@@ -80,7 +79,7 @@ inline void		iter_init(t_iter *restrict newiter, t_farm *restrict farm,
 	newiter->least = farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len];
 }
 
-int				next(t_iter *restrict iter, t_farm *restrict farm)
+int			mtrx_next(t_mtrx_iter *iter, t_farm *farm)
 {
 	register __uint64_t tmp;
 
@@ -94,4 +93,18 @@ int				next(t_iter *restrict iter, t_farm *restrict farm)
 	BSR_ASM(tmp);
 	iter->curitem = RESETBIT_LLU(iter->curitem, tmp);
 	return (64 * (iter->i - 1) + (int)tmp);
+}
+
+void		iter_init(t_iter *newiter, int i)
+{
+	newiter->i = 0;
+	newiter->row = i;
+}
+
+t_connect	*next(t_iter *iter, t_farm *farm)
+{
+	if (iter->i >= GRAPH_ITEM(iter->row).con_count)
+		return (NULL);
+	return (&(((t_connect *)&(((t_graph_item **)farm->work_graph.mem)
+						[iter->row][1]))[(iter->i)++]));
 }

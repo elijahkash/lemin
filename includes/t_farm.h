@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/13 21:18:27 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/14 18:21:31 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ typedef struct	s_graph_item
 	int		con_count;
 	int		state;
 }				t_graph_item;
+
+# define GRAPH_ITEM(i) (*((t_graph_item **)farm->work_graph.mem)[i])
 
 typedef struct	s_connect
 {
@@ -50,23 +52,31 @@ typedef struct	s_farm
 	int					end;
 }				t_farm;
 
-void			farm_init(t_farm *restrict farm);
-void			mtrx_init(t_farm *restrict farm);
-int				mtrx(t_farm *restrict farm, int i, int j);
-void			mtrx_set(t_farm *restrict farm, int i, int j);
-void			mtrx_reset(t_farm *restrict farm, int i, int j);
-int				mtrx_getcon(t_farm *restrict farm, int i);
+void			farm_init(t_farm *farm);
+void			mtrx_init(t_farm *farm);
+int				mtrx(t_farm *farm, int i, int j);
+void			mtrx_set(t_farm *farm, int i, int j);
+void			mtrx_reset(t_farm *farm, int i, int j);
+int				mtrx_getcon(t_farm *farm, int i);
 
-typedef struct	s_iterator
+typedef struct	s_mtrx_iterator
 {
 	int			row;
 	int			i;
 	__uint64_t	curitem;
 	int			least;
+}				t_mtrx_iter;
+
+void			mtrx_iter_init(t_mtrx_iter *newiter, t_farm *farm, int i);
+int				mtrx_next(t_mtrx_iter *iter, t_farm *farm);
+
+typedef struct	s_graph_iterator
+{
+	int			i;
+	int			row;
 }				t_iter;
 
-void			iter_init(t_iter *restrict newiter, t_farm *restrict farm,
-							register int i);
-int				next(t_iter *restrict iter, t_farm *restrict farm);
+void			iter_init(t_iter *newiter, int i);
+t_connect		*next(t_iter *iter, t_farm *farm);
 
 #endif
