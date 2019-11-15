@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 18:28:41 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/15 14:56:25 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/15 16:10:41 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ void	restruct_names(t_farm *farm)
 		ft_free(*(char **)darr_pop(farm->rooms));
 	darr_del(&(farm->rooms));
 	farm->rooms = newrooms;
+	darr_trim(farm->rooms);
 }
 
 int		prepare_work_graph(t_farm *farm)
@@ -158,5 +159,4 @@ int		prepare_work_graph(t_farm *farm)
 	restruct_names(farm);
 	return (0);
 }
-// trim mem?
-//
+// TODO: gcmemtrim
