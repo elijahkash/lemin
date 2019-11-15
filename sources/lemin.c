@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:20:37 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/14 20:46:20 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/15 14:54:09 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	lemin(void)
 	t_connect *ptr;
 	while (i < farm->work_graph.size)
 	{
-		ft_printf("%s\t%d\t", *(char **)darr(farm->rooms, GRAPH_ITEM(i).id),
+		ft_printf("%s\t%d\t", (char *)darr(farm->rooms, GRAPH_ITEM(i).id),
 								GRAPH_ITEM(i).con_count);
 		iter_init(&iter2, i);
 		while ((ptr = next(&iter2, farm)))
@@ -99,7 +99,6 @@ void	lemin(void)
 		ft_printf("\n");
 		i++;
 	}
-
 	ft_printf("\n\n%d\n\n", i);
 
 	return ;

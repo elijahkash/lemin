@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 18:28:41 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/14 20:57:27 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/15 14:56:25 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,11 @@ void	determ_connect_component(t_darr connect_component, t_farm *farm)
 	darr_add(supp, &(farm->start));
 	while (i < (int)darr_l(connect_component))
 	{
-		if (*(int *)darr(connect_component, i) == farm->end)
-		{
-			i++;
-			continue ;
-		}
 		mtrx_iter_init(&iter, farm, *(int *)darr(connect_component, i));
 		while ((j = mtrx_next(&iter, farm)) >= 0)
 		{
-			if (!darr_flfind_i(supp, &j, ft_icmp))
-			{
-				darr_insert_uniq(supp, &j, ft_icmp);
+			if (darr_insert_uniq(supp, &j, ft_icmp))
 				darr_add(connect_component, &j);
-			}
 		}
 		i++;
 	}
@@ -126,11 +118,35 @@ void	create_work_graph(t_farm *farm, t_darr connect_component)
 	}
 }
 
+void	restruct_names(t_farm *farm)
+{
+	t_darr	newrooms;
+	int		i;
+	char	*tmp;
+
+	darr_init(&newrooms, sizeof(char), farm->work_graph.size * 2);
+	i = 0;
+	while (i < farm->work_graph.size)
+	{
+		tmp = *(char **)darr(farm->rooms, GRAPH_ITEM(i).id);
+		GRAPH_ITEM(i).id = (int)darr_l(newrooms);
+		while (*tmp)
+			darr_add(newrooms, tmp++);
+		darr_add(newrooms, tmp);
+		i++;
+	}
+	while (darr_l(farm->rooms))
+		ft_free(*(char **)darr_pop(farm->rooms));
+	darr_del(&(farm->rooms));
+	farm->rooms = newrooms;
+}
+
 int		prepare_work_graph(t_farm *farm)
 {
 	t_darr	connect_component;
 
 	darr_init(&connect_component, sizeof(int), 64);
+	farm->bcmtrx.mtrx[farm->end * farm->bcmtrx.mtrx_len] = 0;
 	determ_connect_component(connect_component, farm);
 	del_dead_end(farm, connect_component);
 	darr_sort(connect_component, ft_icmp, ft_qsort);
@@ -138,5 +154,9 @@ int		prepare_work_graph(t_farm *farm)
 		return (1);
 	create_work_graph(farm, connect_component);
 	darr_del(&connect_component);
+	mtrx_del(farm);
+	restruct_names(farm);
 	return (0);
 }
+// trim mem?
+//

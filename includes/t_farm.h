@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/14 18:21:31 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/15 13:12:24 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct	s_bit_connect_mtrx
 
 typedef struct	s_graph_item
 {
-	int		id;
+	size_t	id;
 	int		con_count;
 	int		state;
 }				t_graph_item;
@@ -54,6 +54,7 @@ typedef struct	s_farm
 
 void			farm_init(t_farm *farm);
 void			mtrx_init(t_farm *farm);
+void			mtrx_del(t_farm *farm);
 int				mtrx(t_farm *farm, int i, int j);
 void			mtrx_set(t_farm *farm, int i, int j);
 void			mtrx_reset(t_farm *farm, int i, int j);

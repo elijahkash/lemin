@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/14 18:22:35 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/15 13:12:03 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,12 @@ void		mtrx_init(t_farm *farm)
 	farm->bcmtrx.mtrx_len = (size / 64 + ((size % 64) ? 2 : 1));
 	farm->bcmtrx.mtrx = (__uint64_t *)ft_memalloc(8 * size *
 												farm->bcmtrx.mtrx_len);
+}
+
+void		mtrx_del(t_farm *farm)
+{
+	ft_memdel((void **)&(farm->bcmtrx.mtrx));
+	farm->bcmtrx.mtrx_len = 0;
 }
 
 void		mtrx_iter_init(t_mtrx_iter *newiter, t_farm *farm, int i)
