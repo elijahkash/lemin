@@ -2,6 +2,7 @@
 	"files.associations": {
 		"ft_dyn_arr.h": "c",
 		"iterator": "c",
-		"prepare_work_graph.h": "c"
+		"prepare_work_graph.h": "c",
+		"__locale": "c"
 	}
 }

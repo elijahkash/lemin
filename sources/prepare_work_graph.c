@@ -6,13 +6,13 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 18:28:41 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/15 16:10:41 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/17 00:00:59 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <prepare_work_graph.h>
 
-void	determ_connect_component(t_darr connect_component, t_farm *farm)
+void	determ_connect_component(t_darr connect_component, t_source_farm *farm)
 {
 	int i;
 	int j;
@@ -36,7 +36,7 @@ void	determ_connect_component(t_darr connect_component, t_farm *farm)
 	darr_del(&supp);
 }
 
-void	del_dead_end(t_farm *farm, t_darr connect_component)
+void	del_dead_end(t_source_farm *farm, t_darr connect_component)
 {
 	int		i;
 	int		j;
@@ -59,7 +59,7 @@ void	del_dead_end(t_farm *farm, t_darr connect_component)
 	}
 }
 
-int		count_connections(t_farm *farm, t_darr connect_component)
+int		count_connections(t_source_farm *farm, t_darr connect_component)
 {
 	int		res;
 	int 	i;
@@ -74,7 +74,7 @@ int		count_connections(t_farm *farm, t_darr connect_component)
 	return (res);
 }
 
-void	fill_connections(t_connect *arr, t_farm *farm, int i,
+void	fill_connections(t_connect *arr, t_source_farm *farm, int i,
 							t_darr connect_component)
 {
 	int		k;
@@ -91,7 +91,7 @@ void	fill_connections(t_connect *arr, t_farm *farm, int i,
 	}
 }
 
-void	create_work_graph(t_farm *farm, t_darr connect_component)
+void	create_work_graph(t_source_farm *farm, t_darr connect_component)
 {
 	int		i;
 	int		connects;
@@ -118,7 +118,7 @@ void	create_work_graph(t_farm *farm, t_darr connect_component)
 	}
 }
 
-void	restruct_names(t_farm *farm)
+void	restruct_names(t_source_farm *farm)
 {
 	t_darr	newrooms;
 	int		i;
@@ -142,7 +142,7 @@ void	restruct_names(t_farm *farm)
 	darr_trim(farm->rooms);
 }
 
-int		prepare_work_graph(t_farm *farm)
+int		prepare_work_graph(t_source_farm *farm)
 {
 	t_darr	connect_component;
 
@@ -159,4 +159,3 @@ int		prepare_work_graph(t_farm *farm)
 	restruct_names(farm);
 	return (0);
 }
-// TODO: gcmemtrim

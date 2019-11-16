@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/13 20:44:25 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/16 21:46:25 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 static char	*g_start = NULL;
 static char *g_end = NULL;
 
-static int		set_farm_se(t_farm *restrict farm)
+static int		set_farm_se(t_source_farm *restrict farm)
 {
 	register size_t	i;
 	register size_t size;
@@ -39,7 +39,7 @@ static int		set_farm_se(t_farm *restrict farm)
 }
 
 static int		handle_cmd(int state, char *restrict line,
-							t_farm *restrict farm)
+							t_source_farm *restrict farm)
 {
 	if (!ft_strcmp(line, "##start"))
 		state |= (state & (START | END) || farm->start != -1) ? ERRSTATE :
@@ -49,7 +49,7 @@ static int		handle_cmd(int state, char *restrict line,
 	return (state + (int)farm * 0);
 }
 
-static int		read_ants(int state, char *restrict line, t_farm *restrict farm)
+static int		read_ants(int state, char *restrict line, t_source_farm *restrict farm)
 {
 	if (state & (START | END) || ft_isdigit_ws(line))
 		return (state | ERRSTATE);
@@ -59,7 +59,7 @@ static int		read_ants(int state, char *restrict line, t_farm *restrict farm)
 	return (state);
 }
 
-static int		read_tube(int state, char *restrict line, t_farm *restrict farm)
+static int		read_tube(int state, char *restrict line, t_source_farm *restrict farm)
 {
 	char	**words;
 	int		i;
@@ -83,7 +83,8 @@ static int		read_tube(int state, char *restrict line, t_farm *restrict farm)
 	return (state);
 }
 
-static int		read_room(int state, char *restrict line, t_farm *restrict farm)
+//TODO: check on max int (rooms)
+static int		read_room(int state, char *restrict line, t_source_farm *restrict farm)
 {
 	char **words;
 
@@ -111,7 +112,7 @@ static int		read_room(int state, char *restrict line, t_farm *restrict farm)
 	return (state);
 }
 
-static int		handle_line(char *restrict line, t_farm *restrict farm)
+static int		handle_line(char *restrict line, t_source_farm *restrict farm)
 {
 	static int state = ANTS;
 
@@ -128,7 +129,7 @@ static int		handle_line(char *restrict line, t_farm *restrict farm)
 	return ((state & ERRSTATE));
 }
 
-int				handle_input(t_farm *restrict farm)
+int				handle_input(t_source_farm *restrict farm)
 {
 	int		ret;
 	char	*line;
@@ -147,5 +148,6 @@ int				handle_input(t_farm *restrict farm)
 			return (1);
 	}
 	ft_free(line);
+	ft_force_buff();
 	return (0);
 }
