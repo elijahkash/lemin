@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 15:28:03 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 17:50:15 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ static int		set_farm_se(t_source_farm *restrict farm)
 	register size_t	i;
 	register size_t size;
 
-	size = (int)*farm->rooms.curlen;
+	size = *farm->rooms.curlen;
+	if (size >= __INT32_MAX__ - 2)
+		return (1);
 	i = 0;
 	while (i < size)
 	{
@@ -63,9 +65,9 @@ static int		read_ants(int state, char *restrict line,
 static int		read_tube(int state, char *restrict line,
 						t_source_farm *restrict farm)
 {
-	char	**words;
-	int		i;
-	int		j;
+	char		**words;
+	__int32_t	i;
+	__int32_t	j;
 
 	words = ft_strsplit(line, '-');
 	if (words[0] && words[1] && !words[2])
@@ -85,7 +87,6 @@ static int		read_tube(int state, char *restrict line,
 	return (state);
 }
 
-//TODO: check on max int (rooms)
 static int		read_room(int state, char *restrict line,
 						t_source_farm *restrict farm)
 {

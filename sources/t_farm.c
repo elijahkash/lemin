@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 15:50:54 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 16:19:47 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,21 @@ void		src_farm_del(t_source_farm **farm)
 	ft_free(*farm);
 }
 
-int			mtrx(t_source_farm *farm, int i, int j)
+int			mtrx(t_source_farm *farm, __int32_t i, __int32_t j)
 {
 	return (GETBIT_LLU(
 		farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len + 1 + j / 64], j % 64));
 }
 
-int			mtrx_getcon(t_source_farm *farm, int i)
+__int32_t	mtrx_getcon(t_source_farm *farm, __int32_t i)
 {
-	return ((int)farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len]);
+	return ((__int32_t)farm->bcmtrx.mtrx[i * farm->bcmtrx.mtrx_len]);
 }
 
-void		mtrx_set(t_source_farm *farm, int i, int j)
+void		mtrx_set(t_source_farm *farm, __int32_t i, __int32_t j)
 {
-	register int	pos;
-	register int	bit;
+	register __int32_t	pos;
+	register __int32_t	bit;
 
 	pos = i * farm->bcmtrx.mtrx_len + 1 + j / 64;
 	bit = j % 64;
@@ -56,10 +56,10 @@ void		mtrx_set(t_source_farm *farm, int i, int j)
 	return ;
 }
 
-void		mtrx_reset(t_source_farm *farm, int i, int j)
+void		mtrx_reset(t_source_farm *farm, __int32_t i, __int32_t j)
 {
-	register int	pos;
-	register int	bit;
+	register __int32_t	pos;
+	register __int32_t	bit;
 
 	pos = i * farm->bcmtrx.mtrx_len + 1 + j / 64;
 	bit = j % 64;
@@ -71,9 +71,9 @@ void		mtrx_reset(t_source_farm *farm, int i, int j)
 
 void		mtrx_init(t_source_farm *farm)
 {
-	register int size;
+	register __int32_t size;
 
-	size = (int)*farm->rooms.curlen;
+	size = (__int32_t)*farm->rooms.curlen;
 	farm->bcmtrx.mtrx_len = (size / 64 + ((size % 64) ? 2 : 1));
 	farm->bcmtrx.mtrx = (__uint64_t *)ft_memalloc(8 * size *
 												farm->bcmtrx.mtrx_len);
@@ -85,7 +85,8 @@ void		mtrx_del(t_source_farm *farm)
 	farm->bcmtrx.mtrx_len = 0;
 }
 
-void		mtrx_iter_init(t_mtrx_iter *newiter, t_source_farm *farm, int i)
+void		mtrx_iter_init(t_mtrx_iter *newiter, t_source_farm *farm,
+							__int32_t i)
 {
 	newiter->row = i;
 	newiter->i = 1;
@@ -131,27 +132,27 @@ void			work_farm_del(t_work_farm **farm)
 	ft_free(*farm);
 }
 
-t_graph_item	*graph_item(t_work_farm *farm, int i)
+t_graph_item	*graph_item(t_work_farm *farm, __int32_t i)
 {
 	return (((t_graph_item **)farm->graph.mem)[i]);
 }
 
-t_connect		*list_of_connects(t_work_farm *farm, int i)
+t_connect		*list_of_connects(t_work_farm *farm, __int32_t i)
 {
 	return (((t_connect *)&(((t_graph_item **)farm->graph.mem)[i][1])));
 }
 
-int				graph(t_work_farm *farm, int i, int j)
+int				graph(t_work_farm *farm, __int32_t i, __int32_t j)
 {
 	return (connect_find(list_of_connects(farm, i),
 						graph_item(farm, i)->con_count, j) ? 1 : 0);
 }
 
-t_connect		*connect_find(t_connect *connects, int count, int i)
+t_connect		*connect_find(t_connect *connects, __int32_t count, __int32_t i)
 {
-	int		bot;
-	int		top;
-	int		tmp;
+	__int32_t		bot;
+	__int32_t		top;
+	__int32_t		tmp;
 
 	if (!count)
 		return (NULL);
@@ -171,11 +172,11 @@ t_connect		*connect_find(t_connect *connects, int count, int i)
 	return (tmp ? NULL : connects + bot);
 }
 
-void		graph_set(t_work_farm *farm, int i, t_connect connect)
+void		graph_set(t_work_farm *farm, __int32_t i, t_connect connect)
 {
-	int			bot;
-	int			top;
-	int			tmp; // can be deleted (norminette)
+	__int32_t			bot;
+	__int32_t			top;
+	__int32_t			tmp; // can be deleted (norminette)
 	t_connect	*ptr;
 
 	ptr = list_of_connects(farm, i);
@@ -205,11 +206,11 @@ void		graph_set(t_work_farm *farm, int i, t_connect connect)
 	return ;
 }
 
-void		graph_reset(t_work_farm *farm, int i, int j)
+void		graph_reset(t_work_farm *farm, __int32_t i, __int32_t j)
 {
-	int			bot;
-	int			top;
-	int			tmp;
+	__int32_t			bot;
+	__int32_t			top;
+	__int32_t			tmp;
 	t_connect	*ptr;
 
 	ptr = list_of_connects(farm, i);
@@ -239,7 +240,7 @@ void		graph_reset(t_work_farm *farm, int i, int j)
 	return ;
 }
 
-void			graph_iter_init(t_graph_iter *newiter, int i)
+void			graph_iter_init(t_graph_iter *newiter, __int32_t i)
 {
 	newiter->i = 0;
 	newiter->row = i;
