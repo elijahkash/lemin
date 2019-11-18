@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 17:56:56 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 19:20:42 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,15 @@ typedef struct	s_bit_connect_mtrx
 typedef struct	s_source_farm
 {
 	size_t				ants;
+	t_darr				names;
 	t_darr				rooms; //TODO: del mallocs???
 	t_bit_connect_mtrx	bcmtrx;
 	__int32_t			start;
 	__int32_t			end;
 }				t_source_farm;
+
+# define INIT_COUNT_ROOMS 128
+# define INIT_COUNT_NAMES 1024
 
 # define MTRX(farm, i, j) (GETBIT_LLU((farm)->bcmtrx.mtrx[i * (farm) \
 							->bcmtrx.mtrx_len + 1 + j / 64], j % 64))

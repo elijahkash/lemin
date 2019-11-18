@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 17:50:15 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 20:41:42 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,27 @@
 
 #include <limits.h>
 
-static char	*g_start = NULL;
-static char *g_end = NULL;
+static size_t	g_start = 0;
+static size_t	g_end = 0;
+// static char	*g_start = NULL;
+// static char *g_end = NULL;
 
 static int		set_farm_se(t_source_farm *restrict farm)
 {
 	register size_t	i;
 	register size_t size;
 
-	size = *farm->rooms.curlen;
+	size = darr_l(farm->rooms);
 	if (size >= __INT32_MAX__ - 2)
 		return (1);
 	i = 0;
 	while (i < size)
 	{
-		farm->start = (*(char **)darr(farm->rooms, i) == g_start) ?
+		farm->start = (*(char **)darr(farm->rooms, i) ==
+						darr(farm->names, g_start)) ?
 						i : farm->start;
-		farm->end = (*(char **)darr(farm->rooms, i) == g_end) ?
+		farm->end = (*(char **)darr(farm->rooms, i)  ==
+						darr(farm->names, g_end)) ?
 						i : farm->end;
 		if (i < size - 1 && !ft_strcmp(*(char **)darr(
 			farm->rooms, i), *(char **)darr(farm->rooms, i + 1)))
@@ -87,6 +91,20 @@ static int		read_tube(int state, char *restrict line,
 	return (state);
 }
 
+void			form_rooms(t_source_farm *farm)
+{
+	size_t	i;
+	char	*ptr[1];
+
+	i = 0;
+	while (i < darr_l(farm->rooms))
+	{
+		ptr[0] = darr(farm->names, *(size_t *)darr(farm->rooms, i));
+		darr_eq(farm->rooms, i, ptr);
+		i++;
+	}
+}
+
 static int		read_room(int state, char *restrict line,
 						t_source_farm *restrict farm)
 {
@@ -96,6 +114,9 @@ static int		read_room(int state, char *restrict line,
 	if (words[0] && !words[1])
 	{
 		mtrx_init(farm);
+		darr_trim(farm->names);
+		darr_trim(farm->rooms);
+		form_rooms(farm);
 		darr_sort(farm->rooms, ft_scmp, ft_qsort);
 		state = (set_farm_se(farm)) ? (state | ERRSTATE) :
 										(state & ~ROOMS) | TUBES;
@@ -105,9 +126,13 @@ static int		read_room(int state, char *restrict line,
 		if (ft_strchr(words[1], '-') || words[1][0] == 'L' ||
 			*ft_skip_atoi(words[1]) || *ft_skip_atoi(words[2]))
 			state |= ERRSTATE;
-		darr_add_str(farm->rooms, words[0]);
-		g_start = (state & START) ? *(char **)darr_top(farm->rooms) : g_start;
-		g_end = (state & END) ? *(char **)darr_top(farm->rooms) : g_end;
+		darr_add(farm->rooms, ft_z(darr_l(farm->names)));
+		g_start = (state & START) ? darr_l(farm->names) : g_start;
+		g_end = (state & END) ? darr_l(farm->names) : g_end;
+		darr_add_n(farm->names, words[0], ft_strlen(words[0]) + 1);
+		// darr_add_str(farm->rooms, words[0]);
+		// g_start = (state & START) ? *(char **)darr_top(farm->rooms) : g_start;
+		// g_end = (state & END) ? *(char **)darr_top(farm->rooms) : g_end;
 		state &= ~(START | END);
 	}
 	else

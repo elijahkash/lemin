@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 16:19:47 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 19:47:09 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ void		src_farm_init(t_source_farm **farm)
 	(*farm)->start = -1;
 	(*farm)->bcmtrx.mtrx_len = 0;
 	(*farm)->bcmtrx.mtrx = NULL;
-	darr_init(&((*farm)->rooms), PTR_SIZE, 128);
+	darr_init(&((*farm)->rooms), PTR_SIZE, INIT_COUNT_ROOMS);
+	darr_init(&((*farm)->names), sizeof(char), INIT_COUNT_NAMES);
 }
 
 void		src_farm_del(t_source_farm **farm)
 {
 	mtrx_del(*farm);
 	darr_del(&((*farm)->rooms));
+	darr_del(&((*farm)->names));
 	ft_free(*farm);
 }
 

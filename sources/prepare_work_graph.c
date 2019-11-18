@@ -6,11 +6,11 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 18:28:41 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 15:27:10 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 19:56:54 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <prepare_work_graph.h>
+#include <prepare_work_graph.h> //TODO: rename file?
 
 void	determ_connect_component(t_darr connect_component, t_source_farm *farm)
 {
@@ -130,8 +130,8 @@ void	restruct_names(t_work_farm *work_farm, t_source_farm *src_farm)
 		GRAPH_ITEM(work_farm, i)->id = (int)darr_l(work_farm->rooms);
 		darr_add_n(work_farm->rooms, tmp, ft_strlen(tmp) + 1);
 	}
-	while (darr_l(src_farm->rooms))
-		ft_free(*(char **)darr_pop(src_farm->rooms));
+	// while (darr_l(src_farm->rooms))
+	// 	ft_free(*(char **)darr_pop(src_farm->rooms));
 	darr_trim(work_farm->rooms);
 }
 
@@ -140,7 +140,7 @@ void	create_work_farm(t_work_farm *work_farm, t_source_farm *src_farm)
 	t_darr	connect_component;
 
 	src_farm->bcmtrx.mtrx[src_farm->end * src_farm->bcmtrx.mtrx_len] = 0;
-	darr_init(&connect_component, sizeof(int), 64);
+	darr_init(&connect_component, sizeof(int), darr_l(src_farm->rooms));
 	determ_connect_component(connect_component, src_farm);
 	del_dead_end(src_farm, connect_component);
 	darr_sort(connect_component, ft_icmp, ft_qsort);
