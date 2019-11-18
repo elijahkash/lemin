@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 20:41:42 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 21:33:24 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 
 static size_t	g_start = 0;
 static size_t	g_end = 0;
-// static char	*g_start = NULL;
-// static char *g_end = NULL;
 
 static int		set_farm_se(t_source_farm *restrict farm)
 {
@@ -31,11 +29,9 @@ static int		set_farm_se(t_source_farm *restrict farm)
 	while (i < size)
 	{
 		farm->start = (*(char **)darr(farm->rooms, i) ==
-						darr(farm->names, g_start)) ?
-						i : farm->start;
+					darr(farm->names, g_start)) ? i : farm->start;
 		farm->end = (*(char **)darr(farm->rooms, i)  ==
-						darr(farm->names, g_end)) ?
-						i : farm->end;
+					darr(farm->names, g_end)) ? i : farm->end;
 		if (i < size - 1 && !ft_strcmp(*(char **)darr(
 			farm->rooms, i), *(char **)darr(farm->rooms, i + 1)))
 			return (1);
@@ -128,11 +124,8 @@ static int		read_room(int state, char *restrict line,
 			state |= ERRSTATE;
 		darr_add(farm->rooms, ft_z(darr_l(farm->names)));
 		g_start = (state & START) ? darr_l(farm->names) : g_start;
-		g_end = (state & END) ? darr_l(farm->names) : g_end;
+		g_end = (state & END) ? darr_l(farm->names) : g_end; //TODO: can del if
 		darr_add_n(farm->names, words[0], ft_strlen(words[0]) + 1);
-		// darr_add_str(farm->rooms, words[0]);
-		// g_start = (state & START) ? *(char **)darr_top(farm->rooms) : g_start;
-		// g_end = (state & END) ? *(char **)darr_top(farm->rooms) : g_end;
 		state &= ~(START | END);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 18:28:41 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 19:56:54 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 21:47:30 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,6 @@ void	restruct_names(t_work_farm *work_farm, t_source_farm *src_farm)
 		GRAPH_ITEM(work_farm, i)->id = (int)darr_l(work_farm->rooms);
 		darr_add_n(work_farm->rooms, tmp, ft_strlen(tmp) + 1);
 	}
-	// while (darr_l(src_farm->rooms))
-	// 	ft_free(*(char **)darr_pop(src_farm->rooms));
 	darr_trim(work_farm->rooms);
 }
 

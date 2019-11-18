@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 19:20:42 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 21:37:12 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct	s_source_farm
 {
 	size_t				ants;
 	t_darr				names;
-	t_darr				rooms; //TODO: del mallocs???
+	t_darr				rooms;
 	t_bit_connect_mtrx	bcmtrx;
 	__int32_t			start;
 	__int32_t			end;
