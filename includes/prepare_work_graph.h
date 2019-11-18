@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 18:30:06 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/17 00:01:01 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 14:10:09 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include <t_farm.h>
 
-int		prepare_work_graph(t_source_farm *farm);
+void	create_work_farm(t_work_farm *work_farm, t_source_farm *src_farm);
 
 #endif

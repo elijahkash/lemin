@@ -6,13 +6,15 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/16 22:58:26 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 14:09:46 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <t_farm.h>
 
-void		farm_init(t_source_farm **farm)
+#include <prepare_work_graph.h> //FIXME: ????
+
+void		src_farm_init(t_source_farm **farm)
 {
 	*farm = ft_malloc(sizeof(t_source_farm));
 	(*farm)->ants = 0;
@@ -20,12 +22,10 @@ void		farm_init(t_source_farm **farm)
 	(*farm)->start = -1;
 	(*farm)->bcmtrx.mtrx_len = 0;
 	(*farm)->bcmtrx.mtrx = NULL;
-	// farm->work_graph.mem = NULL;
-	// farm->work_graph.size = 0;
 	darr_init(&((*farm)->rooms), PTR_SIZE, 128);
 }
 
-void		farm_del(t_source_farm **farm)
+void		src_farm_del(t_source_farm **farm)
 {
 	mtrx_del(*farm);
 	darr_del(&((*farm)->rooms));
@@ -116,6 +116,21 @@ int			mtrx_next(t_mtrx_iter *iter, t_source_farm *farm)
 
 
 
+void			work_farm_init(t_work_farm **farm, t_source_farm *src_farm)
+{
+	*farm = ft_malloc(sizeof(t_work_farm));
+	(*farm)->ants = src_farm->ants;
+	(*farm)->graph.mem = NULL;
+	create_work_farm(*farm, src_farm);
+}
+
+void			work_farm_del(t_work_farm **farm)
+{
+	darr_del(&((*farm)->rooms));
+	ft_free((*farm)->graph.mem);
+	ft_free(*farm);
+}
+
 t_graph_item	*graph_item(t_work_farm *farm, int i)
 {
 	return (((t_graph_item **)farm->graph.mem)[i]);
@@ -202,7 +217,7 @@ void		graph_reset(t_work_farm *farm, int i, int j)
 	bot = 0;
 	while (bot != top)
 	{
-		tmp = i - ptr[bot + (top - bot) / 2].dst;
+		tmp = j - ptr[bot + (top - bot) / 2].dst;
 		if (!tmp)
 		{
 			bot += (top - bot) / 2;
@@ -213,7 +228,7 @@ void		graph_reset(t_work_farm *farm, int i, int j)
 		else
 			bot += (top - bot) / 2 + 1;
 	}
-	tmp = i - ptr[bot].dst;
+	tmp = j - ptr[bot].dst;
 	if (tmp)
 		return ;
 	ft_memmove(ptr + bot, ptr + bot + 1,

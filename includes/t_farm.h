@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/16 22:13:55 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 14:02:30 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ typedef struct	s_source_farm
 # define MTRX_GETCON(farm, i) ((int)(farm)->bcmtrx.mtrx[ \
 								i * (farm)->bcmtrx.mtrx_len])
 
-void			farm_init(t_source_farm **farm);
-void			farm_del(t_source_farm **farm);
+void			src_farm_init(t_source_farm **farm);
+void			src_farm_del(t_source_farm **farm);
 void			mtrx_init(t_source_farm *farm);
 void			mtrx_del(t_source_farm *farm);
 int				mtrx(t_source_farm *farm, int i, int j);
@@ -93,6 +93,9 @@ typedef struct	s_work_farm
 # define GRAPH(farm, i, j) (connect_find(LIST_OF_CONNECTS(farm, i), \
 						GRAPH_ITEM(farm, i)->con_count, j) ? 1 : 0);
 
+
+void			work_farm_init(t_work_farm **farm, t_source_farm *src_farm);
+void			work_farm_del(t_work_farm **farm);
 t_graph_item	*graph_item(t_work_farm *farm, int i);
 t_connect		*list_of_connects(t_work_farm *farm, int i);
 int				graph(t_work_farm *farm, int i, int j);

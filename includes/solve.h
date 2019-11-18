@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:31 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/16 20:53:05 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 14:06:29 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 
 # include <t_farm.h>
 
-int		solve(t_source_farm *farm); //FIXME: change type
+int		solve(t_work_farm *farm);
 
 #endif

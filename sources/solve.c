@@ -6,13 +6,13 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/16 20:52:44 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 14:06:20 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <solve.h>
 
-int		solve(t_source_farm *farm) //FIXME: chenge type
+int		solve(t_work_farm *farm)
 {
 	return ((int)farm * 0);
 }
