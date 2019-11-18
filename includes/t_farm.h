@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 14:02:30 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 15:37:47 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct	s_graph_item
 	int		state;
 }				t_graph_item;
 
+# define BASE_STATE 0
+
 typedef struct	s_connect
 {
 	int		dst;
@@ -101,6 +103,8 @@ t_connect		*list_of_connects(t_work_farm *farm, int i);
 int				graph(t_work_farm *farm, int i, int j);
 
 t_connect		*connect_find(t_connect *connects, int count, int i);
+void			graph_set(t_work_farm *farm, int i, t_connect connect);
+void			graph_reset(t_work_farm *farm, int i, int j);
 
 typedef struct	s_graph_iterator
 {

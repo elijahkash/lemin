@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/16 21:46:25 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 15:28:03 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static int		handle_cmd(int state, char *restrict line,
 	return (state + (int)farm * 0);
 }
 
-static int		read_ants(int state, char *restrict line, t_source_farm *restrict farm)
+static int		read_ants(int state, char *restrict line,
+						t_source_farm *restrict farm)
 {
 	if (state & (START | END) || ft_isdigit_ws(line))
 		return (state | ERRSTATE);
@@ -59,7 +60,8 @@ static int		read_ants(int state, char *restrict line, t_source_farm *restrict fa
 	return (state);
 }
 
-static int		read_tube(int state, char *restrict line, t_source_farm *restrict farm)
+static int		read_tube(int state, char *restrict line,
+						t_source_farm *restrict farm)
 {
 	char	**words;
 	int		i;
@@ -84,7 +86,8 @@ static int		read_tube(int state, char *restrict line, t_source_farm *restrict fa
 }
 
 //TODO: check on max int (rooms)
-static int		read_room(int state, char *restrict line, t_source_farm *restrict farm)
+static int		read_room(int state, char *restrict line,
+						t_source_farm *restrict farm)
 {
 	char **words;
 

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 18:28:41 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 14:51:15 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 15:27:10 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	create_graph(t_work_farm *work_farm, t_source_farm *src_farm,
 		((void **)work_farm->graph.mem)[i] = bias;
 		GRAPH_ITEM(work_farm, i)->id = *(int *)darr(connect_component, i);
 		GRAPH_ITEM(work_farm, i)->con_count = connects;
-		GRAPH_ITEM(work_farm, i)->state = 0;
+		GRAPH_ITEM(work_farm, i)->state = BASE_STATE;
 		fill_connections((t_connect *)(bias + sizeof(t_graph_item)), src_farm,
 							GRAPH_ITEM(work_farm, i)->id, connect_component);
 		bias += sizeof(t_graph_item) + sizeof(t_connect) * connects;
@@ -129,9 +129,6 @@ void	restruct_names(t_work_farm *work_farm, t_source_farm *src_farm)
 		tmp = *(char **)darr(src_farm->rooms, GRAPH_ITEM(work_farm, i)->id);
 		GRAPH_ITEM(work_farm, i)->id = (int)darr_l(work_farm->rooms);
 		darr_add_n(work_farm->rooms, tmp, ft_strlen(tmp) + 1);
-		// while (*tmp)
-		// 	darr_add(work_farm->rooms, tmp++);
-		// darr_add(work_farm->rooms, tmp);
 	}
 	while (darr_l(src_farm->rooms))
 		ft_free(*(char **)darr_pop(src_farm->rooms));

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 14:09:46 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/18 15:50:54 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,17 +188,19 @@ void		graph_set(t_work_farm *farm, int i, t_connect connect)
 	bot = 0;
 	while (bot != top)
 	{
-		tmp = i - ptr[bot + (top - bot) / 2].dst;
+		tmp = connect.dst - ptr[bot + (top - bot) / 2].dst;
 		if (tmp < 0)
 			top = bot + (top - bot) / 2;
 		else
 			bot += (top - bot) / 2 + 1;
 	}
-	tmp = i - ptr[bot].dst;
+	tmp = connect.dst - ptr[bot].dst;
+	if (!tmp)
+		return ;
 	bot += (tmp > 0) ? 1 : 0;
 	//FIXME: here ?
 	ft_memmove(ptr + bot + 1, ptr + bot,
-		sizeof(t_connect) * (GRAPH_ITEM(farm, i)->con_count - bot));
+		sizeof(t_connect) * (GRAPH_ITEM(farm, i)->con_count++ - bot));
 	ptr[bot] = connect;
 	return ;
 }
