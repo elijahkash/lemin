@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:20:37 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 21:34:24 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/22 16:22:50 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,27 @@ void	lemin(void)
 	if (ret || !(src_farm->ants * darr_l(src_farm->rooms)) ||
 		src_farm->start == -1 || src_farm->end == -1 || !src_farm->bcmtrx.mtrx)
 		return ;
+	ft_force_buff();
 
 
+	ft_printf("\n");
 
-	// ft_printf("\n");
+	__int32_t i;
+	t_mtrx_iter iter;
+	__int32_t k;
+	i = 0;
+	while (i < (int)darr_l(src_farm->rooms))
+	{
+		ft_printf("%s\t%d\t", *(char **)darr(src_farm->rooms, i),
+								mtrx_getcon(src_farm, i));
+		mtrx_iter_init(&iter, src_farm, i);
+		while ((k = mtrx_next(&iter, src_farm)) >= 0)
+			ft_printf("%d ", k);
+		ft_printf("\n");
+		i++;
+	}
 
-	// __int32_t i;
-	// t_mtrx_iter iter;
-	// __int32_t k;
-	// i = 0;
-	// while (i < (int)darr_l(src_farm->rooms))
-	// {
-	// 	ft_printf("%s\t%d\t", *(char **)darr(src_farm->rooms, i),
-	// 							mtrx_getcon(src_farm, i));
-	// 	mtrx_iter_init(&iter, src_farm, i);
-	// 	while ((k = mtrx_next(&iter, src_farm)) >= 0)
-	// 		ft_printf("%d ", k);
-	// 	ft_printf("\n");
-	// 	i++;
-	// }
-
-	// ft_printf("\n\n%d\n\n", i);
+	ft_printf("\n\n%d\n\n", i);
 
 
 	work_farm_init(&work_farm, src_farm);
@@ -81,25 +81,25 @@ void	lemin(void)
 	// }
 
 
-	// ft_printf("\n");
+	ft_printf("\n");
 
 
-	// t_graph_iter iter2;
-	// t_connect *ptr;
-	// i = 0;
-	// while (i < work_farm->graph.size)
-	// {
-	// 	ft_printf("%s\t%d\t", (char *)darr(work_farm->rooms,
-	// 		GRAPH_ITEM(work_farm, i)->id), GRAPH_ITEM(work_farm, i)->con_count);
-	// 	graph_iter_init(&iter2, i);
-	// 	while ((ptr = graph_next(&iter2, work_farm)))
-	// 	{
-	// 		ft_printf("%d ", ptr->dst);
-	// 	}
-	// 	ft_printf("\n");
-	// 	i++;
-	// }
-	// ft_printf("\n\n%d\n\n", i);
+	t_graph_iter iter2;
+	t_connect *ptr;
+	i = 0;
+	while (i < work_farm->graph.size)
+	{
+		ft_printf("%d\t%s\t%d\t", i, (char *)darr(work_farm->rooms,
+			GRAPH_ITEM(work_farm, i)->id), GRAPH_ITEM(work_farm, i)->con_count);
+		graph_iter_init(&iter2, i, 0);
+		while ((ptr = graph_next(&iter2, work_farm)))
+		{
+			ft_printf("%d ", ptr->dst);
+		}
+		ft_printf("\n");
+		i++;
+	}
+	ft_printf("\n\n%d\n\n", i);
 
 
 	// t_connect test;
@@ -125,7 +125,7 @@ void	lemin(void)
 	// }
 	// ft_printf("\n\n%d\n\n", i);
 
-	// ft_force_buff();
+	 ft_force_buff();
 
 
 

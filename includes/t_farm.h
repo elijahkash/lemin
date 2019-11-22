@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 21:37:12 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/22 16:28:15 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,39 @@ int				mtrx_next(t_mtrx_iter *iter, t_source_farm *farm);
 
 
 
+
+
+
+
 typedef struct	s_graph_item
 {
 	size_t		id;
 	__int32_t	con_count;
-	__int32_t	state;
+	__int32_t	weight; // really need?????
+	__int32_t	state; // char?
 }				t_graph_item;
 
-# define BASE_STATE 0
+# define INIT_WEIGHT 0
+# define INIT_STATE 0
+# define BASE_STATE 0 // 24; need safe separete when clean graph!
+# define MARKED		1
+# define MARKED_IN	2
+# define MARKED_OUT 4
+# define SEPARATE	8
 
+//TODO: api for fast get lst bit?
+// +1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 typedef struct	s_connect
 {
 	__int32_t	dst;
-	__int32_t	weight;
+	// __int32_t	weight;
+	char		state;
 }				t_connect;
+
+# define WAY_BASE_STATE 0
+# define WAY_NEGATIVE	1
+# define WAY_FORBIDDEN	2
+// # define END_WAY	3
 
 typedef struct	s_graph
 {
@@ -115,9 +134,40 @@ typedef struct	s_graph_iterator
 {
 	__int32_t	i;
 	__int32_t	row;
+	char		state; //TODO: can del and use row bit ???
 }				t_graph_iter;
 
-void			graph_iter_init(t_graph_iter *newiter, __int32_t i);
+# define ALL_WAYS	0
+# define ALLOW_WAYS	1
+# define NEG_WAYS	2
+
+void			graph_iter_init(t_graph_iter *newiter, __int32_t i,
+								t_work_farm *farm);
 t_connect		*graph_next(t_graph_iter *iter, t_work_farm *farm);
+t_connect		*graph_next_all(t_graph_iter *iter, t_work_farm *farm);
+t_connect		*graph_next_allow(t_graph_iter *iter, t_work_farm *farm);
+t_connect		*graph_next_neg(t_graph_iter *iter, t_work_farm *farm);
+
+extern t_connect		*(*iter_func[])(t_graph_iter *iter, t_work_farm *farm);
+
+
+
+
+
+void			clean_graph_state(t_work_farm *farm);
+
+
+
+
+
+
+typedef struct	s_full_connect
+{
+	__int32_t	src;
+	__int32_t	dst;
+}				t_full_connect;
+
+
+
 
 #endif

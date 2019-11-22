@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 19:47:09 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/22 16:35:07 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,15 +242,72 @@ void		graph_reset(t_work_farm *farm, __int32_t i, __int32_t j)
 	return ;
 }
 
-void			graph_iter_init(t_graph_iter *newiter, __int32_t i)
+void			graph_iter_init(t_graph_iter *newiter, __int32_t i,
+								t_work_farm *farm)
 {
 	newiter->i = 0;
 	newiter->row = i;
+	if (!farm)
+		newiter->state = 0;
+	else
+		newiter->state = (GRAPH_ITEM(farm, i)->state & MARKED_IN) ?
+							NEG_WAYS : ALLOW_WAYS;
 }
 
 t_connect		*graph_next(t_graph_iter *iter, t_work_farm *farm)
 {
-	if (iter->i >= GRAPH_ITEM(farm, iter->row)->con_count)
-		return (NULL);
-	return (&(LIST_OF_CONNECTS(farm, iter->row)[(iter->i)++]));
+	return (iter_func[(int)iter->state](iter, farm)); // int?
 }
+
+t_connect		*graph_next_all(t_graph_iter *iter, t_work_farm *farm)
+{
+	return ((iter->i < GRAPH_ITEM(farm, iter->row)->con_count) ?
+	&(LIST_OF_CONNECTS(farm, iter->row)[(iter->i)++]) : NULL);
+}
+
+t_connect		*graph_next_allow(t_graph_iter *iter, t_work_farm *farm)
+{
+	register t_connect	*tmp;
+
+	while ((tmp = graph_next_all(iter, farm)) && (tmp->state & WAY_FORBIDDEN))
+		continue;
+	return (tmp);
+}
+
+t_connect		*graph_next_neg(t_graph_iter *iter, t_work_farm *farm)
+{
+	register t_connect	*tmp;
+
+	while ((tmp = graph_next_all(iter, farm)) && !(tmp->dst & WAY_NEGATIVE))
+		continue;
+	return (tmp);
+}
+
+t_connect		*(*iter_func[])(t_graph_iter *iter, t_work_farm *farm) = {
+	graph_next_all,
+	graph_next_allow,
+	graph_next_neg
+};
+
+
+
+
+
+
+
+
+
+
+void			clean_graph_state(t_work_farm *farm)
+{
+	__int32_t	i;
+
+	i = 0;
+	while (i < farm->graph.size)
+	{
+		GRAPH_ITEM(farm, i)->state &= ~SEPARATE;
+		GRAPH_ITEM(farm, i)->weight = INIT_WEIGHT; // really need?
+		i++;
+	}
+}
+
