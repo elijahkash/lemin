@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/23 18:20:36 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/23 19:26:52 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,8 @@ t_connect		*graph_next_neg(t_graph_iter *iter, t_work_farm *farm)
 {
 	register t_connect	*tmp;
 
-	while ((tmp = graph_next_all(iter, farm)) && !(tmp->dst & WAY_NEGATIVE))
+	while ((tmp = graph_next_all(iter, farm)) && ((tmp->state & WAY_FORBIDDEN)
+			|| !(tmp->state & WAY_NEGATIVE))) //????
 		continue;
 	return (tmp);
 }

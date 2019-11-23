@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/23 18:57:40 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/23 19:46:19 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	mark_item(t_connect *connect, t_work_farm *farm, __int32_t weight)
 		// GRAPH_ITEM(farm, connect->dst)->weight = weight +
 		// 	((!(connect->state & WAY_NEGATIVE)) ? 1 : -1);
 		GRAPH_ITEM(farm, connect->dst)->weight = weight + 1;
-		GRAPH_ITEM(farm, connect->dst)->state =
+		GRAPH_ITEM(farm, connect->dst)->state |=
 			((!(connect->state & WAY_NEGATIVE)) ?
 					MARKED_IN : MARKED_OUT);
 	}
@@ -119,7 +119,7 @@ int		find_new_way(t_darr list_results, t_work_farm *farm)
 		graph_iter_init(&iter, i, 0);
 		while ((j = graph_next(&iter, farm))) // _need parse forbidden?
 			if (GRAPH_ITEM(farm, j->dst)->weight == k &&
-				(h = graph_state(farm, j->dst, i) && h != WAY_FORBIDDEN))
+				(h = graph_state(farm, j->dst, i) && !(h & WAY_FORBIDDEN)))
 				break ;
 		connect.dst = j->dst;
 		connect.src = i;
