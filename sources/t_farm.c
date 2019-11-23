@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/22 16:35:07 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/23 18:20:36 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,21 @@ int				graph(t_work_farm *farm, __int32_t i, __int32_t j)
 						graph_item(farm, i)->con_count, j) ? 1 : 0);
 }
 
+t_connect		*graph_connect(t_work_farm *farm, __int32_t i, __int32_t j)
+{
+	return (connect_find(list_of_connects(farm, i),
+						graph_item(farm, i)->con_count, j));
+}
+
+int				graph_state(t_work_farm *farm, __int32_t i, __int32_t j)
+{
+	t_connect	*tmp;
+
+	tmp = connect_find(list_of_connects(farm, i),
+						graph_item(farm, i)->con_count, j);
+	return (tmp ? tmp->state : 0);
+}
+
 t_connect		*connect_find(t_connect *connects, __int32_t count, __int32_t i)
 {
 	__int32_t		bot;
@@ -248,7 +263,7 @@ void			graph_iter_init(t_graph_iter *newiter, __int32_t i,
 	newiter->i = 0;
 	newiter->row = i;
 	if (!farm)
-		newiter->state = 0;
+		newiter->state = ALL_WAYS;
 	else
 		newiter->state = (GRAPH_ITEM(farm, i)->state & MARKED_IN) ?
 							NEG_WAYS : ALLOW_WAYS;
@@ -305,7 +320,7 @@ void			clean_graph_state(t_work_farm *farm)
 	i = 0;
 	while (i < farm->graph.size)
 	{
-		GRAPH_ITEM(farm, i)->state &= ~SEPARATE;
+		GRAPH_ITEM(farm, i)->state &= SEPARATE; // !!!!!
 		GRAPH_ITEM(farm, i)->weight = INIT_WEIGHT; // really need?
 		i++;
 	}

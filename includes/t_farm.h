@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/22 16:28:15 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/23 18:13:53 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ typedef struct	s_connect
 	char		state;
 }				t_connect;
 
-# define WAY_BASE_STATE 0
-# define WAY_NEGATIVE	1
-# define WAY_FORBIDDEN	2
+# define WAY_BASE_STATE 1
+# define WAY_NEGATIVE	2
+# define WAY_FORBIDDEN	4
 // # define END_WAY	3
 
 typedef struct	s_graph
@@ -124,6 +124,8 @@ void			work_farm_del(t_work_farm **farm);
 t_graph_item	*graph_item(t_work_farm *farm, __int32_t i);
 t_connect		*list_of_connects(t_work_farm *farm, __int32_t i);
 int				graph(t_work_farm *farm, __int32_t i, __int32_t j);
+t_connect		*graph_connect(t_work_farm *farm, __int32_t i, __int32_t j);
+int				graph_state(t_work_farm *farm, __int32_t i, __int32_t j);
 
 t_connect		*connect_find(t_connect *connects, __int32_t count,
 								__int32_t i);

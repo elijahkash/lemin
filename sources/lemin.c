@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:20:37 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/22 16:22:50 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/23 18:39:22 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	lemin(void)
 		graph_iter_init(&iter2, i, 0);
 		while ((ptr = graph_next(&iter2, work_farm)))
 		{
-			ft_printf("%d ", ptr->dst);
+			ft_printf("%d ", ptr->dst * ((ptr->state & WAY_NEGATIVE) ? -1 : 1));
 		}
 		ft_printf("\n");
 		i++;
