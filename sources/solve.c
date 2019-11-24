@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/23 19:46:19 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/24 20:33:25 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,14 @@ int		find_new_way(t_darr list_results, t_work_farm *farm)
 	while (k-- > 0)
 	{
 		graph_iter_init(&iter, i, 0);
-		while ((j = graph_next(&iter, farm))) // _need parse forbidden?
+		while ((j = graph_next(&iter, farm)))
 			if (GRAPH_ITEM(farm, j->dst)->weight == k &&
 				(h = graph_state(farm, j->dst, i) && !(h & WAY_FORBIDDEN)))
 				break ;
 		connect.dst = j->dst;
 		connect.src = i;
 		i = connect.dst;
-		darr_add(list_results, &connect);
+		// darr_add(list_results, &connect);
 		// if (k > 0)
 			reverse(connect, farm);
 	}
@@ -145,26 +145,26 @@ int		find_new_way(t_darr list_results, t_work_farm *farm)
 
 
 
-	printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+	// printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
 
-	t_graph_iter iter2;
-	t_connect *ptr;
-	i = 0;
-	while (i < farm->graph.size)
-	{
-		printf("%d\t%s\t%d\t", i, (char *)darr(farm->rooms,
-			GRAPH_ITEM(farm, i)->id), GRAPH_ITEM(farm, i)->con_count);
-		graph_iter_init(&iter2, i, 0);
-		while ((ptr = graph_next(&iter2, farm)))
-		{
-			printf("%2d", ptr->dst * ((ptr->state & WAY_NEGATIVE) ? -1 : 1));
-			printf("%1s", ((ptr->state & WAY_FORBIDDEN) ? "*" : ""));
-		}
-		printf("\n");
-		i++;
-	}
-	printf("\n\n%d\n\n", i);
+	// t_graph_iter iter2;
+	// t_connect *ptr;
+	// i = 0;
+	// while (i < farm->graph.size)
+	// {
+	// 	printf("%d\t%s\t%d\t", i, (char *)darr(farm->rooms,
+	// 		GRAPH_ITEM(farm, i)->id), GRAPH_ITEM(farm, i)->con_count);
+	// 	graph_iter_init(&iter2, i, 0);
+	// 	while ((ptr = graph_next(&iter2, farm)))
+	// 	{
+	// 		printf("%2d", ptr->dst * ((ptr->state & WAY_NEGATIVE) ? -1 : 1));
+	// 		printf("%1s", ((ptr->state & WAY_FORBIDDEN) ? "*" : ""));
+	// 	}
+	// 	printf("\n");
+	// 	i++;
+	// }
+	// printf("\n\n%d\n\n", i);
 
 
 
@@ -172,25 +172,46 @@ int		find_new_way(t_darr list_results, t_work_farm *farm)
 	return (1);
 }
 
+typedef struct	s_way
+{
+	__int32_t	*connects;
+	__int32_t	len;
+}				t_way;
+
+typedef struct	s_list_ways
+{
+	t_way		*ways;
+	__int32_t	count;
+}				t_list_ways;
+
 int		solve(t_work_farm *farm)
 {
 	t_darr	list_results;
+	__int32_t	k;
+	__int32_t	min_moves;
+	t_list_ways	res;
+	t_list_ways	*tmp;
 
 	darr_init(&list_results, sizeof(t_full_connect), 64);
+	k = 0;
+	min_moves = 0;
 	while (find_new_way(list_results, farm))
-		continue ;
-
-	size_t i;
-
-	i = 0;
-	while (i < darr_l(list_results))
 	{
-		t_full_connect *tmp;
+		k++;
 
-		tmp = darr(list_results, i);
-		ft_printf("%d-%d\n", tmp->src, tmp->dst);
-		i++;
 	}
+
+	// size_t i;
+
+	// i = 0;
+	// while (i < darr_l(list_results))
+	// {
+	// 	t_full_connect *tmp;
+
+	// 	tmp = darr(list_results, i);
+	// 	ft_printf("%d-%d\n", tmp->src, tmp->dst);
+	// 	i++;
+	// }
 
 
 	darr_del(&list_results);
