@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solve.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/24 20:33:25 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/25 16:55:42 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,23 @@ void	reverse(t_full_connect connect, t_work_farm *farm)
 	{
 		if (connect.dst != farm->start)
 			GRAPH_ITEM(farm, connect.dst)->state |= (SEPARATE | MARKED_OUT);
-		graph_connect(farm, connect.dst, connect.src)->state |= WAY_FORBIDDEN;
-		graph_connect(farm, connect.src, connect.dst)->state |= WAY_NEGATIVE;
 	}
 	else
 	{
 		GRAPH_ITEM(farm, connect.dst)->state &= ~(SEPARATE | MARKED_IN);
-		graph_connect(farm, connect.dst, connect.src)->state |= WAY_BASE_STATE;
-		graph_connect(farm, connect.src, connect.dst)->state |= WAY_BASE_STATE;
 	}
+	if (graph_connect(farm, connect.src, connect.dst)->state & WAY_FORBIDDEN)
+	{
+		graph_connect(farm, connect.dst, connect.src)->state = WAY_BASE_STATE;
+		graph_connect(farm, connect.src, connect.dst)->state = WAY_BASE_STATE;
+	}
+	else
+	{
+		graph_connect(farm, connect.dst, connect.src)->state = WAY_FORBIDDEN;
+		graph_connect(farm, connect.src, connect.dst)->state = WAY_NEGATIVE;
+	}
+
+
 }
 
 int		find_new_way(t_darr list_results, t_work_farm *farm)
@@ -119,7 +127,7 @@ int		find_new_way(t_darr list_results, t_work_farm *farm)
 		graph_iter_init(&iter, i, 0);
 		while ((j = graph_next(&iter, farm)))
 			if (GRAPH_ITEM(farm, j->dst)->weight == k &&
-				(h = graph_state(farm, j->dst, i) && !(h & WAY_FORBIDDEN)))
+				((h = graph_state(farm, j->dst, i)) && !(h & WAY_FORBIDDEN)))
 				break ;
 		connect.dst = j->dst;
 		connect.src = i;
@@ -176,6 +184,7 @@ typedef struct	s_way
 {
 	__int32_t	*connects;
 	__int32_t	len;
+	__int32_t		ants; //TODO: size_t!!!!!!!!!!!???????????????
 }				t_way;
 
 typedef struct	s_list_ways
@@ -184,13 +193,94 @@ typedef struct	s_list_ways
 	__int32_t	count;
 }				t_list_ways;
 
+int		comp_way_by_len(const void *a, const void *b)
+{
+	return (((t_way *)a)->len - ((t_way *)b)->len);
+}
+
+void	find_way(t_darr way, __int32_t first, t_work_farm *farm)
+{
+	t_graph_iter	iter;
+	t_connect		*tmp;
+
+	darr_add(way, &first);
+	graph_iter_init(&iter, first, farm);
+	iter.state = FORB_WAYS;
+	while (*(__int32_t *)darr_top(way) != farm->end)
+	{
+		tmp = graph_next(&iter, farm);
+		darr_add(way, &(tmp->dst));
+		graph_iter_init(&iter, tmp->dst, farm);
+		iter.state = FORB_WAYS;
+	}
+}
+
+void	find_ways(t_list_ways *res, t_work_farm *farm)
+{
+	__int32_t	i;
+	t_graph_iter	iter;
+	t_connect		*tmp;
+	t_darr			way; //del
+
+
+	darr_init(&way, sizeof(__int32_t), 32);
+	i = 0;
+	res->ways = ft_malloc(sizeof(t_way) * res->count);
+	graph_iter_init(&iter, farm->start, 0);
+	iter.state = FORB_WAYS; //!!!!!!!!!!!!!
+	while ((tmp = graph_next(&iter, farm)))
+	{
+		darr_clean(way);
+		//darr_add(way, &farm->start);
+		find_way(way, tmp->dst, farm);
+		res->ways[i].len = darr_l(way);
+		res->ways[i].connects = ft_malloc(4 * res->ways[i].len);
+		for (int j = 0; j < (int)darr_l(way); j++)
+			res->ways[i].connects[j] = *(__int32_t *)darr(way, j);
+		i++;
+	}
+	ft_qsort(res->ways, res->count, sizeof(t_way), comp_way_by_len);
+}
+
+__int32_t	calc_moves(t_list_ways res, __int32_t ants)
+{
+	__int32_t	i;
+	__int32_t	l;
+	__int32_t	l1;
+	__int32_t	cur;
+
+	cur = 0;
+	if (res.count == 1)
+	{
+		res.ways[0].ants = ants;
+		return (ants + res.ways[0].len - 1);
+	}
+	else
+	{
+		i = res.count - 1;
+		while (i > 0)
+		{
+			l = res.ways[i].len;
+			l1 = res.ways[i - 1].len;
+			cur += (ants - (l - l1)) / res.count +
+					(((ants - (l - l1)) % res.count) ? 1 : 0);
+			res.ways[i].ants = cur;
+			ants -= ((ants - (l - l1)) / res.count +
+					(((ants - (l - l1)) % res.count) ? 1 : 0)) * (i + 1);
+			i--;
+		}
+		res.ways[0].ants = ants + cur;
+		return (res.ways[0].ants + res.ways[0].len - 1);
+	}
+}
+
 int		solve(t_work_farm *farm)
 {
 	t_darr	list_results;
 	__int32_t	k;
-	__int32_t	min_moves;
+	__int32_t	min_moves; //size_t?
 	t_list_ways	res;
-	t_list_ways	*tmp;
+	t_list_ways	tmp;
 
 	darr_init(&list_results, sizeof(t_full_connect), 64);
 	k = 0;
@@ -198,8 +288,37 @@ int		solve(t_work_farm *farm)
 	while (find_new_way(list_results, farm))
 	{
 		k++;
+		tmp.count = k;
+		find_ways(&tmp, farm);
+		if (k == 1 || (calc_moves(tmp, farm->ants) < min_moves))
+		{
+			min_moves = calc_moves(tmp, farm->ants);
+			res = tmp;
+		}
 
+
+	ft_printf("\nnumber of ways = %d\n", res.count);
+	ft_printf("number of moves = %d\n", min_moves);
+	ft_printf("number of tmp!!!ways = %d\n", tmp.count);
+	ft_printf("number of tmp!!!moves = %d\n", calc_moves(tmp, farm->ants));
+
+		//del tmp/res
 	}
+
+	// ft_printf("\nlen0=%d\n", res.ways[0].len);
+	// for(int i = 0; i < res.ways[0].len; i++)
+	// 	ft_printf(" %d", res.ways[0].connects[i]);
+	// ft_printf("\nlen1=%d\n", res.ways[1].len);
+	// for(int i = 0; i < res.ways[1].len; i++)
+	// 	ft_printf(" %d", res.ways[1].connects[i]);
+
+
+	// ft_printf("\nnumber of ways = %d\n", res.count);
+	// ft_printf("\nnumber of moves = %d\n", min_moves);
+	// ft_printf("\nnumber of tmp!!!ways = %d\n", tmp.count);
+	// ft_printf("\nnumber of tmp!!!moves = %d\n", calc_moves(tmp, farm->ants));
+
+
 
 	// size_t i;
 

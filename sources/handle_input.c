@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/19 14:03:46 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/25 15:55:40 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,3 +172,5 @@ int				handle_input(t_source_farm *restrict farm)
 	ft_free(line);
 	return (0);
 }
+
+//TODO: start = end?

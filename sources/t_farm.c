@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_farm.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/23 19:26:52 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/25 15:55:40 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ void			graph_iter_init(t_graph_iter *newiter, __int32_t i,
 {
 	newiter->i = 0;
 	newiter->row = i;
-	if (!farm)
+	if (!farm) // forb ways!!!!!!!!
 		newiter->state = ALL_WAYS;
 	else
 		newiter->state = (GRAPH_ITEM(farm, i)->state & MARKED_IN) ?
@@ -299,10 +299,20 @@ t_connect		*graph_next_neg(t_graph_iter *iter, t_work_farm *farm)
 	return (tmp);
 }
 
+t_connect		*graph_next_forb(t_graph_iter *iter, t_work_farm *farm)
+{
+	register t_connect	*tmp;
+
+	while ((tmp = graph_next_all(iter, farm)) && !(tmp->state & WAY_FORBIDDEN))
+		continue;
+	return (tmp);
+}
+
 t_connect		*(*iter_func[])(t_graph_iter *iter, t_work_farm *farm) = {
 	graph_next_all,
 	graph_next_allow,
-	graph_next_neg
+	graph_next_neg,
+	graph_next_forb
 };
 
 

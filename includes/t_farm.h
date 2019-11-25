@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_farm.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:00:30 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/23 18:13:53 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/25 15:55:39 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ typedef struct	s_graph_iterator
 # define ALL_WAYS	0
 # define ALLOW_WAYS	1
 # define NEG_WAYS	2
+# define FORB_WAYS	3
 
 void			graph_iter_init(t_graph_iter *newiter, __int32_t i,
 								t_work_farm *farm);
