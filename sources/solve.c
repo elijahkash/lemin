@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/25 16:55:42 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/11/25 18:37:32 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,8 +248,11 @@ __int32_t	calc_moves(t_list_ways res, __int32_t ants)
 	__int32_t	l;
 	__int32_t	l1;
 	__int32_t	cur;
+	__int32_t	potok;
+
 
 	cur = 0;
+	potok = res.count;
 	if (res.count == 1)
 	{
 		res.ways[0].ants = ants;
@@ -262,14 +265,15 @@ __int32_t	calc_moves(t_list_ways res, __int32_t ants)
 		{
 			l = res.ways[i].len;
 			l1 = res.ways[i - 1].len;
-			cur += (ants - (l - l1)) / res.count +
-					(((ants - (l - l1)) % res.count) ? 1 : 0);
+			cur += (ants - (l - l1)) / potok +
+					(((ants - (l - l1)) % potok) ? 1 : 0);
 			res.ways[i].ants = cur;
-			ants -= ((ants - (l - l1)) / res.count +
-					(((ants - (l - l1)) % res.count) ? 1 : 0)) * (i + 1);
+			ants -= (((ants - (l - l1)) / potok +
+					(((ants - (l - l1)) % potok) ? 1 : 0)) * (i + 1));
 			i--;
+			potok--;
 		}
-		res.ways[0].ants = ants + cur;
+		res.ways[0].ants = cur + (ants >= 0 ? ants : 0);
 		return (res.ways[0].ants + res.ways[0].len - 1);
 	}
 }
@@ -297,10 +301,10 @@ int		solve(t_work_farm *farm)
 		}
 
 
-	ft_printf("\nnumber of ways = %d\n", res.count);
-	ft_printf("number of moves = %d\n", min_moves);
-	ft_printf("number of tmp!!!ways = %d\n", tmp.count);
-	ft_printf("number of tmp!!!moves = %d\n", calc_moves(tmp, farm->ants));
+	// ft_printf("\nnumber of ways = %d\n", res.count);
+	// ft_printf("number of moves = %d\n", min_moves);
+	// ft_printf("number of tmp!!!ways = %d\n", tmp.count);
+	// ft_printf("number of tmp!!!moves = %d\n", calc_moves(tmp, farm->ants));
 
 		//del tmp/res
 	}
@@ -312,11 +316,28 @@ int		solve(t_work_farm *farm)
 	// for(int i = 0; i < res.ways[1].len; i++)
 	// 	ft_printf(" %d", res.ways[1].connects[i]);
 
+	t_darr	test;
 
-	// ft_printf("\nnumber of ways = %d\n", res.count);
-	// ft_printf("\nnumber of moves = %d\n", min_moves);
-	// ft_printf("\nnumber of tmp!!!ways = %d\n", tmp.count);
-	// ft_printf("\nnumber of tmp!!!moves = %d\n", calc_moves(tmp, farm->ants));
+	darr_init(&test, 4, 256);
+	for (int j = 0; j < res.count; j++)
+	{
+		ft_printf("len = %d\t", res.ways[j].len);
+		for(int i = 0; i < res.ways[j].len; i++)
+		{
+			ft_printf(" %d", res.ways[j].connects[i]);
+			for(int k = 0; k < (int)darr_l(test); k++)
+				if (res.ways[j].connects[i] == *(int *)darr(test, k))
+					ft_printf("*");
+			darr_add(test, &(res.ways[j].connects[i]));
+		}
+		ft_printf("\n");
+	}
+
+
+	ft_printf("\nnumber of ways = %d\n", res.count);
+	ft_printf("\nnumber of moves = %d\n", min_moves);
+	ft_printf("\nnumber of tmp!!!ways = %d\n", tmp.count);
+	ft_printf("\nnumber of tmp!!!moves = %d\n", calc_moves(tmp, farm->ants));
 
 
 
