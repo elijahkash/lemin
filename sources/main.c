@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 17:09:56 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/25 15:36:49 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/03 18:45:02 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 
 int		main(void)
 {
-	ft_gc_init();
+	ft_memman_init();
 	lemin();
-	ft_gc_clean();
+	ft_force_buff();
+	ft_memman_clean();
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:20:37 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/25 15:55:38 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/03 18:45:08 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ void	lemin(void)
 	// }
 	// ft_printf("\n\n%d\n\n", i);
 
-	 ft_force_buff();
 
 
 

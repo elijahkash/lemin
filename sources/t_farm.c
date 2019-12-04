@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/25 15:55:40 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/03 19:55:26 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,8 @@ void			graph_iter_init(t_graph_iter *newiter, __int32_t i,
 	if (!farm) // forb ways!!!!!!!!
 		newiter->state = ALL_WAYS;
 	else
-		newiter->state = (GRAPH_ITEM(farm, i)->state & MARKED_IN) ?
+		newiter->state = (GRAPH_ITEM(farm, i)->state & MARKED &&
+						GRAPH_ITEM(farm, i)->state & MARKED_IN) ?
 							NEG_WAYS : ALLOW_WAYS;
 }
 

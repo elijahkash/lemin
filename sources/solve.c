@@ -6,23 +6,11 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/25 18:37:32 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/04 15:57:37 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <solve.h>
-
-
-
-
-
-
-#include <stdio.h>
-
-
-
-
-
 
 void	mark_item(t_connect *connect, t_work_farm *farm, __int32_t weight)
 {
@@ -63,15 +51,6 @@ void	add_nodes(__int32_t item, t_work_farm *farm, t_darr marked)
 
 void	reverse(t_full_connect connect, t_work_farm *farm)
 {
-	if (!(GRAPH_ITEM(farm, connect.dst)->state & SEPARATE))
-	{
-		if (connect.dst != farm->start)
-			GRAPH_ITEM(farm, connect.dst)->state |= (SEPARATE | MARKED_OUT);
-	}
-	else
-	{
-		GRAPH_ITEM(farm, connect.dst)->state &= ~(SEPARATE | MARKED_IN);
-	}
 	if (graph_connect(farm, connect.src, connect.dst)->state & WAY_FORBIDDEN)
 	{
 		graph_connect(farm, connect.dst, connect.src)->state = WAY_BASE_STATE;
@@ -81,6 +60,21 @@ void	reverse(t_full_connect connect, t_work_farm *farm)
 	{
 		graph_connect(farm, connect.dst, connect.src)->state = WAY_FORBIDDEN;
 		graph_connect(farm, connect.src, connect.dst)->state = WAY_NEGATIVE;
+	}
+	if (!(GRAPH_ITEM(farm, connect.dst)->state & SEPARATE))
+	{
+		if (connect.dst != farm->start)
+			GRAPH_ITEM(farm, connect.dst)->state |= (SEPARATE | MARKED_OUT);
+	}
+	else
+	{
+		t_graph_iter iter;
+
+		graph_iter_init(&iter, connect.dst, farm);
+		iter.state = NEG_WAYS;
+		if (graph_next(&iter, farm) == NULL)
+			// GRAPH_ITEM(farm, connect.dst)->state &= ~(SEPARATE | MARKED_IN);
+		GRAPH_ITEM(farm, connect.dst)->state = MARKED;
 	}
 
 
@@ -127,8 +121,11 @@ int		find_new_way(t_darr list_results, t_work_farm *farm)
 		graph_iter_init(&iter, i, 0);
 		while ((j = graph_next(&iter, farm)))
 			if (GRAPH_ITEM(farm, j->dst)->weight == k &&
-				((h = graph_state(farm, j->dst, i)) && !(h & WAY_FORBIDDEN)))
+	((h = graph_state(farm, j->dst, i)) && !(h & WAY_FORBIDDEN) &&
+	(!(graph_item(farm, j->dst)->state & SEPARATE) || h & WAY_NEGATIVE)))
 				break ;
+		if (i == farm->end)
+			ft_printf(" %s ", (char *)darr(farm->rooms, graph_item(farm, j->dst)->id));
 		connect.dst = j->dst;
 		connect.src = i;
 		i = connect.dst;
@@ -294,11 +291,12 @@ int		solve(t_work_farm *farm)
 		k++;
 		tmp.count = k;
 		find_ways(&tmp, farm);
-		if (k == 1 || (calc_moves(tmp, farm->ants) < min_moves))
-		{
-			min_moves = calc_moves(tmp, farm->ants);
-			res = tmp;
-		}
+		// if (k == 1 || (calc_moves(tmp, farm->ants) < min_moves))
+		// {
+		// 	min_moves = calc_moves(tmp, farm->ants);
+		// 	res = tmp;
+		// }
+		res = tmp;
 
 
 	// ft_printf("\nnumber of ways = %d\n", res.count);
@@ -307,6 +305,33 @@ int		solve(t_work_farm *farm)
 	// ft_printf("number of tmp!!!moves = %d\n", calc_moves(tmp, farm->ants));
 
 		//del tmp/res
+
+	ft_printf("ways = %d\n", res.count);
+	t_darr	test;
+
+	darr_init(&test, 4, 256);
+	for (int j = 0; j < res.count; j++)
+	{
+		ft_printf("len = %d\t", res.ways[j].len);
+		for(int i = 0; i < res.ways[j].len; i++)
+		{
+			//ft_printf(" %s", darr(farm->rooms, GRAPH_ITEM(farm, res.ways[j].connects[i])->id));
+			ft_printf(" %d", res.ways[j].connects[i]);
+			if (i < res.ways[j].len - 1 && !(graph_connect(farm, res.ways[j].connects[i], res.ways[j].connects[i + 1])->state & WAY_FORBIDDEN))
+				ft_printf("=");
+			else
+				ft_printf("");
+			if (res.ways[j].connects[i] != farm->end)
+			{
+				for(int k = 0; k < (int)darr_l(test); k++)
+					if (res.ways[j].connects[i] == *(int *)darr(test, k))
+						ft_printf("*");
+			}
+			darr_add(test, &(res.ways[j].connects[i]));
+		}
+		ft_printf("\n");
+	}
+	ft_printf("\n\n\n");
 	}
 
 	// ft_printf("\nlen0=%d\n", res.ways[0].len);
@@ -316,22 +341,6 @@ int		solve(t_work_farm *farm)
 	// for(int i = 0; i < res.ways[1].len; i++)
 	// 	ft_printf(" %d", res.ways[1].connects[i]);
 
-	t_darr	test;
-
-	darr_init(&test, 4, 256);
-	for (int j = 0; j < res.count; j++)
-	{
-		ft_printf("len = %d\t", res.ways[j].len);
-		for(int i = 0; i < res.ways[j].len; i++)
-		{
-			ft_printf(" %d", res.ways[j].connects[i]);
-			for(int k = 0; k < (int)darr_l(test); k++)
-				if (res.ways[j].connects[i] == *(int *)darr(test, k))
-					ft_printf("*");
-			darr_add(test, &(res.ways[j].connects[i]));
-		}
-		ft_printf("\n");
-	}
 
 
 	ft_printf("\nnumber of ways = %d\n", res.count);
