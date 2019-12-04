@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/04 18:45:50 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/04 19:17:46 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,8 @@ int		find_new_way(t_darr list_results, t_work_farm *farm)
 			break ;
 	}
 
-
 	if (!(GRAPH_ITEM(farm, farm->end)->state & MARKED))
 		return (0); // darr_del etc
-
-
 
 
 	__int32_t	k;
@@ -126,54 +123,11 @@ int		find_new_way(t_darr list_results, t_work_farm *farm)
 	(graph_item(farm, j->dst)->state & MARKED_IN && h & WAY_NEGATIVE) ||
 	graph_item(farm, j->dst)->state & MARKED_OUT)))
 				break ;
-		// if (i == farm->end)
-		// 	ft_printf(" %s ", (char *)darr(farm->rooms, graph_item(farm, j->dst)->id));
 		connect.dst = j->dst;
 		connect.src = i;
 		i = connect.dst;
-		// darr_add(list_results, &connect);
-		// if (k > 0)
-			reverse(connect, farm);
+		reverse(connect, farm);
 	}
-
-
-
-
-
-	// 	i = 0;
-	// while (i < (__int32_t)darr_l(list_results))
-	// {
-	// 	t_full_connect *tmp;
-
-	// 	tmp = darr(list_results, i);
-	// 	ft_printf("%d-%d\n", tmp->src, tmp->dst);
-	// 	i++;
-	// }
-
-
-
-	// printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-
-
-	// t_graph_iter iter2;
-	// t_connect *ptr;
-	// i = 0;
-	// while (i < farm->graph.size)
-	// {
-	// 	printf("%d\t%s\t%d\t", i, (char *)darr(farm->rooms,
-	// 		GRAPH_ITEM(farm, i)->id), GRAPH_ITEM(farm, i)->con_count);
-	// 	graph_iter_init(&iter2, i, 0);
-	// 	while ((ptr = graph_next(&iter2, farm)))
-	// 	{
-	// 		printf("%2d", ptr->dst * ((ptr->state & WAY_NEGATIVE) ? -1 : 1));
-	// 		printf("%1s", ((ptr->state & WAY_FORBIDDEN) ? "*" : ""));
-	// 	}
-	// 	printf("\n");
-	// 	i++;
-	// }
-	// printf("\n\n%d\n\n", i);
-
-
 
 	darr_del(&marked);
 	return (1);
@@ -253,8 +207,6 @@ __int32_t	calc_moves(t_list_ways res, __int32_t ants)
 	for(int i = 0; i < res.count ; i++)
 	{
 		res.ways[i].border = 0;
-		// if (i == 0)
-		// 	res.ways[0].border = res.ways[0].len;
 		for (int j = 0; j < i; j++)
 			res.ways[i].border += (res.ways[i].len - res.ways[j].len);
 	}
@@ -270,15 +222,6 @@ __int32_t	calc_moves(t_list_ways res, __int32_t ants)
 			way--;
 			res.ways[way].ants = k;
 		}
-
-		// tmp = (way != 1) ? (ants / (res.ways[way - 1].border)) : ants;
-		// if (tmp)
-		// {
-		// 	k += tmp;
-		// 	ants -= (tmp * way);
-		// }
-		// way--;
-		// res.ways[way].ants = k;
 	}
 	return (res.ways[0].ants + res.ways[0].len - 1);
 }
@@ -305,11 +248,6 @@ int		solve(t_work_farm *farm)
 			res = tmp;
 		}
 
-
-	// ft_printf("\nnumber of ways = %d\n", res.count);
-	// ft_printf("number of moves = %d\n", min_moves);
-	// ft_printf("number of tmp!!!ways = %d\n", tmp.count);
-	// ft_printf("number of tmp!!!moves = %d\n", calc_moves(tmp, farm->ants));
 
 		//del tmp/res
 
@@ -341,33 +279,12 @@ int		solve(t_work_farm *farm)
 	ft_printf("\n\n\n");
 	}
 
-	// ft_printf("\nlen0=%d\n", res.ways[0].len);
-	// for(int i = 0; i < res.ways[0].len; i++)
-	// 	ft_printf(" %d", res.ways[0].connects[i]);
-	// ft_printf("\nlen1=%d\n", res.ways[1].len);
-	// for(int i = 0; i < res.ways[1].len; i++)
-	// 	ft_printf(" %d", res.ways[1].connects[i]);
-
 
 
 	ft_printf("\nnumber of ways = %d\n", res.count);
 	ft_printf("\nnumber of moves = %d\n", min_moves);
 	ft_printf("\nnumber of tmp!!!ways = %d\n", tmp.count);
 	ft_printf("\nnumber of tmp!!!moves = %d\n", calc_moves(tmp, farm->ants));
-
-
-
-	// size_t i;
-
-	// i = 0;
-	// while (i < darr_l(list_results))
-	// {
-	// 	t_full_connect *tmp;
-
-	// 	tmp = darr(list_results, i);
-	// 	ft_printf("%d-%d\n", tmp->src, tmp->dst);
-	// 	i++;
-	// }
 
 
 	darr_del(&list_results);
