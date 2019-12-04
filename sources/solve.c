@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/04 17:52:00 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/04 18:45:50 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,14 +260,25 @@ __int32_t	calc_moves(t_list_ways res, __int32_t ants)
 	}
 	while (way > 0)
 	{
-		tmp = (way != 1) ? (ants / (res.ways[way - 1].border/* + way - 1*/)) : ants;
-		if (tmp)
+		if (ants > res.ways[way - 1].border)
 		{
-			k += tmp;
-			ants -= (tmp * way);
+			k++;
+			ants -= way;
 		}
-		way--;
-		res.ways[way].ants = k;
+		else
+		{
+			way--;
+			res.ways[way].ants = k;
+		}
+
+		// tmp = (way != 1) ? (ants / (res.ways[way - 1].border)) : ants;
+		// if (tmp)
+		// {
+		// 	k += tmp;
+		// 	ants -= (tmp * way);
+		// }
+		// way--;
+		// res.ways[way].ants = k;
 	}
 	return (res.ways[0].ants + res.ways[0].len - 1);
 }
