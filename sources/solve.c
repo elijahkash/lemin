@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/04 15:57:37 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/04 17:52:00 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,12 @@ int		find_new_way(t_darr list_results, t_work_farm *farm)
 		while ((j = graph_next(&iter, farm)))
 			if (GRAPH_ITEM(farm, j->dst)->weight == k &&
 	((h = graph_state(farm, j->dst, i)) && !(h & WAY_FORBIDDEN) &&
-	(!(graph_item(farm, j->dst)->state & SEPARATE) || h & WAY_NEGATIVE)))
+	(!(graph_item(farm, j->dst)->state & SEPARATE) ||
+	(graph_item(farm, j->dst)->state & MARKED_IN && h & WAY_NEGATIVE) ||
+	graph_item(farm, j->dst)->state & MARKED_OUT)))
 				break ;
-		if (i == farm->end)
-			ft_printf(" %s ", (char *)darr(farm->rooms, graph_item(farm, j->dst)->id));
+		// if (i == farm->end)
+		// 	ft_printf(" %s ", (char *)darr(farm->rooms, graph_item(farm, j->dst)->id));
 		connect.dst = j->dst;
 		connect.src = i;
 		i = connect.dst;
@@ -182,6 +184,7 @@ typedef struct	s_way
 	__int32_t	*connects;
 	__int32_t	len;
 	__int32_t		ants; //TODO: size_t!!!!!!!!!!!???????????????
+	__int32_t	border;
 }				t_way;
 
 typedef struct	s_list_ways
@@ -241,38 +244,32 @@ void	find_ways(t_list_ways *res, t_work_farm *farm)
 
 __int32_t	calc_moves(t_list_ways res, __int32_t ants)
 {
-	__int32_t	i;
-	__int32_t	l;
-	__int32_t	l1;
-	__int32_t	cur;
-	__int32_t	potok;
+	int k = 0;
+	int tmp;
+	int way = res.count;
 
-
-	cur = 0;
-	potok = res.count;
-	if (res.count == 1)
-	{
-		res.ways[0].ants = ants;
+	if (res.count == 1) //!
 		return (ants + res.ways[0].len - 1);
-	}
-	else
+	for(int i = 0; i < res.count ; i++)
 	{
-		i = res.count - 1;
-		while (i > 0)
-		{
-			l = res.ways[i].len;
-			l1 = res.ways[i - 1].len;
-			cur += (ants - (l - l1)) / potok +
-					(((ants - (l - l1)) % potok) ? 1 : 0);
-			res.ways[i].ants = cur;
-			ants -= (((ants - (l - l1)) / potok +
-					(((ants - (l - l1)) % potok) ? 1 : 0)) * (i + 1));
-			i--;
-			potok--;
-		}
-		res.ways[0].ants = cur + (ants >= 0 ? ants : 0);
-		return (res.ways[0].ants + res.ways[0].len - 1);
+		res.ways[i].border = 0;
+		// if (i == 0)
+		// 	res.ways[0].border = res.ways[0].len;
+		for (int j = 0; j < i; j++)
+			res.ways[i].border += (res.ways[i].len - res.ways[j].len);
 	}
+	while (way > 0)
+	{
+		tmp = (way != 1) ? (ants / (res.ways[way - 1].border/* + way - 1*/)) : ants;
+		if (tmp)
+		{
+			k += tmp;
+			ants -= (tmp * way);
+		}
+		way--;
+		res.ways[way].ants = k;
+	}
+	return (res.ways[0].ants + res.ways[0].len - 1);
 }
 
 int		solve(t_work_farm *farm)
@@ -291,12 +288,11 @@ int		solve(t_work_farm *farm)
 		k++;
 		tmp.count = k;
 		find_ways(&tmp, farm);
-		// if (k == 1 || (calc_moves(tmp, farm->ants) < min_moves))
-		// {
-		// 	min_moves = calc_moves(tmp, farm->ants);
-		// 	res = tmp;
-		// }
-		res = tmp;
+		if (k == 1 || (calc_moves(tmp, farm->ants) < min_moves))
+		{
+			min_moves = calc_moves(tmp, farm->ants);
+			res = tmp;
+		}
 
 
 	// ft_printf("\nnumber of ways = %d\n", res.count);
@@ -315,12 +311,12 @@ int		solve(t_work_farm *farm)
 		ft_printf("len = %d\t", res.ways[j].len);
 		for(int i = 0; i < res.ways[j].len; i++)
 		{
-			//ft_printf(" %s", darr(farm->rooms, GRAPH_ITEM(farm, res.ways[j].connects[i])->id));
-			ft_printf(" %d", res.ways[j].connects[i]);
-			if (i < res.ways[j].len - 1 && !(graph_connect(farm, res.ways[j].connects[i], res.ways[j].connects[i + 1])->state & WAY_FORBIDDEN))
-				ft_printf("=");
-			else
-				ft_printf("");
+			ft_printf(" %s", darr(farm->rooms, GRAPH_ITEM(farm, res.ways[j].connects[i])->id));
+			//ft_printf(" %d", res.ways[j].connects[i]);
+			// if (i < res.ways[j].len - 1 && !(graph_connect(farm, res.ways[j].connects[i], res.ways[j].connects[i + 1])->state & WAY_FORBIDDEN))
+			// 	ft_printf("=");
+			// else
+			// 	ft_printf("");
 			if (res.ways[j].connects[i] != farm->end)
 			{
 				for(int k = 0; k < (int)darr_l(test); k++)
