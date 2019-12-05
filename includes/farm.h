@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/05 16:40:43 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/05 18:04:54 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include <libft.h>
 
+/*
+**	In fact, if graph have <= 16383 node, we can use __uint16_t !!!!!
+*/
 typedef __uint32_t	t_uint;
 
 /*
@@ -82,7 +85,11 @@ typedef struct		s_connect
 ** Also, it means, that during the operation of the algorithm,
 ** no connection or nodes will be lost.
 **
-** Some
+** Some asymptotic analysis for graph
+** N - number of nodes, C - count connect for node
+** 1) access operation (find ptr) to node			O(1)
+** 2) access operation (find ptr) to connect		O(log(C))
+** 3) get next connect (find ptr) for node			O(1)
 */
 typedef struct		s_graph
 {
@@ -93,6 +100,11 @@ typedef struct		s_graph
 	t_uint			end;
 }					t_graph;
 
+/*
+** Using an iterator is only allowed with his API:
+** void 		iter_init(addres of t_iter, node_nbr, traverse type, t_graph);
+** t_connect 	*iter_next(addres of t_iter);
+*/
 typedef struct		s_graph_iterator
 {
 	t_uint			i;
@@ -100,12 +112,50 @@ typedef struct		s_graph_iterator
 	t_uint			type;
 }					t_iter;
 
+/*
+** This is traverse type for t_iter.type
+** ITER_ALL - traverse all connections of node (even forbidden);
+** ITER_ALLOWED - traverse all connections except forbidden
+** ITER_NEGATIVE - traverse only negative connections
+** ITER_FORBIDDEN - traverse only forbidden connections
+** ITER_BY_SEPARATE_NODE - auto chose of type, by checkig node:
+** 			- if node.separate == 0		:		ITER_ALLOWED
+**			- if node.marked_out == 1	:		ITER_ALLOWED
+**			- if node.marked_in == 1	:		ITER_NEGATIVE
+*/
 # define ITER_ALL				1
 # define ITER_ALLOWED			2
 # define ITER_NEGATIVE			4
 # define ITER_FORBIDDEN			8
 # define ITER_BY_SEPARATE_NODE	16
 
+/*
+** Note about input:
+** as coordinates of each node dost not have no effect on
+** the decision algorithm, we dont save them at all!!!!!
+**
+** Here is description of sense t_vect 'chars'; t_vect 'names'.
+** t_vect - this is dynamic array from libft.h.
+** 'chars' - array of chars
+** 'names' - array of indexes/ptr. Each index/ptr point, where in 'chars'
+** located his C-string.
+** This trick let us save up to 3 bytes per string +
+** allows us to achieve an extremely high level of cacheability while
+** output of graph node names +
+** in the process of finding the paths, we will operate with structures with
+** information of the minimum length that we exclusively need.
+** access to the names of the graph we need only to display
+** the already found paths.
+**
+** That is the point:
+** # when we read new node (C-string arbitrary lenght <l>)
+** 		- add to 'chars' <l + 1> symbols : full string + '\0'
+**  	- add to 'names' indes of first letter this string in 'chars'
+** # when all nodes have been read:
+**		- trim extra mem in 'chars' and 'names'
+**		- instead of indexes in names write direct pointers
+** # relax :)
+*/
 typedef struct		s_farm
 {
 	long long		ants;
@@ -116,10 +166,13 @@ typedef struct		s_farm
 
 typedef struct		s_full_connect
 {
-	t_connect		src;
-	t_connect		dst;
+	t_connect		src_to_dst;
+	t_connect		dst_to_src;
 }					t_full_connect;
 
+/*
+**	ants - this is the number of ants that will go this way.
+*/
 typedef struct		s_way
 {
 	t_uint			*nodes;
