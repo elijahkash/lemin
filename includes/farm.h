@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/05 18:04:54 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/05 19:05:50 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct		s_connect
 }					t_connect;
 
 /*
-** Since we can't delete connections (thay can be reversed more then 1 times),
+** Since we can't delete connections (they can be reversed more then 1 times),
 ** we mark "deleted" ways as forbidden, and, if we pass through negative
 ** directions, both directions (and negative, and forbidden) turn into
 ** normal ways (marked as BASE_STATE).
@@ -76,7 +76,8 @@ typedef struct		s_connect
 **
 ** Some notes about graph:
 ** We are expecting good input data and we are not deleting any nodes
-** and connections, even if they don't have any profit for algorithm.
+** and connections, even if they don't have any profit for algorithm
+** (EXCEPT loops! they are will be ignored!).
 ** This means that we will place even those nodes in the graph,
 ** that do not have any connections or belong to a connection component,
 ** other than the one, in which the start/end node is located.
@@ -84,6 +85,8 @@ typedef struct		s_connect
 ** nodes, unreacheble from start (before end), but reacheble from end.
 ** Also, it means, that during the operation of the algorithm,
 ** no connection or nodes will be lost.
+** Also, it means, that in case of 2 same connections,
+** input ERROR will be generated !
 **
 ** Some asymptotic analysis for graph
 ** N - number of nodes, C - count connect for node
@@ -123,11 +126,11 @@ typedef struct		s_graph_iterator
 **			- if node.marked_out == 1	:		ITER_ALLOWED
 **			- if node.marked_in == 1	:		ITER_NEGATIVE
 */
-# define ITER_ALL				1
-# define ITER_ALLOWED			2
-# define ITER_NEGATIVE			4
-# define ITER_FORBIDDEN			8
-# define ITER_BY_SEPARATE_NODE	16
+# define ITER_ALL				0
+# define ITER_ALLOWED			1
+# define ITER_NEGATIVE			2
+# define ITER_FORBIDDEN			3
+# define ITER_BY_SEPARATE_NODE	4
 
 /*
 ** Note about input:
