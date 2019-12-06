@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/06 15:42:34 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 16:41:02 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,69 @@ void					full_connect_reverse(t_full_connect connect)
 ** =============================================================================
 */
 
+inline t_node		*graph_node(t_graph *restrict graph, t_uint index)
+{
+	return (graph->nodes[index]);
+}
+
+inline t_connect	*graph_node_connects(t_node *restrict node)
+{
+	return (node + 1);
+}
+
+void				graph_add_connect(t_graph *restrict graph,
+									t_uint src, t_uint dst)
+{
+	t_node		*restrict node;
+	t_connect	*restrict con;
+
+	node = graph->nodes[src];
+	con = ((t_connect *)(node + 1)) + (node->count_connects)++;
+	con->dst = dst;
+	con->state = CONNECT_BASE_STATE;
+}
+
+static t_connect	*graph_connect_find(t_connect *restrict connects,
+									t_uint count_connects, t_uint dst)
+{
+	t_uint		bot;
+	t_uint		top;
+	t_uint		tmp;
+
+	if (!count_connects)
+		return (NULL);
+	top = count_connects - 1;
+	bot = 0;
+	while (bot != top)
+	{
+		tmp = dst - connects[bot + (top - bot) / 2].dst;
+		if (!tmp)
+			return (connects + bot + (top - bot) / 2);
+		if (tmp < 0)
+			top = bot + (top - bot) / 2;
+		else
+			bot += (top - bot) / 2 + 1;
+	}
+	tmp = dst - connects[bot].dst;
+	return (tmp ? NULL : connects + bot);
+}
+
+inline t_connect	*graph_connect(t_graph *restrict graph,
+									t_uint src, t_uint dst)
+{
+	t_node	*restrict node;
+
+	node = graph->nodes[src];
+	return (graph_connect_find(((t_connect *)(node + 1)),
+								node->count_connects, dst));
+}
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
+
 static inline t_connect	*iter_next_all(t_iter *restrict iter)
 {
 	return ((iter->i != iter->count_connects) ?
@@ -78,7 +141,7 @@ static inline t_connect	*iter_next_all(t_iter *restrict iter)
 
 static t_connect		*iter_next_allowed(t_iter *restrict iter)
 {
-	t_connect	*tmp;
+	t_connect	*restrict tmp;
 
 	while ((tmp = iter_next_all(iter)) && (tmp->state & CONNECT_FORBIDDEN))
 		continue ;
@@ -87,7 +150,7 @@ static t_connect		*iter_next_allowed(t_iter *restrict iter)
 
 static t_connect		*iter_next_negative(t_iter *restrict iter)
 {
-	t_connect	*tmp;
+	t_connect	*restrict tmp;
 
 	while ((tmp = iter_next_all(iter)) && !(tmp->state & CONNECT_NEGATIVE))
 		continue ;
@@ -96,7 +159,7 @@ static t_connect		*iter_next_negative(t_iter *restrict iter)
 
 static t_connect		*iter_next_forbidden(t_iter *restrict iter)
 {
-	t_connect	*tmp;
+	t_connect	*restrict tmp;
 
 	while ((tmp = iter_next_all(iter)) && !(tmp->state & CONNECT_FORBIDDEN))
 		continue ;

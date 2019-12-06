@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/06 15:42:18 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 16:39:13 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,18 +139,20 @@ void				full_connect_reverse(t_full_connect connect);
 */
 typedef struct		s_graph
 {
-	void **restrict	nodes;
-	void *restrict	mem;
-	size_t			size;
-	t_uint			start;
-	t_uint			end;
-}					t_graph;
+	t_node **restrict	nodes;
+	void *restrict		mem;
+	size_t				size;
+	t_uint				start;
+	t_uint				end;
+}						t_graph;
 
+/*
+** Extremely important!!!
+** add nodes STRICTLY in sorted order !
+*/
 void				graph_add_connect(t_graph *graph, t_uint src, t_uint dst);
 t_node				*graph_node(t_graph *graph, t_uint index);
 t_connect			*graph_connect(t_graph *graph, t_uint src, t_uint dst);
-
-//TODO: static
 t_connect			*graph_node_connects(t_node *node);
 
 /*

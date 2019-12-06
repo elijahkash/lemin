@@ -8,6 +8,12 @@
 		"old_farm.h": "c",
 		"old_handle_input.h": "c",
 		"old_solve.h": "c",
-		"old_prepare_work_graph.h": "c"
+		"old_prepare_work_graph.h": "c",
+		"__bit_reference": "c",
+		"algorithm": "c",
+		"bitset": "c",
+		"chrono": "c",
+		"unordered_map": "c",
+		"hashtable": "c"
 	}
 }
