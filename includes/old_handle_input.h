@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_input.h                                     :+:      :+:    :+:   */
+/*   old_handle_input.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:55:57 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/16 20:52:01 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 11:23:28 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HANDLE_INPUT_H
 # define HANDLE_INPUT_H
 
-# include <t_farm.h>
+# include <old_farm.h>
 
 # define ANTS 1
 # define ROOMS 2

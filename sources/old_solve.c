@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solve.c                                            :+:      :+:    :+:   */
+/*   old_solve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 12:56:50 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/04 19:17:46 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 11:24:07 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <solve.h>
+#include <old_solve.h>
 
 void	mark_item(t_connect *connect, t_work_farm *farm, __int32_t weight)
 {

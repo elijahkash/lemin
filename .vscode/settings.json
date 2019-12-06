@@ -4,6 +4,10 @@
 		"iterator": "c",
 		"prepare_work_graph.h": "c",
 		"__locale": "c",
-		"ft_get_next_line.h": "c"
+		"ft_get_next_line.h": "c",
+		"old_farm.h": "c",
+		"old_handle_input.h": "c",
+		"old_solve.h": "c",
+		"old_prepare_work_graph.h": "c"
 	}
 }

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prepare_work_graph.c                               :+:      :+:    :+:   */
+/*   old_prepare_work_graph.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 18:28:41 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/25 15:55:42 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 11:24:02 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <prepare_work_graph.h> //TODO: rename file?
+#include <old_prepare_work_graph.h> //TODO: rename file?
 
 void	determ_connect_component(t_darr connect_component, t_source_farm *farm)
 {

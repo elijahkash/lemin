@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/05 19:05:50 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 12:41:08 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define FARM_H
 
 # include <libft.h>
+
+//TODO: restrict inline macros
 
 /*
 **	In fact, if graph have <= 16383 node, we can use __uint16_t !!!!!
@@ -49,11 +51,15 @@ typedef struct		s_node
 	t_uint			bfs_level : 30;
 }					t_node;
 
+void				node_reverse(t_node *node);
+
 typedef struct		s_connect
 {
 	t_uint			dst : 30;
 	t_uint			state : 2;
 }					t_connect;
+
+void				connect_reverse(t_connect *connect);
 
 /*
 ** Since we can't delete connections (they can be reversed more then 1 times),
@@ -65,17 +71,27 @@ typedef struct		s_connect
 # define CONNECT_NEGATIVE	1
 # define CONNECT_FORBIDDEN	2
 
+typedef struct		s_full_connect
+{
+	t_connect		*src_to_dst;
+	t_connect		*dst_to_src;
+}					t_full_connect;
+
+void				full_connect_reverse(t_full_connect connect);
+
 /*
+** Some notes about graph:
 ** 1) size = t_farm.names.curlen !
+**
 ** 2) here is struct of memory in *mem:
 ** [node_0 (count_con = i)][con_1]...[con_i],
 ** [node_1 (count_con = j)][con_1]...[con_j],
 ** ...
 ** [node_(size-1) (count_con = k)][con_1]...[con_k].
+**
 ** 3) **nodes pointed to <node_0, node_1 ... node_(size-1)> in *mem.
 **
-** Some notes about graph:
-** We are expecting good input data and we are not deleting any nodes
+** 4) We are expecting good input data and we are not deleting any nodes
 ** and connections, even if they don't have any profit for algorithm
 ** (EXCEPT loops! they are will be ignored!).
 ** This means that we will place even those nodes in the graph,
@@ -88,11 +104,11 @@ typedef struct		s_connect
 ** Also, it means, that in case of 2 same connections,
 ** input ERROR will be generated !
 **
-** Some asymptotic analysis for graph
+** 5) Some asymptotic analysis for graph
 ** N - number of nodes, C - count connect for node
-** 1) access operation (find ptr) to node			O(1)
-** 2) access operation (find ptr) to connect		O(log(C))
-** 3) get next connect (find ptr) for node			O(1)
+**  * access operation (find ptr) to node			O(1)
+**  * access operation (find ptr) to connect		O(log(C))
+**  * get next connect (find ptr) for node			O(1)
 */
 typedef struct		s_graph
 {
@@ -103,17 +119,36 @@ typedef struct		s_graph
 	t_uint			end;
 }					t_graph;
 
+void				graph_add_connect(t_graph *graph, t_uint src, t_uint dst);
+t_node				*graph_node(t_graph *graph, t_uint index);
+t_connect			*graph_connect(t_graph *graph, t_uint src, t_uint dst);
+
+//TODO: static
+t_connect			*graph_node_connects(t_node *node);
+
+
 /*
 ** Using an iterator is only allowed with his API:
-** void 		iter_init(addres of t_iter, node_nbr, traverse type, t_graph);
+** void 		iter_init(addres of t_iter, addres of node, traverse type);
 ** t_connect 	*iter_next(addres of t_iter);
+**
+** t_uint func - index of the necessary iteration function int array func ptrs
 */
 typedef struct		s_graph_iterator
 {
-	t_uint			i;
-	t_uint			node;
-	t_uint			type;
+	t_connect		*cur_connect;
+	t_uint			count_connects;
+	t_uint			func;
 }					t_iter;
+
+void				iter_init(t_iter *iter, t_node *node, t_uint type);
+t_connect			*iter_next(t_iter *iter);
+
+//TODO: static
+t_connect			*iter_next_all(t_iter *iter);
+t_connect			*iter_next_allowed(t_iter *iter);
+t_connect			*iter_next_negative(t_iter *iter);
+t_connect			*iter_next_forbidden(t_iter *iter);
 
 /*
 ** This is traverse type for t_iter.type
@@ -157,21 +192,24 @@ typedef struct		s_graph_iterator
 ** # when all nodes have been read:
 **		- trim extra mem in 'chars' and 'names'
 **		- instead of indexes in names write direct pointers
+**		- sort 'names' by strcmp (for some optimisations - use head!)
 ** # relax :)
+**
+** Note about reading connects:
+** We can't create t_graph after reading all rooms. It have difficult structure,
+** so first we consider all the connections (in t_vect connects), trim mem,
+** sort them by src node, count count_connections for every node,
+** THEN create t_graph, and after this, del t_vect connections for memory save
+** (becouse at this moment, all connections stored in t_graph).
 */
 typedef struct		s_farm
 {
 	long long		ants;
 	t_vect			chars;
 	t_vect			names;
+	t_vect			connects;
 	t_graph			graph;
 }					t_farm;
-
-typedef struct		s_full_connect
-{
-	t_connect		src_to_dst;
-	t_connect		dst_to_src;
-}					t_full_connect;
 
 /*
 **	ants - this is the number of ants that will go this way.
@@ -180,14 +218,21 @@ typedef struct		s_way
 {
 	t_uint			*nodes;
 	t_uint			len;
-	t_uint			border; // no need!!!!!!!
 	long long		ants;
 }					t_way;
+
+void				way_init(t_uint *arr, t_uint len);
+void				way_del(void);
 
 typedef struct		s_enum_ways
 {
 	t_way			*ways;
 	t_uint			count;
+	long long		ants;
 }					t_enum_ways;
+
+void				enum_ways_init(t_uint count);
+void				enum_ways_del(void);
+long long			count_moves(t_enum_ways combs);
 
 #endif

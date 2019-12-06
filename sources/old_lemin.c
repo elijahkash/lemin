@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lemin.c                                            :+:      :+:    :+:   */
+/*   old_lemin.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:20:37 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/03 18:45:08 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 11:23:59 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <lemin.h>
 
-#include <t_farm.h>
-#include <handle_input.h>
-#include <solve.h>
+#include <old_farm.h>
+#include <old_handle_input.h>
+#include <old_solve.h>
 
 void	lemin(void)
 {

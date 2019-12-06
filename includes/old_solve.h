@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prepare_work_graph.h                               :+:      :+:    :+:   */
+/*   old_solve.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/13 18:30:06 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/11/18 14:10:09 by mtrisha          ###   ########.fr       */
+/*   Created: 2019/11/07 12:56:31 by mtrisha           #+#    #+#             */
+/*   Updated: 2019/12/06 11:23:37 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PREPARE_WORK_GRAPH_H
-# define PREPARE_WORK_GRAPH_H
+#ifndef SOLVE_H
+# define SOLVE_H
 
-# include <t_farm.h>
+# include <old_farm.h>
 
-void	create_work_farm(t_work_farm *work_farm, t_source_farm *src_farm);
+int		solve(t_work_farm *farm);
 
 #endif

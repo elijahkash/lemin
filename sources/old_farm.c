@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_farm.c                                           :+:      :+:    :+:   */
+/*   old_farm.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:01:17 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/03 19:55:26 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 11:23:46 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <t_farm.h>
+#include <old_farm.h>
 
-#include <prepare_work_graph.h> //FIXME: ????
+#include <old_prepare_work_graph.h> //FIXME: ????
 
 void		src_farm_init(t_source_farm **farm)
 {

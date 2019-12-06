@@ -6,15 +6,13 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 17:09:56 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/03 18:45:02 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 11:22:45 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
 #include <lemin.h>
-
-//TODO: int to __int32_t
 
 int		main(void)
 {
