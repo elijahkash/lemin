@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/06 16:39:13 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 18:02:34 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,10 @@ typedef struct		s_graph
 	t_uint				end;
 }						t_graph;
 
+void				farm_init_graph(t_graph *graph, t_farm *farm);
+void				farm_fill_graph(t_graph *graph, t_farm *farm);
+void				farm_del_graph(t_graph *graph);
+
 /*
 ** Extremely important!!!
 ** add nodes STRICTLY in sorted order !
@@ -246,12 +250,15 @@ typedef struct		s_farm
 	t_graph			graph;
 }					t_farm;
 
+# define FARM_INIT_ROOM_COUNT			1024
+# define FARM_INIT_CHARS_PER_ROOM		8
+# define FARM_INIT_CHARS_COUNT (FARM_INIT_ROOM_COUNT * FARM_INIT_CHARS_PER_ROOM)
+# define FARM_INIT_CONNECTS_PER_ROOM	2.5
+
 void				farm_init_rooms(t_farm *farm);
 void				farm_init_connects(t_farm *farm);
-void				farm_create_graph(t_farm *farm);
 void				farm_del_connects(t_farm *farm);
 void				farm_del_rooms(t_farm *farm);
-void				farm_del_graph(t_farm *farm);
 
 /*
 ** =============================================================================

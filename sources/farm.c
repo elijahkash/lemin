@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/06 16:41:02 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 18:02:31 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,29 @@ void					full_connect_reverse(t_full_connect connect)
 ** =============================================================================
 ** =============================================================================
 */
+
+void				farm_init_graph(t_graph *restrict graph,
+									t_farm *restrict farm)
+{
+	graph->size = farm->names.curlen;
+	graph->nodes = ft_malloc(sizeof(t_node *) * graph->size);
+	graph->mem = ft_malloc(sizeof(t_node) * graph->size +
+							sizeof(t_connect) * farm->connects.curlen);
+}
+
+void				farm_fill_graph(t_graph *graph, t_farm *farm)
+{
+
+}
+
+void				farm_del_graph(t_graph *restrict graph)
+{
+	ft_free(graph->nodes);
+	ft_free(graph->mem);
+	graph->nodes = NULL;
+	graph->mem = NULL;
+	graph->size = 0;
+}
 
 inline t_node		*graph_node(t_graph *restrict graph, t_uint index)
 {
@@ -188,6 +211,35 @@ void					iter_init(t_iter *restrict iter, t_node *restrict node,
 inline t_connect		*iter_next(t_iter *restrict iter)
 {
 	return (iter_func[iter->func](iter));
+}
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
+
+void				farm_init_rooms(t_farm *restrict farm)
+{
+	vect_init(&(farm->chars), sizeof(char), FARM_INIT_CHARS_COUNT);
+	vect_init(&(farm->names), sizeof(char *), FARM_INIT_ROOM_COUNT);
+}
+
+void				farm_init_connects(t_farm *restrict farm)
+{
+	vect_init(&(farm->connects), sizeof(t_uint),
+				(size_t)(2 * farm->names.curlen * FARM_INIT_CONNECTS_PER_ROOM));
+}
+
+void				farm_del_connects(t_farm *restrict farm)
+{
+	vect_del(&(farm->connects));
+}
+
+void				farm_del_rooms(t_farm *restrict farm)
+{
+	vect_del(&(farm->chars));
+	vect_del(&(farm->names));
 }
 
 /*
