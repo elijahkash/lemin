@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/06 15:10:35 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 15:42:18 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ typedef struct		s_connect
 	t_uint			state : 2;
 }					t_connect;
 
-void				connect_reverse(t_connect *connect);
-
 /*
 ** Since we can't delete connections (they can be reversed more then 1 times),
 ** we mark "deleted" ways as forbidden, and, if we pass through negative
@@ -89,10 +87,15 @@ void				connect_reverse(t_connect *connect);
 ** =============================================================================
 */
 
+/*
+** This struct need's for recovery way from end to start.
+** So directions the same: from end to start!
+** It mean's, that src_to_dst will become NEGATIVE and dst_to_src FORBIDDEN !
+*/
 typedef struct		s_full_connect
 {
-	t_connect		*src_to_dst;
-	t_connect		*dst_to_src;
+	t_connect *restrict		src_to_dst;
+	t_connect *restrict		dst_to_src;
 }					t_full_connect;
 
 void				full_connect_reverse(t_full_connect connect);
@@ -136,8 +139,8 @@ void				full_connect_reverse(t_full_connect connect);
 */
 typedef struct		s_graph
 {
-	void			**nodes;
-	void			*mem;
+	void **restrict	nodes;
+	void *restrict	mem;
 	size_t			size;
 	t_uint			start;
 	t_uint			end;
@@ -165,10 +168,10 @@ t_connect			*graph_node_connects(t_node *node);
 */
 typedef struct		s_graph_iterator
 {
-	t_connect		*connects;
-	t_uint			i;
-	t_uint			count_connects;
-	t_uint			func;
+	t_connect *restrict		connects;
+	t_uint					i;
+	t_uint					count_connects;
+	t_uint					func;
 }					t_iter;
 
 void				iter_init(t_iter *iter, t_node *node, t_uint type);
@@ -259,9 +262,9 @@ void				farm_del_graph(t_farm *farm);
 */
 typedef struct		s_way
 {
-	t_uint			*nodes;
-	t_uint			len;
-	long long		ants;
+	t_uint *restrict	nodes;
+	t_uint				len;
+	long long			ants;
 }					t_way;
 
 void				way_init(t_way *way, t_uint *arr, t_uint len);
@@ -275,7 +278,7 @@ void				way_del(t_way way);
 
 typedef struct		s_enum_ways
 {
-	t_way			*ways;
+	t_way *restrict	ways;
 	t_uint			count;
 	long long		moves;
 }					t_enum_ways;

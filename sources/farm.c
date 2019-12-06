@@ -6,13 +6,63 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/06 15:08:39 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 15:42:34 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <farm.h>
 
 #include <libft.h>
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
+
+//TODO: need marked???
+void					node_reverse(t_node *restrict node)
+{
+	t_iter	iter;
+
+	if (node->separate)
+	{
+		iter_init(&iter, node, ITER_NEGATIVE);
+		if (iter_next(&iter) == NULL)
+		{
+			node->separate = 0;
+			// node->marked = 1;
+			// node->marked_in = 0;
+			// node->marked_out = 0;
+		}
+	}
+	else
+	{
+		//TODO: check on start???
+		// node->marked_out = 1;
+		node->separate = 1;
+	}
+}
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
+
+void					full_connect_reverse(t_full_connect connect)
+{
+	if (connect.src_to_dst->state & (CONNECT_FORBIDDEN || CONNECT_NEGATIVE))
+	{
+		connect.src_to_dst->state = CONNECT_BASE_STATE;
+		connect.dst_to_src->state = CONNECT_BASE_STATE;
+	}
+	else
+	{
+		connect.src_to_dst->state = CONNECT_NEGATIVE;
+		connect.dst_to_src->state = CONNECT_FORBIDDEN;
+	}
+}
 
 /*
 ** =============================================================================
