@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/06 12:41:08 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/06 15:10:35 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ typedef __uint32_t	t_uint;
 # define MAX_NODES (__UINT32_MAX__ >> 2)
 
 /*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
+
+/*
 ** Look here for understanding 'separate' and 'marked_in/out' statements
 ** http://www.macfreek.nl/memory/Disjoint_Path_Finding
 */
@@ -52,6 +58,12 @@ typedef struct		s_node
 }					t_node;
 
 void				node_reverse(t_node *node);
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
 
 typedef struct		s_connect
 {
@@ -71,6 +83,12 @@ void				connect_reverse(t_connect *connect);
 # define CONNECT_NEGATIVE	1
 # define CONNECT_FORBIDDEN	2
 
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
+
 typedef struct		s_full_connect
 {
 	t_connect		*src_to_dst;
@@ -78,6 +96,12 @@ typedef struct		s_full_connect
 }					t_full_connect;
 
 void				full_connect_reverse(t_full_connect connect);
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
 
 /*
 ** Some notes about graph:
@@ -126,6 +150,11 @@ t_connect			*graph_connect(t_graph *graph, t_uint src, t_uint dst);
 //TODO: static
 t_connect			*graph_node_connects(t_node *node);
 
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
 
 /*
 ** Using an iterator is only allowed with his API:
@@ -136,7 +165,8 @@ t_connect			*graph_node_connects(t_node *node);
 */
 typedef struct		s_graph_iterator
 {
-	t_connect		*cur_connect;
+	t_connect		*connects;
+	t_uint			i;
 	t_uint			count_connects;
 	t_uint			func;
 }					t_iter;
@@ -144,19 +174,13 @@ typedef struct		s_graph_iterator
 void				iter_init(t_iter *iter, t_node *node, t_uint type);
 t_connect			*iter_next(t_iter *iter);
 
-//TODO: static
-t_connect			*iter_next_all(t_iter *iter);
-t_connect			*iter_next_allowed(t_iter *iter);
-t_connect			*iter_next_negative(t_iter *iter);
-t_connect			*iter_next_forbidden(t_iter *iter);
-
 /*
 ** This is traverse type for t_iter.type
 ** ITER_ALL - traverse all connections of node (even forbidden);
 ** ITER_ALLOWED - traverse all connections except forbidden
 ** ITER_NEGATIVE - traverse only negative connections
 ** ITER_FORBIDDEN - traverse only forbidden connections
-** ITER_BY_SEPARATE_NODE - auto chose of type, by checkig node:
+** ITER_BY_NODE - auto chose of type, by checkig node:
 ** 			- if node.separate == 0		:		ITER_ALLOWED
 **			- if node.marked_out == 1	:		ITER_ALLOWED
 **			- if node.marked_in == 1	:		ITER_NEGATIVE
@@ -165,7 +189,13 @@ t_connect			*iter_next_forbidden(t_iter *iter);
 # define ITER_ALLOWED			1
 # define ITER_NEGATIVE			2
 # define ITER_FORBIDDEN			3
-# define ITER_BY_SEPARATE_NODE	4
+# define ITER_BY_NODE			4
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
 
 /*
 ** Note about input:
@@ -211,6 +241,19 @@ typedef struct		s_farm
 	t_graph			graph;
 }					t_farm;
 
+void				farm_init_rooms(t_farm *farm);
+void				farm_init_connects(t_farm *farm);
+void				farm_create_graph(t_farm *farm);
+void				farm_del_connects(t_farm *farm);
+void				farm_del_rooms(t_farm *farm);
+void				farm_del_graph(t_farm *farm);
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
+
 /*
 **	ants - this is the number of ants that will go this way.
 */
@@ -221,18 +264,27 @@ typedef struct		s_way
 	long long		ants;
 }					t_way;
 
-void				way_init(t_uint *arr, t_uint len);
-void				way_del(void);
+void				way_init(t_way *way, t_uint *arr, t_uint len);
+void				way_del(t_way way);
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
 
 typedef struct		s_enum_ways
 {
 	t_way			*ways;
 	t_uint			count;
-	long long		ants;
+	long long		moves;
 }					t_enum_ways;
 
-void				enum_ways_init(t_uint count);
-void				enum_ways_del(void);
-long long			count_moves(t_enum_ways combs);
+void				enum_ways_init(t_enum_ways *combs, t_uint count);
+void				enum_ways_del(t_enum_ways *combs);
+//TODO: hmathew: need optimise + norminnet! now extrimely slow
+// for main idea look here (in bottom):
+// https://github.com/VBrazhnik/Lem_in/wiki/Algorithm
+long long			count_moves(t_enum_ways *combs, long long ants);
 
 #endif
