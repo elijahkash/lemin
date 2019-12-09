@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:05:25 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 18:18:33 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	add_nodes(t_uint item, t_graph *graph, t_deq *marked)
 	t_node			*node;
 
 	iter_init(&iter, graph->nodes[item], ITER_BY_NODE);
-	while ((connect = graph_next(&iter)))
+	while ((connect = iter_next(&iter)))
 	{
 		node = graph_node(graph, connect->dst);
 		if (node->marked == 0)

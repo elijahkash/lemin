@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:04:31 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 18:10:46 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,7 @@ typedef struct		s_double_number
 	t_uint			b;
 }					t_dnbr;
 
-int					dnbr_cmp_by_a(void *number_1, void *number_2);
+int					dnbr_cmp_by_a(const void *number_1, const void *number_2);
 
 /*
 ** =============================================================================

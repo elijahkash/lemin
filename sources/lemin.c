@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 16:53:46 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 18:23:17 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,15 @@ void	print_input_error(int ret, t_farm *farm)
 		ft_printf("There's no rooms!\n");
 	else if (farm->connects.curlen == 0)
 		ft_printf("There's no tubes!\n");
-	else if (farm->start == 0 - 1 || farm->end == 0 - 1)
+	else if (farm->start == (size_t)(0 - 1) || farm->end == (size_t)(0 - 1))
 		ft_printf("There's no start/end room!\n");
 }
 
 int		detect_errors(int ret, t_farm *farm)
 {
 	if (ret || farm->ants == 0 || farm->names.curlen == 0 ||
-	farm->start == 0 - 1 || farm->end == 0 - 1 || farm->connects.curlen == 0)
+		farm->start == (size_t)(0 - 1) || farm->end == (size_t)(0 - 1) ||
+		farm->connects.curlen == 0)
 		return (1);
 	else
 		return (0);
@@ -68,6 +69,8 @@ void	lemin(void)
 	farm_init(farm);
 	ret = read_input(farm);
 	ft_force_buff();
+	if (farm->connects.mem)
+		vect_shrink(&(farm->connects), 0);
 	if (detect_errors(ret, farm) || (ret |= graph_init(&(farm->graph), farm)))
 	{
 		print_input_error(ret, farm);
@@ -83,6 +86,6 @@ void	lemin(void)
 	else
 		ft_printf("There's no way between start and end!\n");
 	enum_ways_del(&result);
-	farm_del(&farm);
+	farm_del(farm);
 	return ;
 }

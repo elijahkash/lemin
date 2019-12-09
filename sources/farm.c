@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:02:31 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 18:26:10 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,10 +151,10 @@ int						graph_init(t_graph *restrict graph,
 							sizeof(t_connect) * farm->connects.curlen * 2);
 	graph_fill(graph, farm, node_connects);
 	graph_clear_state(graph);
-	graph->start = vect_flfind_i(&(farm->names),
-					ft_p(vect(&(farm->chars), farm->start)), ft_strcmp) - 1;
-	graph->end = vect_flfind_i(&(farm->names),
-					ft_p(vect(&(farm->chars), farm->end)), ft_strcmp) - 1;
+	graph->start = vect_bin_find(&(farm->names),
+					ft_p(vect(&(farm->chars), farm->start)), ft_scmp) - 1;
+	graph->end = vect_bin_find(&(farm->names),
+					ft_p(vect(&(farm->chars), farm->end)), ft_scmp) - 1;
 	return (0);
 }
 
@@ -174,7 +174,7 @@ inline t_node			*graph_node(t_graph *restrict graph, t_uint index)
 
 inline t_connect		*graph_node_connects(t_node *restrict node)
 {
-	return (node + 1);
+	return ((t_connect *)(node + 1));
 }
 
 void					graph_add_connect(t_graph *restrict graph,
@@ -192,9 +192,9 @@ void					graph_add_connect(t_graph *restrict graph,
 static t_connect		*graph_connect_find(t_connect *restrict connects,
 									t_uint count_connects, t_uint dst)
 {
-	t_uint		bot;
-	t_uint		top;
-	t_uint		tmp;
+	t_uint			bot;
+	t_uint			top;
+	long long		tmp;
 
 	if (!count_connects)
 		return (NULL);
@@ -357,7 +357,8 @@ void					farm_del_rooms(t_farm *restrict farm)
 ** =============================================================================
 */
 
-int						dnbr_cmp_by_a(void *number_1, void *number_2)
+int						dnbr_cmp_by_a(const void *number_1,
+										const void *number_2)
 {
 	return (((t_dnbr *)number_1)->a - ((t_dnbr *)number_2)->a);
 }

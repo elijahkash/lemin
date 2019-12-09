@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 15:37:15 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 18:28:00 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@
 static int		read_tube(int state, char *restrict line,
 							t_farm *restrict farm)
 {
-	size_t count;
-	t_uint	i;
-	t_uint	j;
+	size_t	count;
+	t_dnbr	connect;
 	char	*tmp;
 
 	count = ft_ccwords(line, '-');
@@ -28,14 +27,11 @@ static int		read_tube(int state, char *restrict line,
 	{
 		tmp = ft_strchr(line, '-');
 		*(tmp++) = '\0';
-		i = vect_flfind_i(&(farm->names), &line, ft_scmp);
-		j = vect_flfind_i(&(farm->names), &tmp, ft_scmp);
-		state |= (i-- * j-- == 0) ? ERRSTATE | TUBE_ERROR : 0;
-		if (i != j)
-		{
-			mtrx_set(farm, i, j);
-			mtrx_set(farm, j, i);
-		}
+		connect.a = vect_bin_find(&(farm->names), (void *)&line, ft_scmp);
+		connect.b = vect_bin_find(&(farm->names), (void *)&tmp, ft_scmp);
+		state |= (connect.a-- * connect.b-- == 0) ? ERRSTATE | TUBE_ERROR : 0;
+		if (connect.a != connect.b)
+			vect_add(&(farm->connects), &connect);
 	}
 	else
 		state |= ERRSTATE | TUBE_ERROR;
@@ -96,8 +92,8 @@ static int		read_room(int state, char *restrict line,
 		return (ERRSTATE | TOO_MUCH);
 	if (count == 1)
 	{
-		vect_trim(farm->names);
-		vect_trim(farm->chars);
+		vect_shrink(&(farm->names), 0);
+		vect_shrink(&(farm->chars), 0);
 		form_rooms(farm);
 		vect_sort(&(farm->names), ft_scmp, ft_qsort);
 		state = is_uniq_names(&(farm->names)) ?
@@ -133,10 +129,10 @@ static int		handle_cmd(int state, char *restrict line,
 							t_farm *restrict farm)
 {
 	if (!ft_strcmp(line, "##start"))
-		state |= (state & (START | END) || farm->start != 0 - 1) ?
+		state |= (state & (START | END) || farm->start != (size_t)(0 - 1)) ?
 					(ERRSTATE | WRONG_CMD) : START;
 	else if (!ft_strcmp(line, "##end"))
-		state |= (state & (START | END) || farm->end != -1) ?
+		state |= (state & (START | END) || farm->end != (size_t)(0 - 1)) ?
 					(ERRSTATE | WRONG_CMD) : END;
 	return (state);
 }

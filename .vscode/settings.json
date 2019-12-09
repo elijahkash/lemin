@@ -18,6 +18,7 @@
 		"ft_vector.h": "c",
 		"input_errors.h": "c",
 		"memory": "c",
-		"utility": "c"
+		"utility": "c",
+		"lemin.h": "c"
 	}
 }
