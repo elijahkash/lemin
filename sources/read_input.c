@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:28:00 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 20:42:12 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,13 @@ static int		read_tube(int state, char *restrict line,
 		*(tmp++) = '\0';
 		connect.a = vect_bin_find(&(farm->names), (void *)&line, ft_scmp);
 		connect.b = vect_bin_find(&(farm->names), (void *)&tmp, ft_scmp);
+		*(--tmp) = '-';
 		state |= (connect.a-- * connect.b-- == 0) ? ERRSTATE | TUBE_ERROR : 0;
-		if (connect.a != connect.b)
-			vect_add(&(farm->connects), &connect);
+		if (connect.a == connect.b)
+			return (state);
+		if (connect.a > connect.b)
+			ft_swap(&(connect.a), &(connect.b), sizeof(t_uint));
+		vect_add(&(farm->connects), &connect);
 	}
 	else
 		state |= ERRSTATE | TUBE_ERROR;
@@ -73,10 +77,13 @@ static void		form_rooms(t_farm *restrict farm)
 static int		is_room(char *restrict line)
 {
 	char *tmp;
+
+	//TODO: here
 	if (line[0] == 'L' ||
-		((tmp = ft_strchr(line, '-')) && tmp < (line = ft_strchr(line, ' '))))
+		((tmp = ft_strchr(line, '-')) && tmp < ft_strchr(line, ' ')))
 		return (0);
-	line = ft_skip_atoi(line + 1);
+	line = ft_strchr(line, ' ') + 1;
+	line = ft_skip_atoi(line);
 	line += (*line == ' ') ? 1 : 0;
 	line = ft_skip_atoi(line);
 	return (*line ? 0 : 1);
@@ -107,6 +114,7 @@ static int		read_room(int state, char *restrict line,
 		farm->end = (state & END) ? farm->chars.curlen : farm->end;
 		state &= ~(START | END);
 		vect_add_n(&(farm->chars), line, ft_strchr(line, ' ') - line);
+		vect_add(&(farm->chars), ft_c('\0'));
 	}
 	else
 		state |= ERRSTATE | ROOM_ERROR;

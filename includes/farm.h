@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:10:46 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 20:00:33 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,7 @@ typedef struct		s_double_number
 	t_uint			b;
 }					t_dnbr;
 
-int					dnbr_cmp_by_a(const void *number_1, const void *number_2);
+int					dnbr_cmp(const void *number_1, const void *number_2);
 
 /*
 ** =============================================================================
@@ -309,7 +309,7 @@ typedef struct		s_way
 
 void				way_init(t_way *way, t_uint *arr, t_uint len);
 void				way_del(t_way way);
-int					comp_way_by_len(void *way1, void *way2);
+int					comp_way_by_len(const void *way1, const void *way2);
 
 /*
 ** =============================================================================

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:23:17 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 21:38:06 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,24 @@ void	lemin(void)
 		farm_del(farm);
 		return ;
 	}
+
+
+	// t_iter iter;
+	// t_connect *tmp;
+	// for (t_uint j = 0; j < farm->graph.size; j++)
+	// {
+	// 	ft_printf("%s\t%lu\t", *(char **)vect(&(farm->names), j), farm->graph.nodes[j]->count_connects);
+	// 	iter_init(&iter, farm->graph.nodes[j], ITER_ALL);
+	// 	while ((tmp = iter_next(&iter)))
+	// 	{
+	// 		ft_printf("%s ", *(char **)vect(&(farm->names), tmp->dst));
+	// 	}
+	// 	ft_printf("\n");
+	// }
+	// ft_printf("\n");
+
+	// ft_force_buff();
+
 	farm_del_connects(farm);
 	ft_bzero(&result, sizeof(t_enum_ways));
 	solve(&result, &(farm->graph), farm->ants);
@@ -85,6 +103,30 @@ void	lemin(void)
 		print_result(&result, farm->ants);
 	else
 		ft_printf("There's no way between start and end!\n");
+
+
+	// ft_printf("ways = %d\n", result.count);
+	// t_darr	test;
+
+	// darr_init(&test, 4, 256);
+	// for (t_uint j = 0; j < result.count; j++)
+	// {
+	// 	ft_printf("len = %d\t", result.ways[j].len);
+	// 	for(t_uint i = 0; i < result.ways[j].len; i++)
+	// 	{
+	// 		ft_printf(" %s", vect(&(farm->names), result.ways[j].nodes[i]));
+	// 		if (result.ways[j].nodes[i] != farm->graph.end)
+	// 		{
+	// 			for(int k = 0; k < (int)darr_l(test); k++)
+	// 				if (result.ways[j].nodes[i] == *(t_uint *)darr(test, k))
+	// 					ft_printf("*");
+	// 		}
+	// 		darr_add(test, &(result.ways[j].nodes[i]));
+	// 	}
+	// 	ft_printf("\n");
+	// }
+	// ft_printf("\n");
+
 	enum_ways_del(&result);
 	farm_del(farm);
 	return ;

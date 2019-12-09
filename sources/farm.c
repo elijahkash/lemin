@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:26:10 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 21:56:30 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void					node_reverse(t_node *restrict node)
 void				mark_node(t_node *node, t_connect *connect,
 								t_uint bfs_level)
 {
-	node->bfs_level = bfs_level;
+	node->bfs_level = bfs_level + 1;
 	node->marked = 1;
 	if (node->separate)
 	{
@@ -67,7 +67,8 @@ void				mark_node(t_node *node, t_connect *connect,
 
 void					full_connect_reverse(t_full_connect connect)
 {
-	if (connect.src_to_dst->state & (CONNECT_FORBIDDEN || CONNECT_NEGATIVE))
+	if (connect.src_to_dst->state == CONNECT_FORBIDDEN ||
+		connect.src_to_dst->state == CONNECT_NEGATIVE)
 	{
 		connect.src_to_dst->state = CONNECT_BASE_STATE;
 		connect.dst_to_src->state = CONNECT_BASE_STATE;
@@ -95,7 +96,7 @@ static int				count_node_connects(t_farm *restrict farm,
 
 	same_connects = 0;
 	i = 0;
-	len = farm->names.curlen - 1;
+	len = farm->connects.curlen - 1;
 	while (i < len)
 	{
 		tmp = (t_dnbr *)vect(&(farm->connects), i);
@@ -127,7 +128,7 @@ static void				graph_fill(t_graph *restrict graph,
 		i++;
 	}
 	i = 0;
-	while (i < farm->names.curlen)
+	while (i < farm->connects.curlen)
 	{
 		tmp = vect(&(farm->connects), i);
 		graph_add_connect(graph, tmp->a, tmp->b);
@@ -143,7 +144,7 @@ int						graph_init(t_graph *restrict graph,
 
 	graph->size = farm->names.curlen;
 	ft_bzero(node_connects, sizeof(t_uint) * graph->size);
-	vect_sort(&(farm->connects), dnbr_cmp_by_a, ft_qsort);
+	vect_sort(&(farm->connects), dnbr_cmp, ft_qsort);
 	if (count_node_connects(farm, node_connects))
 		return (SAME_WAYS);
 	graph->nodes = ft_malloc(sizeof(t_node *) * graph->size);
@@ -202,7 +203,7 @@ static t_connect		*graph_connect_find(t_connect *restrict connects,
 	bot = 0;
 	while (bot != top)
 	{
-		tmp = dst - connects[bot + (top - bot) / 2].dst;
+		tmp = (long long)dst - (long long)(connects[bot + (top - bot) / 2].dst);
 		if (!tmp)
 			return (connects + bot + (top - bot) / 2);
 		if (tmp < 0)
@@ -210,7 +211,7 @@ static t_connect		*graph_connect_find(t_connect *restrict connects,
 		else
 			bot += (top - bot) / 2 + 1;
 	}
-	tmp = dst - connects[bot].dst;
+	tmp = (long long)dst - (long long)(connects[bot].dst);
 	return (tmp ? NULL : connects + bot);
 }
 
@@ -255,7 +256,7 @@ static t_connect		*iter_next_allowed(t_iter *restrict iter)
 {
 	t_connect	*restrict tmp;
 
-	while ((tmp = iter_next_all(iter)) && (tmp->state & CONNECT_FORBIDDEN))
+	while ((tmp = iter_next_all(iter)) && (tmp->state == CONNECT_FORBIDDEN))
 		continue ;
 	return (tmp);
 }
@@ -264,7 +265,7 @@ static t_connect		*iter_next_negative(t_iter *restrict iter)
 {
 	t_connect	*restrict tmp;
 
-	while ((tmp = iter_next_all(iter)) && !(tmp->state & CONNECT_NEGATIVE))
+	while ((tmp = iter_next_all(iter)) && !(tmp->state == CONNECT_NEGATIVE))
 		continue ;
 	return (tmp);
 }
@@ -273,7 +274,7 @@ static t_connect		*iter_next_forbidden(t_iter *restrict iter)
 {
 	t_connect	*restrict tmp;
 
-	while ((tmp = iter_next_all(iter)) && !(tmp->state & CONNECT_FORBIDDEN))
+	while ((tmp = iter_next_all(iter)) && !(tmp->state == CONNECT_FORBIDDEN))
 		continue ;
 	return (tmp);
 }
@@ -357,10 +358,12 @@ void					farm_del_rooms(t_farm *restrict farm)
 ** =============================================================================
 */
 
-int						dnbr_cmp_by_a(const void *number_1,
+inline int				dnbr_cmp(const void *number_1,
 										const void *number_2)
 {
-	return (((t_dnbr *)number_1)->a - ((t_dnbr *)number_2)->a);
+	return ((((t_dnbr *)number_1)->a - ((t_dnbr *)number_2)->a) ?
+			(((t_dnbr *)number_1)->a - ((t_dnbr *)number_2)->a) :
+			(((t_dnbr *)number_1)->b - ((t_dnbr *)number_2)->b));
 }
 
 /*
@@ -382,8 +385,8 @@ inline void				way_del(t_way way)
 	ft_free(way.nodes);
 }
 
-inline int				comp_way_by_len(void *restrict way1,
-										void *restrict way2)
+inline int				comp_way_by_len(const void *restrict way1,
+										const void *restrict way2)
 {
 	return (((t_way *)way1)->len - ((t_way *)way2)->len);
 }

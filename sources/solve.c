@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:18:33 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 22:15:04 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void		reverse_new_way(t_graph *graph)
 	t_node			*ptr;
 
 	cur_iter = graph->end;
-	cur_bfs_level = graph_node(graph, graph->start)->bfs_level;
+	cur_bfs_level = graph_node(graph, graph->end)->bfs_level;
 	while (cur_bfs_level-- > 0)
 	{
 		iter_init(&iter, graph->nodes[cur_iter], ITER_ALL);
@@ -42,9 +42,11 @@ static void		reverse_new_way(t_graph *graph)
 		}
 		connect.dst_to_src = dst_to_src;
 		connect.src_to_dst = src_to_dst;
-		cur_iter = connect.dst_to_src->dst;
+		cur_iter = connect.src_to_dst->dst;
 		full_connect_reverse(connect);
-		node_reverse(graph_node(graph, cur_iter));
+		//TODO: check on start here?
+		if (cur_iter != graph->start)
+			node_reverse(graph_node(graph, cur_iter));
 	}
 }
 
@@ -60,7 +62,7 @@ void	add_nodes(t_uint item, t_graph *graph, t_deq *marked)
 		node = graph_node(graph, connect->dst);
 		if (node->marked == 0)
 		{
-			deq_push_back(marked, connect->dst);
+			deq_push_back(marked, ft_z(connect->dst));
 			mark_node(node, connect, graph_node(graph, item)->bfs_level);
 		}
 	}
@@ -69,6 +71,7 @@ void	add_nodes(t_uint item, t_graph *graph, t_deq *marked)
 static int		find_new_way(t_graph *graph)
 {
 	t_deq	marked;
+	int		res;
 
 	deq_init(&marked, sizeof(t_uint), 128);
 	deq_push_back(&marked, &(graph->start));
@@ -84,8 +87,9 @@ static int		find_new_way(t_graph *graph)
 	deq_del(&marked);
 	if (graph_node(graph, graph->end)->marked)
 		reverse_new_way(graph);
+	res = (graph_node(graph, graph->end)->marked) ? 1 : 0;
 	graph_clear_state(graph);
-	return ((graph_node(graph, graph->end)->marked) ? 1 : 0);
+	return (res);
 }
 
 static void		find_way(t_vect *restrict way, t_uint first_node,
@@ -138,6 +142,30 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 	min_moves = 0;
 	while (find_new_way(graph))
 	{
+
+
+		t_iter iter;
+		t_connect *tmp2;
+		for (t_uint j = 0; j < graph->size; j++)
+		{
+			ft_printf("%lu\t%lu\t", j, graph->nodes[j]->count_connects);
+			iter_init(&iter, graph->nodes[j], ITER_ALL);
+			while ((tmp2 = iter_next(&iter)))
+			{
+				ft_printf(" %lu", tmp2->dst);
+				if (tmp2->state == CONNECT_BASE_STATE)
+				ft_printf("+");
+				if (tmp2->state == CONNECT_FORBIDDEN)
+				ft_printf("x");
+				if (tmp2->state == CONNECT_NEGATIVE)
+				ft_printf("-");
+			}
+			ft_printf("\n");
+		}
+		ft_printf("\n");
+		ft_force_buff();
+
+
 		k++;
 		tmp.count = k;
 		find_ways(&tmp, graph);
