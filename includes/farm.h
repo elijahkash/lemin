@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/06 18:02:34 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 12:51:12 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,7 @@ typedef struct		s_graph
 	t_uint				end;
 }						t_graph;
 
-void				farm_init_graph(t_graph *graph, t_farm *farm);
-void				farm_fill_graph(t_graph *graph, t_farm *farm);
-void				farm_del_graph(t_graph *graph);
+void				graph_del(t_graph *graph);
 
 /*
 ** Extremely important!!!
@@ -158,6 +156,7 @@ void				graph_add_connect(t_graph *graph, t_uint src, t_uint dst);
 t_node				*graph_node(t_graph *graph, t_uint index);
 t_connect			*graph_connect(t_graph *graph, t_uint src, t_uint dst);
 t_connect			*graph_node_connects(t_node *node);
+void				graph_clear_state(t_graph *graph);
 
 /*
 ** =============================================================================
@@ -259,6 +258,29 @@ void				farm_init_rooms(t_farm *farm);
 void				farm_init_connects(t_farm *farm);
 void				farm_del_connects(t_farm *farm);
 void				farm_del_rooms(t_farm *farm);
+
+/*
+** For fast, check on same connection here.
+** return (1) if find; return (0) otherwise
+*/
+int					graph_init(t_graph *graph, t_farm *farm);
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
+
+/*
+** Used for stored input data (connections) in farm.connects
+*/
+typedef struct		s_double_number
+{
+	t_uint			a;
+	t_uint			b;
+}					t_dnbr;
+
+int					dnbr_cmp_by_a(void *number_1, void *number_2);
 
 /*
 ** =============================================================================

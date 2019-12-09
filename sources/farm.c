@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/06 18:02:31 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 12:52:38 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,76 @@ void					full_connect_reverse(t_full_connect connect)
 ** =============================================================================
 */
 
-void				farm_init_graph(t_graph *restrict graph,
+static int				count_node_connects(t_farm *restrict farm,
+											t_uint *restrict node_connects)
+{
+	t_uint	same_connects;
+	t_uint	i;
+	t_dnbr	*tmp;
+	t_uint	len;
+
+	same_connects = 0;
+	i = 0;
+	len = farm->names.curlen - 1;
+	while (i < len)
+	{
+		tmp = (t_dnbr *)vect(&(farm->connects), i);
+		node_connects[tmp->a]++;
+		node_connects[tmp->b]++;
+		same_connects += ((ft_memcmp(tmp, tmp + 1, sizeof(t_dnbr))) ? 0 : 1);
+		i++;
+	}
+	tmp = (t_dnbr *)vect(&(farm->connects), i);
+	node_connects[tmp->a]++;
+	node_connects[tmp->b]++;
+	return (same_connects ? 1 : 0);
+}
+
+static void				graph_fill(t_graph *restrict graph,
+						t_farm *restrict farm, t_uint *restrict node_connects)
+{
+	t_uint	i;
+	void	*current_pos;
+	t_dnbr	*tmp;
+
+	i = 0;
+	current_pos = graph->mem;
+	while (i < graph->size)
+	{
+		graph->nodes[i] = current_pos;
+		((t_node *)current_pos)->count_connects = 0;
+		current_pos += sizeof(t_node) + sizeof(t_connect) * node_connects[i];
+		i++;
+	}
+	i = 0;
+	while (i < farm->names.curlen)
+	{
+		tmp = vect(&(farm->connects), i);
+		graph_add_connect(graph, tmp->a, tmp->b);
+		graph_add_connect(graph, tmp->b, tmp->a);
+		i++;
+	}
+}
+
+int						graph_init(t_graph *restrict graph,
 									t_farm *restrict farm)
 {
+	t_uint	node_connects[farm->names.curlen];
+
 	graph->size = farm->names.curlen;
+	ft_bzero(node_connects, sizeof(t_uint) * graph->size);
+	vect_sort(&(farm->connects), dnbr_cmp_by_a, ft_qsort);
+	if (count_node_connects(farm, node_connects))
+		return (1);
 	graph->nodes = ft_malloc(sizeof(t_node *) * graph->size);
 	graph->mem = ft_malloc(sizeof(t_node) * graph->size +
-							sizeof(t_connect) * farm->connects.curlen);
+							sizeof(t_connect) * farm->connects.curlen * 2);
+	graph_fill(graph, farm, node_connects);
+	graph_clear_state(graph);
+	return (0);
 }
 
-void				farm_fill_graph(t_graph *graph, t_farm *farm)
-{
-
-}
-
-void				farm_del_graph(t_graph *restrict graph)
+void					graph_del(t_graph *restrict graph)
 {
 	ft_free(graph->nodes);
 	ft_free(graph->mem);
@@ -93,17 +148,17 @@ void				farm_del_graph(t_graph *restrict graph)
 	graph->size = 0;
 }
 
-inline t_node		*graph_node(t_graph *restrict graph, t_uint index)
+inline t_node			*graph_node(t_graph *restrict graph, t_uint index)
 {
 	return (graph->nodes[index]);
 }
 
-inline t_connect	*graph_node_connects(t_node *restrict node)
+inline t_connect		*graph_node_connects(t_node *restrict node)
 {
 	return (node + 1);
 }
 
-void				graph_add_connect(t_graph *restrict graph,
+void					graph_add_connect(t_graph *restrict graph,
 									t_uint src, t_uint dst)
 {
 	t_node		*restrict node;
@@ -115,7 +170,7 @@ void				graph_add_connect(t_graph *restrict graph,
 	con->state = CONNECT_BASE_STATE;
 }
 
-static t_connect	*graph_connect_find(t_connect *restrict connects,
+static t_connect		*graph_connect_find(t_connect *restrict connects,
 									t_uint count_connects, t_uint dst)
 {
 	t_uint		bot;
@@ -140,7 +195,7 @@ static t_connect	*graph_connect_find(t_connect *restrict connects,
 	return (tmp ? NULL : connects + bot);
 }
 
-inline t_connect	*graph_connect(t_graph *restrict graph,
+inline t_connect		*graph_connect(t_graph *restrict graph,
 									t_uint src, t_uint dst)
 {
 	t_node	*restrict node;
@@ -148,6 +203,21 @@ inline t_connect	*graph_connect(t_graph *restrict graph,
 	node = graph->nodes[src];
 	return (graph_connect_find(((t_connect *)(node + 1)),
 								node->count_connects, dst));
+}
+
+void					graph_clear_state(t_graph *restrict graph)
+{
+	t_uint	i;
+
+	i = 0;
+	while (i < graph->size)
+	{
+		graph->nodes[i]->marked = 0;
+		graph->nodes[i]->marked_in = 0;
+		graph->nodes[i]->marked_out = 0;
+		graph->nodes[i]->bfs_level = 0;
+		i++;
+	}
 }
 
 /*
@@ -189,7 +259,7 @@ static t_connect		*iter_next_forbidden(t_iter *restrict iter)
 	return (tmp);
 }
 
-t_connect		*(*iter_func[])(t_iter *restrict iter) = {
+t_connect				*(*g_iter_func[])(t_iter *restrict iter) = {
 	iter_next_all,
 	iter_next_allowed,
 	iter_next_negative,
@@ -210,7 +280,7 @@ void					iter_init(t_iter *restrict iter, t_node *restrict node,
 
 inline t_connect		*iter_next(t_iter *restrict iter)
 {
-	return (iter_func[iter->func](iter));
+	return (g_iter_func[iter->func](iter));
 }
 
 /*
@@ -219,27 +289,38 @@ inline t_connect		*iter_next(t_iter *restrict iter)
 ** =============================================================================
 */
 
-void				farm_init_rooms(t_farm *restrict farm)
+void					farm_init_rooms(t_farm *restrict farm)
 {
 	vect_init(&(farm->chars), sizeof(char), FARM_INIT_CHARS_COUNT);
 	vect_init(&(farm->names), sizeof(char *), FARM_INIT_ROOM_COUNT);
 }
 
-void				farm_init_connects(t_farm *restrict farm)
+void					farm_init_connects(t_farm *restrict farm)
 {
-	vect_init(&(farm->connects), sizeof(t_uint),
-				(size_t)(2 * farm->names.curlen * FARM_INIT_CONNECTS_PER_ROOM));
+	vect_init(&(farm->connects), sizeof(t_dnbr),
+				(size_t)(farm->names.curlen * FARM_INIT_CONNECTS_PER_ROOM));
 }
 
-void				farm_del_connects(t_farm *restrict farm)
+void					farm_del_connects(t_farm *restrict farm)
 {
 	vect_del(&(farm->connects));
 }
 
-void				farm_del_rooms(t_farm *restrict farm)
+void					farm_del_rooms(t_farm *restrict farm)
 {
 	vect_del(&(farm->chars));
 	vect_del(&(farm->names));
+}
+
+/*
+** =============================================================================
+** =============================================================================
+** =============================================================================
+*/
+
+int						dnbr_cmp_by_a(void *number_1, void *number_2)
+{
+	return (((t_dnbr *)number_1)->a - ((t_dnbr *)number_2)->a);
 }
 
 /*
@@ -297,7 +378,7 @@ long long				count_moves(t_enum_ways *restrict combs, long long ants)
 		combs->moves = ants + combs->ways[0].len - 1;
 		return (combs->moves);
 	}
-	for(t_uint i = 0; i < way; i++)
+	for (t_uint i = 0; i < way; i++)
 	{
 		border[i] = 0;
 		for (t_uint j = 0; j < i; j++)
