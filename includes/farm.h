@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 12:51:12 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 15:03:18 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,11 +234,14 @@ t_connect			*iter_next(t_iter *iter);
 ** # relax :)
 **
 ** Note about reading connects:
-** We can't create t_graph after reading all rooms. It have difficult structure,
-** so first we consider all the connections (in t_vect connects), trim mem,
-** sort them by src node, count count_connections for every node,
+** We can't create t_graph before reading all rooms.
+** It have difficult structure, so first we consider all the connections
+** (in t_vect connects), trim mem, sort them by src node, count
+** count_connections for every node,
 ** THEN create t_graph, and after this, del t_vect connections for memory save
 ** (becouse at this moment, all connections stored in t_graph).
+**
+** start/end stored positiond of start end end in 'chars'
 */
 typedef struct		s_farm
 {
@@ -247,6 +250,8 @@ typedef struct		s_farm
 	t_vect			names;
 	t_vect			connects;
 	t_graph			graph;
+	size_t			start;
+	size_t			end;
 }					t_farm;
 
 # define FARM_INIT_ROOM_COUNT			1024
@@ -254,6 +259,8 @@ typedef struct		s_farm
 # define FARM_INIT_CHARS_COUNT (FARM_INIT_ROOM_COUNT * FARM_INIT_CHARS_PER_ROOM)
 # define FARM_INIT_CONNECTS_PER_ROOM	2.5
 
+void				farm_init(t_farm *restrict farm);
+void				farm_del(t_farm *restrict farm);
 void				farm_init_rooms(t_farm *farm);
 void				farm_init_connects(t_farm *farm);
 void				farm_del_connects(t_farm *farm);

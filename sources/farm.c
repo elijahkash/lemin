@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 12:52:38 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 15:05:23 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,10 @@ int						graph_init(t_graph *restrict graph,
 							sizeof(t_connect) * farm->connects.curlen * 2);
 	graph_fill(graph, farm, node_connects);
 	graph_clear_state(graph);
+	graph->start = vect_flfind_i(&(farm->names),
+					ft_p(vect(&(farm->chars), farm->start)), ft_strcmp) - 1;
+	graph->end = vect_flfind_i(&(farm->names),
+					ft_p(vect(&(farm->chars), farm->end)), ft_strcmp) - 1;
 	return (0);
 }
 
@@ -288,6 +292,26 @@ inline t_connect		*iter_next(t_iter *restrict iter)
 ** =============================================================================
 ** =============================================================================
 */
+
+void					farm_init(t_farm *restrict farm)
+{
+	farm->ants = 0;
+	farm->start = 0 - 1;
+	farm->end = 0 - 1;
+	farm->connects.mem = NULL;
+	farm->chars.mem = NULL;
+	farm->graph.mem = NULL;
+}
+
+void					farm_del(t_farm *restrict farm)
+{
+	if (farm->chars.mem)
+		farm_del_rooms(farm);
+	if (farm->connects.mem)
+		farm_del_connects(farm);
+	if (farm->graph.mem)
+		graph_del(&(farm->graph));
+}
 
 void					farm_init_rooms(t_farm *restrict farm)
 {
