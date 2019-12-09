@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   farm.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:10:46 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 20:24:09 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,9 +241,9 @@ t_connect			*iter_next(t_iter *iter);
 ** (in t_vect connects), trim mem, sort them by src node, count
 ** count_connections for every node,
 ** THEN create t_graph, and after this, del t_vect connections for memory save
-** (becouse at this moment, all connections stored in t_graph).
+** (because at this moment, all connections stored in t_graph).
 **
-** start/end stored positiond of start end end in 'chars'
+** start/end stored positions of start end end in 'chars'
 */
 typedef struct		s_farm
 {
