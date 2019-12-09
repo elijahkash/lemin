@@ -6,13 +6,14 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 15:01:02 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 15:37:15 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <read_input.h>
 
 #include <libft.h>
+#include <input_errors.h>
 
 static int		read_tube(int state, char *restrict line,
 							t_farm *restrict farm)

@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_input.h                                       :+:      :+:    :+:   */
+/*   solve.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/09 12:54:24 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 15:36:56 by mtrisha          ###   ########.fr       */
+/*   Created: 2019/12/09 15:11:34 by mtrisha           #+#    #+#             */
+/*   Updated: 2019/12/09 15:11:57 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef READ_INPUT_H
-# define READ_INPUT_H
+#ifndef SOLVE_H
+# define SOLVE_H
 
 # include <farm.h>
 
-int		read_input(t_farm *restrict farm);
+int		solve(t_farm *farm);
 
 #endif

@@ -6,13 +6,14 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 15:05:23 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 15:37:46 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <farm.h>
 
 #include <libft.h>
+#include <input_errors.h>
 
 /*
 ** =============================================================================
@@ -130,7 +131,7 @@ int						graph_init(t_graph *restrict graph,
 	ft_bzero(node_connects, sizeof(t_uint) * graph->size);
 	vect_sort(&(farm->connects), dnbr_cmp_by_a, ft_qsort);
 	if (count_node_connects(farm, node_connects))
-		return (1);
+		return (SAME_WAYS);
 	graph->nodes = ft_malloc(sizeof(t_node *) * graph->size);
 	graph->mem = ft_malloc(sizeof(t_node) * graph->size +
 							sizeof(t_connect) * farm->connects.curlen * 2);
