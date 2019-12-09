@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lemin.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 18:23:17 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 20:11:18 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,35 @@
 #include <read_input.h>
 #include <input_errors.h>
 #include <solve.h>
+#include <string.h>
 
 void	print_input_error(int ret, t_farm *farm)
 {
-	if (ret)
+	const char	*err_str = "unknown error";
+	int 		i;
+
+	if (!ret)
 	{
-		if (ret & WRONG_CMD)
-			ft_printf("ERROR: wrong command lines.\n");
-		else if (ret & ANTS_ERROR)
-			ft_printf("ERROR: wrong ants definition.\n");
-		else if (ret & ROOM_ERROR)
-			ft_printf("ERROR: wrong room definition.\n");
-		else if (ret & TOO_MUCH)
-			ft_printf("ERROR: too much input rooms.\n");
-		else if (ret & GNL_ERROR)
-			ft_printf("ERROR: read input stream return error.\n");
-		else if (ret & NO_UNIQ)
-			ft_printf("ERROR: found several rooms with identical names.\n");
-		else if (ret & TUBE_ERROR)
-			ft_printf("ERROR: wrong tube definition.\n");
-		else if (ret & SAME_WAYS)
-			ft_printf("ERROR: found several identical tubes.\n");
-		else
-			ft_printf("ERROR\n");
+		if (farm->ants == 0)
+			ret = NO_ANTS;
+		else if (farm->names.curlen == 0)
+			ret = NO_ROOMS;
+		else if (farm->connects.curlen == 0)
+			ret = NO_TUBES;
+		else if (farm->start == (size_t)(0 - 1) || farm->end == (size_t)(0 - 1))
+			ret = NO_START_END;
 	}
-	else if (farm->ants == 0)
-		ft_printf("There's no ants!\n");
-	else if (farm->names.curlen == 0)
-		ft_printf("There's no rooms!\n");
-	else if (farm->connects.curlen == 0)
-		ft_printf("There's no tubes!\n");
-	else if (farm->start == (size_t)(0 - 1) || farm->end == (size_t)(0 - 1))
-		ft_printf("There's no start/end room!\n");
+	i = 0;
+	while (i < (sizeof(g_errlist) / sizeof(t_err)))
+	{
+		if (g_errlist[i].error_code == ret)
+		{
+			err_str = g_errlist[i].error_string;
+			break ;
+		}
+		++i;
+	}
+	printf("ERROR: %s\n", err_str);
 }
 
 int		detect_errors(int ret, t_farm *farm)
