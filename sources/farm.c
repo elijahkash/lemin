@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 15:37:46 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 18:02:31 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,20 @@ void					node_reverse(t_node *restrict node)
 		//TODO: check on start???
 		// node->marked_out = 1;
 		node->separate = 1;
+	}
+}
+
+void				mark_node(t_node *node, t_connect *connect,
+								t_uint bfs_level)
+{
+	node->bfs_level = bfs_level;
+	node->marked = 1;
+	if (node->separate)
+	{
+		if (connect->state == CONNECT_NEGATIVE)
+			node->marked_out = 1;
+		else
+			node->marked_in = 1;
 	}
 }
 
@@ -367,6 +381,12 @@ inline void				way_del(t_way way)
 	ft_free(way.nodes);
 }
 
+inline int				comp_way_by_len(void *restrict way1,
+										void *restrict way2)
+{
+	return (((t_way *)way1)->len - ((t_way *)way2)->len);
+}
+
 /*
 ** =============================================================================
 ** =============================================================================
@@ -386,7 +406,8 @@ void					enum_ways_del(t_enum_ways *restrict combs)
 	while (combs->count)
 		way_del(combs->ways[--(combs->count)]);
 	combs->moves = 0;
-	ft_free(combs->ways);
+	if (combs->ways)
+		ft_free(combs->ways);
 	combs->ways = NULL;
 }
 
@@ -421,4 +442,9 @@ long long				count_moves(t_enum_ways *restrict combs, long long ants)
 	}
 	combs->moves = combs->ways[0].ants + combs->ways[0].len - 1;
 	return (combs->moves);
+}
+
+void					print_result(t_enum_ways *combs, long long ants)
+{
+	return ;
 }

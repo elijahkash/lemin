@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 15:47:49 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 16:53:46 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	lemin(void)
 {
 	t_farm		farm[1];
 	int			ret;
-	t_enum_ways	*result;
+	t_enum_ways	result;
 
 	farm_init(farm);
 	ret = read_input(farm);
@@ -75,9 +75,14 @@ void	lemin(void)
 		return ;
 	}
 	farm_del_connects(farm);
-	result = solve(farm);
+	ft_bzero(&result, sizeof(t_enum_ways));
+	solve(&result, &(farm->graph), farm->ants);
 	graph_del(&(farm->graph));
-	print_result(result);
+	if (result.count)
+		print_result(&result, farm->ants);
+	else
+		ft_printf("There's no way between start and end!\n");
+	enum_ways_del(&result);
 	farm_del(&farm);
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 15:03:18 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/09 18:04:31 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,8 @@ t_node				*graph_node(t_graph *graph, t_uint index);
 t_connect			*graph_connect(t_graph *graph, t_uint src, t_uint dst);
 t_connect			*graph_node_connects(t_node *node);
 void				graph_clear_state(t_graph *graph);
+void				mark_node(t_node *node, t_connect *connect,
+								t_uint bfs_level);
 
 /*
 ** =============================================================================
@@ -307,6 +309,7 @@ typedef struct		s_way
 
 void				way_init(t_way *way, t_uint *arr, t_uint len);
 void				way_del(t_way way);
+int					comp_way_by_len(void *way1, void *way2);
 
 /*
 ** =============================================================================
@@ -327,5 +330,8 @@ void				enum_ways_del(t_enum_ways *combs);
 // for main idea look here (in bottom):
 // https://github.com/VBrazhnik/Lem_in/wiki/Algorithm
 long long			count_moves(t_enum_ways *combs, long long ants);
+
+//TODO: hmathew: write this!
+void				print_result(t_enum_ways *combs, long long ants);
 
 #endif

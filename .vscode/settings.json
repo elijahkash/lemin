@@ -16,6 +16,8 @@
 		"unordered_map": "c",
 		"hashtable": "c",
 		"ft_vector.h": "c",
-		"input_errors.h": "c"
+		"input_errors.h": "c",
+		"memory": "c",
+		"utility": "c"
 	}
 }
