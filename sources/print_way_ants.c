@@ -6,7 +6,7 @@
 /*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:01:41 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/10 19:06:51 by hmathew          ###   ########.fr       */
+/*   Updated: 2019/12/10 20:43:09 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 */
 void	init_ways_antsnames(t_enum_ways *restrict eways)
 {
-	int i;
-	int j;
+	t_uint i;
+	t_uint j;
 
 	i = 0;
 	while (i < eways->count)
 	{
-		eways->ways[i].ants_names = ft_malloc(sizeof(t_uint) * eways->ways[i].len);
+		eways->ways[i].ants_names = ft_malloc(sizeof(int) * eways->ways[i].len);
 		j = 0;
 		while (j < eways->ways[i].len)
 		{
@@ -48,7 +48,7 @@ void	print_move_in_way(t_way *way, t_farm *restrict farm, int *new_ant_name)
 	{
 		if (way->ants_names[j] != NO_ANT)
 		{
-			if (j != way->len - 1)
+			if (j != (int)way->len - 1)
 			{
 				ft_printf("L%d-%s ", way->ants_names[j], *(char **)vect(&(farm->names), way->nodes[j + 1]));
 				way->ants_names[j + 1] = way->ants_names[j];
@@ -77,7 +77,7 @@ void	print_moves(t_enum_ways *restrict eways, t_farm *restrict farm)
 	while (eways->moves)
 	{
 		i = 0;
-		while (i < eways->count)
+		while (i < (int)eways->count)
 		{
 			print_move_in_way(&(eways->ways[i]), farm, &new_ant_name);
 			i++;
@@ -116,7 +116,7 @@ void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
 	#ifdef DEBUG
 	print_ways(eways, farm);
-	#endif // DEBUG
+	#endif
 	print_moves(eways, farm);
 	return ;
 }

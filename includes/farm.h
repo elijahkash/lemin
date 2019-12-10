@@ -6,7 +6,7 @@
 /*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 18:21:21 by hmathew          ###   ########.fr       */
+/*   Updated: 2019/12/10 20:39:38 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,7 +308,7 @@ int						dnbr_cmp(const void *number_1, const void *number_2);
 typedef struct			s_way
 {
 	t_uint *restrict	nodes;
-	t_uint				*ants_names;
+	int					*ants_names;
 	t_uint				len;
 	long long			ants;
 }						t_way;
