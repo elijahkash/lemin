@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 16:40:55 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 18:08:11 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,39 +16,6 @@
 #include <read_input.h>
 #include <input_errors.h>
 #include <solve.h>
-
-static const t_err	g_errlist[] =
-{
-	{ERRSTATE, "unknown error"},
-	{NO_POSSIBLE_WAY, "There's no way between start and end!"},
-	{NO_START_END, "There's no start/end room!"},
-	{NO_TUBES, "There's no tubes!"},
-	{NO_ROOMS, "There's no rooms!"},
-	{NO_ANTS, "There's no ants!"},
-	{SAME_WAYS, "Found several identical tubes."},
-	{TUBE_ERROR, "Wrong tube definition."},
-	{NO_UNIQ, "Found several rooms with identical names."},
-	{TOO_MUCH, "Too much input rooms."},
-	{ROOM_ERROR, "Wrong room definition."},
-	{ANTS_ERROR, "Wrong ants definition."},
-	{WRONG_CMD, "Wrong command lines."},
-	{GNL_ERROR, "Reading input stream return error."}
-};
-
-void				print_input_error(t_uint ret)
-{
-	const char	*err_str;
-	t_uint 		i;
-
-	i = (sizeof(g_errlist) / sizeof(t_err));
-	while (i-- > 0 )
-		if (g_errlist[i].error_code & ret)
-		{
-			err_str = g_errlist[i].error_string;
-			break ;
-		}
-	ft_printf("ERROR: \"%s\"\n", err_str);
-}
 
 int					detect_errors(t_uint ret, t_farm *farm)
 {
@@ -90,41 +57,3 @@ void				lemin(void)
 	farm_del(farm);
 	return ;
 }
-
-	// list of nodes + connects (after reading input)
-	// t_iter iter;
-	// t_connect *tmp;
-	// for (t_uint j = 0; j < farm->graph.size; j++)
-	// {
-	// 	ft_printf("%s\t%lu\t", *(char **)vect(&(farm->names), j), farm->graph.nodes[j]->count_connects);
-	// 	iter_init(&iter, farm->graph.nodes[j], ITER_ALL);
-	// 	while ((tmp = iter_next(&iter)))
-	// 	{
-	// 		ft_printf("%s ", *(char **)vect(&(farm->names), tmp->dst));
-	// 	}
-	// 	ft_printf("\n");
-	// }
-	// ft_printf("\n");
-	// ft_force_buff();
-
-	// output result
-	// ft_printf("ways = %lu\nmoves = %lu\n", combs->count, combs->moves);
-	// t_darr	test;
-	// darr_init(&test, 4, 256);
-	// for (t_uint j = 0; j < combs->count; j++)
-	// {
-	// 	ft_printf("len = %lu\tants = %lld\t[%s]", combs->ways[j].len, combs->ways[j].ants, *(char **)vect(&(farm->names), farm->graph.start));
-	// 	for(t_uint i = 0; i < combs->ways[j].len; i++)
-	// 	{
-	// 		ft_printf("->[%s]", *(char **)vect(&(farm->names), combs->ways[j].nodes[i]));
-	// 		if (combs->ways[j].nodes[i] != farm->graph.end)
-	// 		{
-	// 			for(int k = 0; k < (int)darr_l(test); k++)
-	// 				if (combs->ways[j].nodes[i] == *(t_uint *)darr(test, k))
-	// 					ft_printf("*");
-	// 		}
-	// 		darr_add(test, &(combs->ways[j].nodes[i]));
-	// 	}
-	// 	ft_printf("\n");
-	// }
-	// ft_printf("\n");

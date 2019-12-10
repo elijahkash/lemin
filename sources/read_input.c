@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 12:42:58 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 18:12:01 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <input_errors.h>
 
 static t_uint		read_tube(t_uint state, char *restrict line,
-							t_farm *restrict farm)
+								t_farm *restrict farm)
 {
 	size_t	count;
 	t_dnbr	connect;
@@ -76,13 +76,14 @@ static void			form_rooms(t_farm *restrict farm)
 
 static t_uint		is_room(char *restrict line)
 {
-	char *tmp;
+	char *tmp_1;
+	char *tmp_2;
 
-	//TODO: here
-	if (line[0] == 'L' ||
-		((tmp = ft_strchr(line, '-')) && tmp < ft_strchr(line, ' ')))
+	tmp_1 = ft_strchr(line, '-');
+	tmp_2 = ft_strchr(line, ' ');
+	if (line[0] == 'L' || (tmp_1 && tmp_1 < tmp_2))
 		return (0);
-	line = ft_strchr(line, ' ') + 1;
+	line = tmp_2 + 1;
 	line = ft_skip_atoi(line);
 	line += (*line == ' ') ? 1 : 0;
 	line = ft_skip_atoi(line);
@@ -90,14 +91,21 @@ static t_uint		is_room(char *restrict line)
 }
 
 static t_uint		read_room(t_uint state, char *restrict line,
-							t_farm *restrict farm)
+								t_farm *restrict farm)
 {
 	size_t count;
 
 	count = ft_ccwords(line, ' ');
-	if (farm->names.curlen == MAX_NODES)
-		return (ERRSTATE | TOO_MUCH);
-	if (count == 1)
+	if (count == 3 && is_room(line))
+	{
+		vect_add(&(farm->names), ft_z(farm->chars.curlen));
+		farm->start = (state & START) ? farm->chars.curlen : farm->start;
+		farm->end = (state & END) ? farm->chars.curlen : farm->end;
+		state &= ~(START | END);
+		vect_add_n(&(farm->chars), line, ft_strchr(line, ' ') - line);
+		vect_add(&(farm->chars), ft_c('\0'));
+	}
+	else if (count == 1)
 	{
 		vect_shrink(&(farm->names), 0);
 		vect_shrink(&(farm->chars), 0);
@@ -107,22 +115,13 @@ static t_uint		read_room(t_uint state, char *restrict line,
 				(state & ~ROOMS) | TUBES : (state | ERRSTATE | NO_UNIQ);
 		farm_init_connects(farm);
 	}
-	else if (count == 3 && is_room(line))
-	{
-		vect_add(&(farm->names), ft_z(farm->chars.curlen));
-		farm->start = (state & START) ? farm->chars.curlen : farm->start;
-		farm->end = (state & END) ? farm->chars.curlen : farm->end;
-		state &= ~(START | END);
-		vect_add_n(&(farm->chars), line, ft_strchr(line, ' ') - line);
-		vect_add(&(farm->chars), ft_c('\0'));
-	}
 	else
 		state |= ERRSTATE | ROOM_ERROR;
 	return (state);
 }
 
 static t_uint		read_ants(t_uint state, char *restrict line,
-							t_farm *restrict farm)
+								t_farm *restrict farm)
 {
 	if (state & (START | END) || ft_isdigit_ws(line))
 		return (state | ERRSTATE | ANTS_ERROR);
@@ -134,7 +133,7 @@ static t_uint		read_ants(t_uint state, char *restrict line,
 }
 
 static t_uint		handle_cmd(t_uint state, char *restrict line,
-							t_farm *restrict farm)
+								t_farm *restrict farm)
 {
 	if (!ft_strcmp(line, "##start"))
 		state |= (state & (START | END) || farm->start != FARM_INIT_SE_VALUES) ?
@@ -156,13 +155,14 @@ static t_uint		handle_line(char *restrict line, t_farm *restrict farm)
 	else if (state & ANTS)
 		state = read_ants(state, line, farm);
 	else if (state & ROOMS)
-		state = read_room(state, line, farm);
+		state = (farm->names.curlen == MAX_NODES) ? (ERRSTATE | TOO_MUCH) :
+				read_room(state, line, farm);
 	if (!(state & ERRSTATE) && state & TUBES)
 		state = read_tube(state, line, farm);
 	return ((state & ~NO_ERROR));
 }
 
-t_uint			read_input(t_farm *restrict farm)
+t_uint				read_input(t_farm *restrict farm)
 {
 	int		gnl_ret;
 	t_uint	ret;

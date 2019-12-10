@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 13:18:45 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 18:11:16 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void		reverse_new_way(t_graph *restrict graph)
 	t_connect *restrict	dst_to_src;
 	t_iter				iter;
 	t_full_connect		connect;
-	t_node *restrict	 ptr;
+	t_node *restrict	ptr;
 
 	cur_iter = graph->end;
 	cur_bfs_level = graph_node(graph, graph->end)->bfs_level;
@@ -49,7 +49,8 @@ static void		reverse_new_way(t_graph *restrict graph)
 	node_reverse(graph_node(graph, graph->start));
 }
 
-void	add_nodes(t_uint item, t_graph *restrict graph, t_deq *restrict marked)
+void			add_nodes(t_uint item, t_graph *restrict graph,
+							t_deq *restrict marked)
 {
 	t_iter					iter;
 	t_connect *restrict		connect;
@@ -78,7 +79,6 @@ static int		find_new_way(t_graph *restrict graph)
 	deq_push_back(&marked, &(graph->start));
 	graph_node(graph, graph->start)->marked = 1; //TODO: optimise
 	graph_node(graph, graph->start)->bfs_level = 0;
-
 	while (marked.curlen)
 	{
 		add_nodes(*(t_uint *)deq_pop_front(&marked), graph, &marked);
@@ -94,7 +94,7 @@ static int		find_new_way(t_graph *restrict graph)
 }
 
 static void		find_way(t_vect *restrict way, t_uint first_node,
-				t_graph *restrict graph)
+							t_graph *restrict graph)
 {
 	t_iter				iter[1];
 	t_connect *restrict	tmp;
@@ -107,8 +107,6 @@ static void		find_way(t_vect *restrict way, t_uint first_node,
 		vect_add(way, ft_z(tmp->dst));
 		iter_init(iter, graph->nodes[tmp->dst], ITER_FORBIDDEN);
 	}
-	//TODO: if pop end node, way len will be wrong
-	// vect_pop(way);
 }
 
 static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
@@ -127,6 +125,7 @@ static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
 		way.curlen = 0;
 		find_way(&way, tmp->dst, graph);
 		res->ways[i].len = way.curlen;
+		//TODO: init
 		res->ways[i].nodes = ft_malloc(sizeof(t_uint) * way.curlen);
 		ft_memcpy(res->ways[i].nodes, way.mem, sizeof(t_uint) * way.curlen);
 		i++;
@@ -135,7 +134,7 @@ static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
 }
 
 int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
-					long long ants)
+						long long ants)
 {
 	t_uint		k;
 	long long	min_moves;
@@ -160,25 +159,3 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 	}
 	return (0);
 }
-
-		// output nodes state after each new way
-		// t_iter iter;
-		// t_connect *tmp2;
-		// for (t_uint j = 0; j < graph->size; j++)
-		// {
-		// 	ft_printf("%lu\t%lu\t", j, graph->nodes[j]->count_connects);
-		// 	iter_init(&iter, graph->nodes[j], ITER_ALL);
-		// 	while ((tmp2 = iter_next(&iter)))
-		// 	{
-		// 		ft_printf(" %lu", tmp2->dst);
-		// 		if (tmp2->state == CONNECT_BASE_STATE)
-		// 		ft_printf("+");
-		// 		if (tmp2->state == CONNECT_FORBIDDEN)
-		// 		ft_printf("x");
-		// 		if (tmp2->state == CONNECT_NEGATIVE)
-		// 		ft_printf("-");
-		// 	}
-		// 	ft_printf("\n");
-		// }
-		// ft_printf("\n");
-		// ft_force_buff();

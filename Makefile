@@ -6,12 +6,13 @@
 #    By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/19 15:35:23 by mtrisha           #+#    #+#              #
-#    Updated: 2019/12/10 15:17:19 by mtrisha          ###   ########.fr        #
+#    Updated: 2019/12/10 17:32:05 by mtrisha          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
-SOURCES = main.c farm.c lemin.c read_input.c solve.c print_way_ants.c
+SOURCES = main.c farm.c lemin.c read_input.c solve.c print_way_ants.c \
+	input_errors.c
 
 CC = gcc
 CFLAGS = -Wall -Wextra #-Werror
