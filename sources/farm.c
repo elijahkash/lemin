@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 21:56:30 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 11:26:41 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,8 +312,8 @@ inline t_connect		*iter_next(t_iter *restrict iter)
 void					farm_init(t_farm *restrict farm)
 {
 	farm->ants = 0;
-	farm->start = 0 - 1;
-	farm->end = 0 - 1;
+	farm->start = FARM_INIT_SE_VALUES;
+	farm->end = FARM_INIT_SE_VALUES;
 	farm->connects.mem = NULL;
 	farm->chars.mem = NULL;
 	farm->graph.mem = NULL;

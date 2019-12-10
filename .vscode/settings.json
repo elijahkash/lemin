@@ -19,6 +19,7 @@
 		"input_errors.h": "c",
 		"memory": "c",
 		"utility": "c",
-		"lemin.h": "c"
+		"lemin.h": "c",
+		"read_input.h": "c"
 	}
 }

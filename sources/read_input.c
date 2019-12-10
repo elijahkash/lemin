@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 20:42:12 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 11:27:05 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <libft.h>
 #include <input_errors.h>
 
-static int		read_tube(int state, char *restrict line,
+static t_uint		read_tube(t_uint state, char *restrict line,
 							t_farm *restrict farm)
 {
 	size_t	count;
@@ -42,7 +42,7 @@ static int		read_tube(int state, char *restrict line,
 	return (state);
 }
 
-static int		is_uniq_names(t_vect *restrict names)
+static t_uint		is_uniq_names(t_vect *restrict names)
 {
 	size_t	i;
 	size_t	is_error;
@@ -60,7 +60,7 @@ static int		is_uniq_names(t_vect *restrict names)
 	return (is_error ? 0 : 1);
 }
 
-static void		form_rooms(t_farm *restrict farm)
+static void			form_rooms(t_farm *restrict farm)
 {
 	size_t	i;
 	char	*ptr;
@@ -74,7 +74,7 @@ static void		form_rooms(t_farm *restrict farm)
 	}
 }
 
-static int		is_room(char *restrict line)
+static t_uint		is_room(char *restrict line)
 {
 	char *tmp;
 
@@ -89,7 +89,7 @@ static int		is_room(char *restrict line)
 	return (*line ? 0 : 1);
 }
 
-static int		read_room(int state, char *restrict line,
+static t_uint		read_room(t_uint state, char *restrict line,
 							t_farm *restrict farm)
 {
 	size_t count;
@@ -121,7 +121,7 @@ static int		read_room(int state, char *restrict line,
 	return (state);
 }
 
-static int		read_ants(int state, char *restrict line,
+static t_uint		read_ants(t_uint state, char *restrict line,
 							t_farm *restrict farm)
 {
 	if (state & (START | END) || ft_isdigit_ws(line))
@@ -133,21 +133,21 @@ static int		read_ants(int state, char *restrict line,
 	return (state);
 }
 
-static int		handle_cmd(int state, char *restrict line,
+static t_uint		handle_cmd(t_uint state, char *restrict line,
 							t_farm *restrict farm)
 {
 	if (!ft_strcmp(line, "##start"))
-		state |= (state & (START | END) || farm->start != (size_t)(0 - 1)) ?
+		state |= (state & (START | END) || farm->start != FARM_INIT_SE_VALUES) ?
 					(ERRSTATE | WRONG_CMD) : START;
 	else if (!ft_strcmp(line, "##end"))
-		state |= (state & (START | END) || farm->end != (size_t)(0 - 1)) ?
+		state |= (state & (START | END) || farm->end != FARM_INIT_SE_VALUES) ?
 					(ERRSTATE | WRONG_CMD) : END;
 	return (state);
 }
 
-static int		handle_line(char *restrict line, t_farm *restrict farm)
+static t_uint		handle_line(char *restrict line, t_farm *restrict farm)
 {
-	static int state = ANTS;
+	static t_uint state = ANTS;
 
 	if (!ft_strncmp(line, "##", 2))
 		state = handle_cmd(state, line, farm);
@@ -162,14 +162,15 @@ static int		handle_line(char *restrict line, t_farm *restrict farm)
 	return ((state & ~NO_ERROR));
 }
 
-int			read_input(t_farm *restrict farm)
+t_uint			read_input(t_farm *restrict farm)
 {
-	int		ret;
+	int		gnl_ret;
+	t_uint	ret;
 	char	*line;
 
-	while ((ret = ft_get_next_line(0, &line)))
+	while ((gnl_ret = ft_get_next_line(0, &line)))
 	{
-		if (ret < 0 || !line)
+		if (gnl_ret < 0 || !line)
 		{
 			ft_memdel((void **)&line);
 			return (GNL_ERROR);

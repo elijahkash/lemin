@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 22:17:43 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 11:51:20 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,48 +16,55 @@
 #include <read_input.h>
 #include <input_errors.h>
 #include <solve.h>
-#include <string.h>
 
-void	print_input_error(int ret, t_farm *farm)
+static const t_err	g_errlist[] =
 {
-	const char	*err_str = "unknown error";
-	int 		i;
+	{ERRSTATE, "unknown error\n"},
+	{NO_POSSIBLE_WAY, "There's no way between start and end!\n"},
+	{NO_START_END, "There's no start/end room!\n"},
+	{NO_TUBES, "There's no tubes!\n"},
+	{NO_ROOMS, "There's no rooms!\n"},
+	{NO_ANTS, "There's no ants!\n"},
+	{SAME_WAYS, "Found several identical tubes.\n"},
+	{TUBE_ERROR, "Wrong tube definition.\n"},
+	{NO_UNIQ, "Found several rooms with identical names.\n"},
+	{TOO_MUCH, "Too much input rooms.\n"},
+	{ROOM_ERROR, "Wrong room definition.\n"},
+	{ANTS_ERROR, "Wrong ants definition.\n"},
+	{WRONG_CMD, "Wrong command lines.\n"},
+	{GNL_ERROR, "Reading input stream return error.\n"}
+};
 
-	if (!ret)
-	{
-		if (farm->ants == 0)
-			ret = NO_ANTS;
-		else if (farm->names.curlen == 0)
-			ret = NO_ROOMS;
-		else if (farm->connects.curlen == 0)
-			ret = NO_TUBES;
-		else if (farm->start == (size_t)(0 - 1) || farm->end == (size_t)(0 - 1))
-			ret = NO_START_END;
-	}
-	i = 0;
-	while (i < (sizeof(g_errlist) / sizeof(t_err)))
-	{
-		if (g_errlist[i].error_code == ret)
+void				print_input_error(t_uint ret)
+{
+	const char	*err_str;
+	t_uint 		i;
+
+	i = (sizeof(g_errlist) / sizeof(t_err));
+	while (i-- > 0 )
+		if (g_errlist[i].error_code | ret)
 		{
 			err_str = g_errlist[i].error_string;
 			break ;
 		}
-		++i;
-	}
-	printf("ERROR: %s\n", err_str);
+	ft_printf("ERROR: \"%s\"\n", err_str);
 }
 
-int		detect_errors(int ret, t_farm *farm)
+int					detect_errors(t_uint ret, t_farm *farm)
 {
-	if (ret || farm->ants == 0 || farm->names.curlen == 0 ||
-		farm->start == (size_t)(0 - 1) || farm->end == (size_t)(0 - 1) ||
-		farm->connects.curlen == 0)
-		return (1);
-	else
-		return (0);
+	if (farm->ants == 0)
+		ret |= NO_ANTS;
+	else if (farm->names.curlen == 0)
+		ret |= NO_ROOMS;
+	else if (farm->connects.curlen == 0)
+		ret |= NO_TUBES;
+	else if (farm->start == FARM_INIT_SE_VALUES ||
+				farm->end == FARM_INIT_SE_VALUES)
+		ret |= NO_START_END;
+	return (ret);
 }
 
-void	lemin(void)
+void				lemin(void)
 {
 	t_farm		farm[1];
 	int			ret;
@@ -68,9 +75,10 @@ void	lemin(void)
 	ft_force_buff();
 	if (farm->connects.mem)
 		vect_shrink(&(farm->connects), 0);
-	if (detect_errors(ret, farm) || (ret |= graph_init(&(farm->graph), farm)))
+	if ((ret |= detect_errors(ret, farm)) ||
+		(ret |= graph_init(&(farm->graph), farm)))
 	{
-		print_input_error(ret, farm);
+		print_input_error(ret);
 		farm_del(farm);
 		return ;
 	}
@@ -99,7 +107,7 @@ void	lemin(void)
 	if (result.count)
 		print_result(&result, farm->ants);
 	else
-		ft_printf("There's no way between start and end!\n");
+		print_input_error(NO_POSSIBLE_WAY);
 
 
 	// ft_printf("ways = %d\n", result.count);

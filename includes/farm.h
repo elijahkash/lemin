@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 22:17:48 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 11:26:18 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,8 @@ typedef struct		s_farm
 	size_t			start;
 	size_t			end;
 }					t_farm;
+
+# define FARM_INIT_SE_VALUES			((size_t)(0 - 1))
 
 # define FARM_INIT_ROOM_COUNT			1024
 # define FARM_INIT_CHARS_PER_ROOM		8
