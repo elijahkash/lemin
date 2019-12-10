@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 13:44:32 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 16:40:55 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,22 +108,22 @@ void				lemin(void)
 	// ft_force_buff();
 
 	// output result
-	// ft_printf("ways = %d\n", result.count);
+	// ft_printf("ways = %lu\nmoves = %lu\n", combs->count, combs->moves);
 	// t_darr	test;
 	// darr_init(&test, 4, 256);
-	// for (t_uint j = 0; j < result.count; j++)
+	// for (t_uint j = 0; j < combs->count; j++)
 	// {
-	// 	ft_printf("len = %d\t", result.ways[j].len);
-	// 	for(t_uint i = 0; i < result.ways[j].len; i++)
+	// 	ft_printf("len = %lu\tants = %lld\t[%s]", combs->ways[j].len, combs->ways[j].ants, *(char **)vect(&(farm->names), farm->graph.start));
+	// 	for(t_uint i = 0; i < combs->ways[j].len; i++)
 	// 	{
-	// 		ft_printf(" %s", *(char **)vect(&(farm->names), result.ways[j].nodes[i]));
-	// 		if (result.ways[j].nodes[i] != farm->graph.end)
+	// 		ft_printf("->[%s]", *(char **)vect(&(farm->names), combs->ways[j].nodes[i]));
+	// 		if (combs->ways[j].nodes[i] != farm->graph.end)
 	// 		{
 	// 			for(int k = 0; k < (int)darr_l(test); k++)
-	// 				if (result.ways[j].nodes[i] == *(t_uint *)darr(test, k))
+	// 				if (combs->ways[j].nodes[i] == *(t_uint *)darr(test, k))
 	// 					ft_printf("*");
 	// 		}
-	// 		darr_add(test, &(result.ways[j].nodes[i]));
+	// 		darr_add(test, &(combs->ways[j].nodes[i]));
 	// 	}
 	// 	ft_printf("\n");
 	// }
