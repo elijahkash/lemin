@@ -20,6 +20,7 @@
 		"memory": "c",
 		"utility": "c",
 		"lemin.h": "c",
-		"read_input.h": "c"
+		"read_input.h": "c",
+		"ft_memory_manager.h": "c"
 	}
 }

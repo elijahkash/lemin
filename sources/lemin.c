@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 11:56:50 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 12:36:23 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,12 @@ int					detect_errors(t_uint ret, t_farm *farm)
 void				lemin(void)
 {
 	t_farm		farm[1];
-	int			ret;
+	t_uint		ret;
 	t_enum_ways	result;
 
 	farm_init(farm);
 	ret = read_input(farm);
 	ft_force_buff();
-	if (farm->connects.mem)
-		vect_shrink(&(farm->connects), 0);
 	if ((ret |= detect_errors(ret, farm)) ||
 		(ret |= graph_init(&(farm->graph), farm)))
 	{
@@ -82,8 +80,18 @@ void				lemin(void)
 		farm_del(farm);
 		return ;
 	}
+	farm_del_connects(farm);
+	ft_bzero(&result, sizeof(t_enum_ways));
+	solve(&result, &(farm->graph), farm->ants);
+	graph_del(&(farm->graph));
+	result.count ? print_result(&result, farm->ants) :
+					print_input_error(NO_POSSIBLE_WAY);
+	enum_ways_del(&result);
+	farm_del(farm);
+	return ;
+}
 
-
+	// list of nodes + connects (after reading input)
 	// t_iter iter;
 	// t_connect *tmp;
 	// for (t_uint j = 0; j < farm->graph.size; j++)
@@ -97,29 +105,18 @@ void				lemin(void)
 	// 	ft_printf("\n");
 	// }
 	// ft_printf("\n");
-
 	// ft_force_buff();
 
-	farm_del_connects(farm);
-	ft_bzero(&result, sizeof(t_enum_ways));
-	solve(&result, &(farm->graph), farm->ants);
-	graph_del(&(farm->graph));
-	if (result.count)
-		print_result(&result, farm->ants);
-	else
-		print_input_error(NO_POSSIBLE_WAY);
-
-
+	// output result
 	// ft_printf("ways = %d\n", result.count);
 	// t_darr	test;
-
 	// darr_init(&test, 4, 256);
 	// for (t_uint j = 0; j < result.count; j++)
 	// {
 	// 	ft_printf("len = %d\t", result.ways[j].len);
 	// 	for(t_uint i = 0; i < result.ways[j].len; i++)
 	// 	{
-	// 		ft_printf(" %s", vect(&(farm->names), result.ways[j].nodes[i]));
+	// 		ft_printf(" %s", *(char **)vect(&(farm->names), result.ways[j].nodes[i]));
 	// 		if (result.ways[j].nodes[i] != farm->graph.end)
 	// 		{
 	// 			for(int k = 0; k < (int)darr_l(test); k++)
@@ -131,8 +128,3 @@ void				lemin(void)
 	// 	ft_printf("\n");
 	// }
 	// ft_printf("\n");
-
-	enum_ways_del(&result);
-	farm_del(farm);
-	return ;
-}

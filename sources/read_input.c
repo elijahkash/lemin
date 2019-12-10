@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 11:27:05 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 12:35:53 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,5 +182,7 @@ t_uint			read_input(t_farm *restrict farm)
 			return (ret);
 	}
 	ft_free(line);
+	if (farm->connects.mem)
+		vect_shrink(&(farm->connects), 0);
 	return (0);
 }

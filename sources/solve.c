@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/09 22:15:04 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 12:28:41 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ static void		find_way(t_vect *restrict way, t_uint first_node,
 		vect_add(way, ft_z(tmp->dst));
 		iter_init(iter, graph->nodes[tmp->dst], ITER_FORBIDDEN);
 	}
+	//TODO: if pop end node, way len will be wrong
+	// vect_pop(way);
 }
 
 static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
@@ -142,30 +144,6 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 	min_moves = 0;
 	while (find_new_way(graph))
 	{
-
-
-		t_iter iter;
-		t_connect *tmp2;
-		for (t_uint j = 0; j < graph->size; j++)
-		{
-			ft_printf("%lu\t%lu\t", j, graph->nodes[j]->count_connects);
-			iter_init(&iter, graph->nodes[j], ITER_ALL);
-			while ((tmp2 = iter_next(&iter)))
-			{
-				ft_printf(" %lu", tmp2->dst);
-				if (tmp2->state == CONNECT_BASE_STATE)
-				ft_printf("+");
-				if (tmp2->state == CONNECT_FORBIDDEN)
-				ft_printf("x");
-				if (tmp2->state == CONNECT_NEGATIVE)
-				ft_printf("-");
-			}
-			ft_printf("\n");
-		}
-		ft_printf("\n");
-		ft_force_buff();
-
-
 		k++;
 		tmp.count = k;
 		find_ways(&tmp, graph);
@@ -181,3 +159,25 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 	}
 	return (0);
 }
+
+		// output nodes state after each new way
+		// t_iter iter;
+		// t_connect *tmp2;
+		// for (t_uint j = 0; j < graph->size; j++)
+		// {
+		// 	ft_printf("%lu\t%lu\t", j, graph->nodes[j]->count_connects);
+		// 	iter_init(&iter, graph->nodes[j], ITER_ALL);
+		// 	while ((tmp2 = iter_next(&iter)))
+		// 	{
+		// 		ft_printf(" %lu", tmp2->dst);
+		// 		if (tmp2->state == CONNECT_BASE_STATE)
+		// 		ft_printf("+");
+		// 		if (tmp2->state == CONNECT_FORBIDDEN)
+		// 		ft_printf("x");
+		// 		if (tmp2->state == CONNECT_NEGATIVE)
+		// 		ft_printf("-");
+		// 	}
+		// 	ft_printf("\n");
+		// }
+		// ft_printf("\n");
+		// ft_force_buff();
