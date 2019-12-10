@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 17:27:59 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 17:33:03 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 17:47:19 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static const t_err	g_errlist[] =
 void				print_input_error(__uint32_t error)
 {
 	const char		*err_str;
-	__uint32_t 		i;
+	__uint32_t		i;
 
 	i = (sizeof(g_errlist) / sizeof(t_err));
-	while (i-- > 0 )
+	while (i-- > 0)
 		if (g_errlist[i].error_code & error)
 		{
 			err_str = g_errlist[i].error_string;

@@ -1,0 +1,59 @@
+	// list of nodes + connects (after reading input)
+	// t_iter iter;
+	// t_connect *tmp;
+	// for (t_uint j = 0; j < farm->graph.size; j++)
+	// {
+	// 	ft_printf("%s\t%lu\t", *(char **)vect(&(farm->names), j), farm->graph.nodes[j]->count_connects);
+	// 	iter_init(&iter, farm->graph.nodes[j], ITER_ALL);
+	// 	while ((tmp = iter_next(&iter)))
+	// 	{
+	// 		ft_printf("%s ", *(char **)vect(&(farm->names), tmp->dst));
+	// 	}
+	// 	ft_printf("\n");
+	// }
+	// ft_printf("\n");
+	// ft_force_buff();
+
+	// output result (in print_result)
+	// ft_printf("ways = %lu\nmoves = %lu\n", combs->count, combs->moves);
+	// t_darr	test;
+	// darr_init(&test, 4, 256);
+	// for (t_uint j = 0; j < combs->count; j++)
+	// {
+	// 	ft_printf("len = %lu\tants = %lld\t[%s]", combs->ways[j].len, combs->ways[j].ants, *(char **)vect(&(farm->names), farm->graph.start));
+	// 	for(t_uint i = 0; i < combs->ways[j].len; i++)
+	// 	{
+	// 		ft_printf("->[%s]", *(char **)vect(&(farm->names), combs->ways[j].nodes[i]));
+	// 		if (combs->ways[j].nodes[i] != farm->graph.end)
+	// 		{
+	// 			for(int k = 0; k < (int)darr_l(test); k++)
+	// 				if (combs->ways[j].nodes[i] == *(t_uint *)darr(test, k))
+	// 					ft_printf("*");
+	// 		}
+	// 		darr_add(test, &(combs->ways[j].nodes[i]));
+	// 	}
+	// 	ft_printf("\n");
+	// }
+	// ft_printf("\n");
+
+			// output nodes state after each new way (in solve.c)
+		// t_iter iter;
+		// t_connect *tmp2;
+		// for (t_uint j = 0; j < graph->size; j++)
+		// {
+		// 	ft_printf("%lu\t%lu\t", j, graph->nodes[j]->count_connects);
+		// 	iter_init(&iter, graph->nodes[j], ITER_ALL);
+		// 	while ((tmp2 = iter_next(&iter)))
+		// 	{
+		// 		ft_printf(" %lu", tmp2->dst);
+		// 		if (tmp2->state == CONNECT_BASE_STATE)
+		// 		ft_printf("+");
+		// 		if (tmp2->state == CONNECT_FORBIDDEN)
+		// 		ft_printf("x");
+		// 		if (tmp2->state == CONNECT_NEGATIVE)
+		// 		ft_printf("-");
+		// 	}
+		// 	ft_printf("\n");
+		// }
+		// ft_printf("\n");
+		// ft_force_buff();

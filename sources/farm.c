@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 16:23:41 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 18:13:51 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 ** =============================================================================
 */
 
-//TODO: need marked???
 void					node_reverse(t_node *restrict node)
 {
 	t_iter	iter;
@@ -36,8 +35,8 @@ void					node_reverse(t_node *restrict node)
 		node->separate = 1;
 }
 
-void				mark_node(t_node *node, t_connect *connect,
-								t_uint bfs_level)
+void					mark_node(t_node *node, t_connect *connect,
+									t_uint bfs_level)
 {
 	node->bfs_level = bfs_level;
 	node->marked = 1;
@@ -103,7 +102,8 @@ static int				count_node_connects(t_farm *restrict farm,
 }
 
 static void				graph_fill(t_graph *restrict graph,
-						t_farm *restrict farm, t_uint *restrict node_connects)
+									t_farm *restrict farm,
+									t_uint *restrict node_connects)
 {
 	t_uint	i;
 	void	*current_pos;
@@ -170,7 +170,7 @@ inline t_connect		*graph_node_connects(t_node *restrict node)
 }
 
 void					graph_add_connect(t_graph *restrict graph,
-									t_uint src, t_uint dst)
+											t_uint src, t_uint dst)
 {
 	t_node		*restrict node;
 	t_connect	*restrict con;
@@ -182,7 +182,7 @@ void					graph_add_connect(t_graph *restrict graph,
 }
 
 static t_connect		*graph_connect_find(t_connect *restrict connects,
-									t_uint count_connects, t_uint dst)
+											t_uint count_connects, t_uint dst)
 {
 	t_uint			bot;
 	t_uint			top;
@@ -207,7 +207,7 @@ static t_connect		*graph_connect_find(t_connect *restrict connects,
 }
 
 inline t_connect		*graph_connect(t_graph *restrict graph,
-									t_uint src, t_uint dst)
+										t_uint src, t_uint dst)
 {
 	t_node	*restrict node;
 
@@ -350,11 +350,12 @@ void					farm_del_rooms(t_farm *restrict farm)
 */
 
 inline int				dnbr_cmp(const void *number_1,
-										const void *number_2)
+									const void *number_2)
 {
-	return ((((t_dnbr *)number_1)->a - ((t_dnbr *)number_2)->a) ?
-			(((t_dnbr *)number_1)->a - ((t_dnbr *)number_2)->a) :
-			(((t_dnbr *)number_1)->b - ((t_dnbr *)number_2)->b));
+	int	res;
+
+	res = ((t_dnbr *)number_1)->a - ((t_dnbr *)number_2)->a;
+	return (res ? res : (((t_dnbr *)number_1)->b - ((t_dnbr *)number_2)->b));
 }
 
 /*
@@ -364,7 +365,7 @@ inline int				dnbr_cmp(const void *number_1,
 */
 
 void					way_init(t_way *restrict way, t_uint *restrict arr,
-								t_uint len)
+									t_uint len)
 {
 	way->ants = 0;
 	way->len = len;

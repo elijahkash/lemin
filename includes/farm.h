@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 13:44:36 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 17:46:19 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 /*
 **	In fact, if graph have <= 16383 node, we can use __uint16_t !!!!!
 */
-typedef __uint32_t	t_uint;
+typedef __uint32_t		t_uint;
 
 /*
 ** From here on will be assumed that our ant's farm can't consist from more than
@@ -49,17 +49,17 @@ typedef __uint32_t	t_uint;
 ** Look here for understanding 'separate' and 'marked_in/out' statements
 ** http://www.macfreek.nl/memory/Disjoint_Path_Finding
 */
-typedef struct		s_node
+typedef struct			s_node
 {
-	t_uint			count_connects : 30;
-	t_uint			marked : 1;
-	t_uint			separate : 1;
-	t_uint			marked_in : 1;
-	t_uint			marked_out : 1;
-	t_uint			bfs_level : 30;
-}					t_node;
+	t_uint				count_connects : 30;
+	t_uint				marked : 1;
+	t_uint				separate : 1;
+	t_uint				marked_in : 1;
+	t_uint				marked_out : 1;
+	t_uint				bfs_level : 30;
+}						t_node;
 
-void				node_reverse(t_node *node);
+void					node_reverse(t_node *node);
 
 /*
 ** =============================================================================
@@ -67,11 +67,11 @@ void				node_reverse(t_node *node);
 ** =============================================================================
 */
 
-typedef struct		s_connect
+typedef struct			s_connect
 {
-	t_uint			dst : 30;
-	t_uint			state : 2;
-}					t_connect;
+	t_uint				dst : 30;
+	t_uint				state : 2;
+}						t_connect;
 
 /*
 ** Since we can't delete connections (they can be reversed more then 1 times),
@@ -94,13 +94,13 @@ typedef struct		s_connect
 ** So directions the same: from end to start!
 ** It mean's, that src_to_dst will become NEGATIVE and dst_to_src FORBIDDEN !
 */
-typedef struct		s_full_connect
+typedef struct			s_full_connect
 {
-	t_connect *restrict		src_to_dst;
-	t_connect *restrict		dst_to_src;
-}					t_full_connect;
+	t_connect *restrict	src_to_dst;
+	t_connect *restrict	dst_to_src;
+}						t_full_connect;
 
-void				full_connect_reverse(t_full_connect connect);
+void					full_connect_reverse(t_full_connect connect);
 
 /*
 ** =============================================================================
@@ -139,7 +139,7 @@ void				full_connect_reverse(t_full_connect connect);
 **  * access operation (find ptr) to connect		O(log(C))
 **  * get next connect (find ptr) for node			O(1)
 */
-typedef struct		s_graph
+typedef struct			s_graph
 {
 	t_node **restrict	nodes;
 	void *restrict		mem;
@@ -148,19 +148,20 @@ typedef struct		s_graph
 	t_uint				end;
 }						t_graph;
 
-void				graph_del(t_graph *graph);
+void					graph_del(t_graph *graph);
 
 /*
 ** Extremely important!!!
 ** add nodes STRICTLY in sorted order !
 */
-void				graph_add_connect(t_graph *graph, t_uint src, t_uint dst);
-t_node				*graph_node(t_graph *graph, t_uint index);
-t_connect			*graph_connect(t_graph *graph, t_uint src, t_uint dst);
-t_connect			*graph_node_connects(t_node *node);
-void				graph_clear_state(t_graph *graph);
-void				mark_node(t_node *node, t_connect *connect,
-								t_uint bfs_level);
+void					graph_add_connect(t_graph *graph, t_uint src,
+											t_uint dst);
+t_node					*graph_node(t_graph *graph, t_uint index);
+t_connect				*graph_connect(t_graph *graph, t_uint src, t_uint dst);
+t_connect				*graph_node_connects(t_node *node);
+void					graph_clear_state(t_graph *graph);
+void					mark_node(t_node *node, t_connect *connect,
+									t_uint bfs_level);
 
 /*
 ** =============================================================================
@@ -175,16 +176,16 @@ void				mark_node(t_node *node, t_connect *connect,
 **
 ** t_uint func - index of the necessary iteration function int array func ptrs
 */
-typedef struct		s_graph_iterator
+typedef struct			s_graph_iterator
 {
-	t_connect *restrict		connects;
-	t_uint					i;
-	t_uint					count_connects;
-	t_uint					func;
-}					t_iter;
+	t_connect *restrict	connects;
+	t_uint				i;
+	t_uint				count_connects;
+	t_uint				func;
+}						t_iter;
 
-void				iter_init(t_iter *iter, t_node *node, t_uint type);
-t_connect			*iter_next(t_iter *iter);
+void					iter_init(t_iter *iter, t_node *node, t_uint type);
+t_connect				*iter_next(t_iter *iter);
 
 /*
 ** This is traverse type for t_iter.type
@@ -247,16 +248,16 @@ t_connect			*iter_next(t_iter *iter);
 **
 ** start/end stored positions of start end end in 'chars'
 */
-typedef struct		s_farm
+typedef struct			s_farm
 {
-	long long		ants;
-	t_vect			chars;
-	t_vect			names;
-	t_vect			connects;
-	t_graph			graph;
-	size_t			start;
-	size_t			end;
-}					t_farm;
+	long long			ants;
+	t_vect				chars;
+	t_vect				names;
+	t_vect				connects;
+	t_graph				graph;
+	size_t				start;
+	size_t				end;
+}						t_farm;
 
 # define FARM_INIT_SE_VALUES			((size_t)(0 - 1))
 
@@ -265,18 +266,18 @@ typedef struct		s_farm
 # define FARM_INIT_CHARS_COUNT (FARM_INIT_ROOM_COUNT * FARM_INIT_CHARS_PER_ROOM)
 # define FARM_INIT_CONNECTS_PER_ROOM	2.5
 
-void				farm_init(t_farm *restrict farm);
-void				farm_del(t_farm *restrict farm);
-void				farm_init_rooms(t_farm *farm);
-void				farm_init_connects(t_farm *farm);
-void				farm_del_connects(t_farm *farm);
-void				farm_del_rooms(t_farm *farm);
+void					farm_init(t_farm *restrict farm);
+void					farm_del(t_farm *restrict farm);
+void					farm_init_rooms(t_farm *farm);
+void					farm_init_connects(t_farm *farm);
+void					farm_del_connects(t_farm *farm);
+void					farm_del_rooms(t_farm *farm);
 
 /*
 ** For fast, check on same connection here.
 ** return (1) if find; return (0) otherwise
 */
-int					graph_init(t_graph *graph, t_farm *farm);
+int						graph_init(t_graph *graph, t_farm *farm);
 
 /*
 ** =============================================================================
@@ -287,13 +288,13 @@ int					graph_init(t_graph *graph, t_farm *farm);
 /*
 ** Used for stored input data (connections) in farm.connects
 */
-typedef struct		s_double_number
+typedef struct			s_double_number
 {
-	t_uint			a;
-	t_uint			b;
-}					t_dnbr;
+	t_uint				a;
+	t_uint				b;
+}						t_dnbr;
 
-int					dnbr_cmp(const void *number_1, const void *number_2);
+int						dnbr_cmp(const void *number_1, const void *number_2);
 
 /*
 ** =============================================================================
@@ -304,16 +305,16 @@ int					dnbr_cmp(const void *number_1, const void *number_2);
 /*
 **	ants - this is the number of ants that will go this way.
 */
-typedef struct		s_way
+typedef struct			s_way
 {
 	t_uint *restrict	nodes;
 	t_uint				len;
 	long long			ants;
-}					t_way;
+}						t_way;
 
-void				way_init(t_way *way, t_uint *arr, t_uint len);
-void				way_del(t_way way);
-int					comp_way_by_len(const void *way1, const void *way2);
+void					way_init(t_way *way, t_uint *arr, t_uint len);
+void					way_del(t_way way);
+int						comp_way_by_len(const void *way1, const void *way2);
 
 /*
 ** =============================================================================
@@ -321,21 +322,21 @@ int					comp_way_by_len(const void *way1, const void *way2);
 ** =============================================================================
 */
 
-typedef struct		s_enum_ways
+typedef struct			s_enum_ways
 {
-	t_way *restrict	ways;
-	t_uint			count;
-	long long		moves;
-}					t_enum_ways;
+	t_way *restrict		ways;
+	t_uint				count;
+	long long			moves;
+}						t_enum_ways;
 
-void				enum_ways_init(t_enum_ways *combs, t_uint count);
-void				enum_ways_del(t_enum_ways *combs);
-//TODO: hmathew: need optimise + norminnet! now extrimely slow
-// for main idea look here (in bottom):
-// https://github.com/VBrazhnik/Lem_in/wiki/Algorithm
-long long			count_moves(t_enum_ways *combs, long long ants);
+void					enum_ways_init(t_enum_ways *combs, t_uint count);
+void					enum_ways_del(t_enum_ways *combs);
+/*
+** for main idea look here (in bottom):
+** https://github.com/VBrazhnik/Lem_in/wiki/Algorithm
+*/
+long long				count_moves(t_enum_ways *combs, long long ants);
 
-//TODO: hmathew: write this!
-void				print_result(t_enum_ways *combs, t_farm *farm);
+void					print_result(t_enum_ways *combs, t_farm *farm);
 
 #endif
