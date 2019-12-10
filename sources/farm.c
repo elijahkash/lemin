@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   farm.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 13:44:24 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 14:00:38 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -437,10 +437,4 @@ long long				count_moves(t_enum_ways *restrict combs, long long ants)
 	}
 	combs->moves = combs->ways[0].ants + combs->ways[0].len - 1;
 	return (combs->moves);
-}
-
-void					print_result(t_enum_ways *restrict combs,
-										t_farm *restrict farm)
-{
-	return ;
 }
