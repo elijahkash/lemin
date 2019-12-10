@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 12:36:23 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 13:44:32 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void				lemin(void)
 	ft_bzero(&result, sizeof(t_enum_ways));
 	solve(&result, &(farm->graph), farm->ants);
 	graph_del(&(farm->graph));
-	result.count ? print_result(&result, farm->ants) :
+	result.count ? print_result(&result, farm) :
 					print_input_error(NO_POSSIBLE_WAY);
 	enum_ways_del(&result);
 	farm_del(farm);

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 13:17:06 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 13:44:24 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -439,7 +439,8 @@ long long				count_moves(t_enum_ways *restrict combs, long long ants)
 	return (combs->moves);
 }
 
-void					print_result(t_enum_ways *combs, long long ants)
+void					print_result(t_enum_ways *restrict combs,
+										t_farm *restrict farm)
 {
 	return ;
 }

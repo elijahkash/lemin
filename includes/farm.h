@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 13:38:49 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 13:44:36 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,6 +336,6 @@ void				enum_ways_del(t_enum_ways *combs);
 long long			count_moves(t_enum_ways *combs, long long ants);
 
 //TODO: hmathew: write this!
-void				print_result(t_enum_ways *combs, long long ants);
+void				print_result(t_enum_ways *combs, t_farm *farm);
 
 #endif
