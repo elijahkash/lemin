@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   farm.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 14:00:38 by hmathew          ###   ########.fr       */
+/*   Updated: 2019/12/10 16:23:41 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,6 +409,7 @@ void					enum_ways_del(t_enum_ways *restrict combs)
 long long				count_moves(t_enum_ways *restrict combs, long long ants)
 {
 	long long	k = 0;
+	long long	tmp = 0;
 	t_uint		way;
 	t_uint		border[combs->count];
 
@@ -427,10 +428,12 @@ long long				count_moves(t_enum_ways *restrict combs, long long ants)
 	}
 	while (way > 0)
 	{
-		if (ants > border[way - 1])
+		if (ants - (way - 1) > border[way - 1])
 		{
-			k++;
-			ants -= way;
+			tmp = (ants - (way - 1) - border[way - 1]) / way;
+			tmp += (tmp) ? 0 : 1;
+			k += tmp;
+			ants -= (way * tmp);
 		}
 		else
 			combs->ways[--way].ants = k;
