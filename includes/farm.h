@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 12:50:06 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 13:38:49 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 # include <libft.h>
 
-//TODO: restrict inline macros
+/*
+** TODO: restrict inline macros
+*/
 
 /*
 **	In fact, if graph have <= 16383 node, we can use __uint16_t !!!!!
