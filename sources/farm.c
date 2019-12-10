@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 11:26:41 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 13:17:06 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,16 @@ void					node_reverse(t_node *restrict node)
 	{
 		iter_init(&iter, node, ITER_NEGATIVE);
 		if (iter_next(&iter) == NULL)
-		{
 			node->separate = 0;
-			// node->marked = 1;
-			// node->marked_in = 0;
-			// node->marked_out = 0;
-		}
 	}
 	else
-	{
-		//TODO: check on start???
-		// node->marked_out = 1;
 		node->separate = 1;
-	}
 }
 
 void				mark_node(t_node *node, t_connect *connect,
 								t_uint bfs_level)
 {
-	node->bfs_level = bfs_level + 1;
+	node->bfs_level = bfs_level;
 	node->marked = 1;
 	if (node->separate)
 	{

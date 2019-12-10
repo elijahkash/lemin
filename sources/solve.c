@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 12:28:41 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 13:18:45 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 #include <farm.h>
 #include <libft.h>
 
-static void		reverse_new_way(t_graph *graph)
+static void		reverse_new_way(t_graph *restrict graph)
 {
-	t_uint			cur_iter;
-	t_uint			cur_bfs_level;
-	t_connect		*src_to_dst;
-	t_connect		*dst_to_src;
-	t_iter			iter;
-	t_full_connect	connect;
-	t_node			*ptr;
+	t_uint				cur_iter;
+	t_uint				cur_bfs_level;
+	t_connect *restrict	src_to_dst;
+	t_connect *restrict	dst_to_src;
+	t_iter				iter;
+	t_full_connect		connect;
+	t_node *restrict	 ptr;
 
 	cur_iter = graph->end;
 	cur_bfs_level = graph_node(graph, graph->end)->bfs_level;
@@ -37,25 +37,26 @@ static void		reverse_new_way(t_graph *graph)
 			if (ptr->bfs_level == cur_bfs_level &&
 				(dst_to_src->state != CONNECT_FORBIDDEN) &&
 				(ptr->separate == 0 || ptr->marked_out ||
-				(ptr->marked_in && dst_to_src->state == CONNECT_NEGATIVE)))
+				dst_to_src->state == CONNECT_NEGATIVE))
 				break ;
 		}
 		connect.dst_to_src = dst_to_src;
 		connect.src_to_dst = src_to_dst;
 		cur_iter = connect.src_to_dst->dst;
 		full_connect_reverse(connect);
-		//TODO: check on start here?
-		if (cur_iter != graph->start)
-			node_reverse(graph_node(graph, cur_iter));
+		node_reverse(graph_node(graph, cur_iter));
 	}
+	node_reverse(graph_node(graph, graph->start));
 }
 
-void	add_nodes(t_uint item, t_graph *graph, t_deq *marked)
+void	add_nodes(t_uint item, t_graph *restrict graph, t_deq *restrict marked)
 {
-	t_iter			iter;
-	t_connect		*connect;
-	t_node			*node;
+	t_iter					iter;
+	t_connect *restrict		connect;
+	t_node *restrict		node;
+	t_uint					bfs_level;
 
+	bfs_level = graph_node(graph, item)->bfs_level + 1;
 	iter_init(&iter, graph->nodes[item], ITER_BY_NODE);
 	while ((connect = iter_next(&iter)))
 	{
@@ -63,12 +64,12 @@ void	add_nodes(t_uint item, t_graph *graph, t_deq *marked)
 		if (node->marked == 0)
 		{
 			deq_push_back(marked, ft_z(connect->dst));
-			mark_node(node, connect, graph_node(graph, item)->bfs_level);
+			mark_node(node, connect, bfs_level);
 		}
 	}
 }
 
-static int		find_new_way(t_graph *graph)
+static int		find_new_way(t_graph *restrict graph)
 {
 	t_deq	marked;
 	int		res;
