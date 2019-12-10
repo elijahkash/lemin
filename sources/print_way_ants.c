@@ -6,13 +6,27 @@
 /*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:01:41 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/10 14:47:31 by hmathew          ###   ########.fr       */
+/*   Updated: 2019/12/10 17:03:23 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "farm.h"
 #include "libft.h"
 #include "print_way_ants.h"
+
+t_print_room	*create_print_rooms(t_enum_ways *restrict combs, t_farm *restrict farm)
+{
+	t_way *ways;
+
+
+}
+
+t_print_way	*create_print_ways(t_enum_ways *restrict combs, t_farm *restrict farm)
+{
+	t_way *ways;
+
+
+}
 
 void	print_result(t_enum_ways *restrict combs, t_farm *restrict farm)
 {
