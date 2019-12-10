@@ -3,18 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+         #
+#    By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/19 15:35:23 by mtrisha           #+#    #+#              #
-#    Updated: 2019/12/10 14:02:47 by hmathew          ###   ########.fr        #
+#    Updated: 2019/12/10 15:17:19 by mtrisha          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
 SOURCES = main.c farm.c lemin.c read_input.c solve.c print_way_ants.c
-	# old_lemin.c old_farm.c old_handle_input.c \
-	# old_prepare_work_graph.c old_solve.c \
-
 
 CC = gcc
 CFLAGS = -Wall -Wextra #-Werror
