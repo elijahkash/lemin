@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 12:35:53 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 12:42:58 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,8 @@ t_uint			read_input(t_farm *restrict farm)
 			return (GNL_ERROR);
 		}
 		ret = handle_line(line, farm);
-		ft_printf("%s\n", line);
+		ft_buf_add(FD_STDOUT, line, ft_strlen(line));
+		ft_buf_add(FD_STDOUT, "\n", 1);
 		ft_free(line);
 		if (ret)
 			return (ret);
