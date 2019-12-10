@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 16:40:55 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 17:33:18 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,39 +16,6 @@
 #include <read_input.h>
 #include <input_errors.h>
 #include <solve.h>
-
-static const t_err	g_errlist[] =
-{
-	{ERRSTATE, "unknown error"},
-	{NO_POSSIBLE_WAY, "There's no way between start and end!"},
-	{NO_START_END, "There's no start/end room!"},
-	{NO_TUBES, "There's no tubes!"},
-	{NO_ROOMS, "There's no rooms!"},
-	{NO_ANTS, "There's no ants!"},
-	{SAME_WAYS, "Found several identical tubes."},
-	{TUBE_ERROR, "Wrong tube definition."},
-	{NO_UNIQ, "Found several rooms with identical names."},
-	{TOO_MUCH, "Too much input rooms."},
-	{ROOM_ERROR, "Wrong room definition."},
-	{ANTS_ERROR, "Wrong ants definition."},
-	{WRONG_CMD, "Wrong command lines."},
-	{GNL_ERROR, "Reading input stream return error."}
-};
-
-void				print_input_error(t_uint ret)
-{
-	const char	*err_str;
-	t_uint 		i;
-
-	i = (sizeof(g_errlist) / sizeof(t_err));
-	while (i-- > 0 )
-		if (g_errlist[i].error_code & ret)
-		{
-			err_str = g_errlist[i].error_string;
-			break ;
-		}
-	ft_printf("ERROR: \"%s\"\n", err_str);
-}
 
 int					detect_errors(t_uint ret, t_farm *farm)
 {

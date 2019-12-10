@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 13:18:45 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 17:21:42 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
 		way.curlen = 0;
 		find_way(&way, tmp->dst, graph);
 		res->ways[i].len = way.curlen;
+		//TODO: init
 		res->ways[i].nodes = ft_malloc(sizeof(t_uint) * way.curlen);
 		ft_memcpy(res->ways[i].nodes, way.mem, sizeof(t_uint) * way.curlen);
 		i++;
