@@ -15,6 +15,19 @@
 			"environment": [],
 			"externalConsole": true,
 			"MIMode": "lldb"
+		},
+		{
+			"name": "(lldb) Launch with make",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "/Users/mtrisha/wd/lemin/lem-in",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"externalConsole": true,
+			"MIMode": "lldb",
+			"preLaunchTask": "make debug"
 		}
 	]
 }
