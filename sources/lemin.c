@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 11:51:20 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 11:56:50 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,20 @@
 
 static const t_err	g_errlist[] =
 {
-	{ERRSTATE, "unknown error\n"},
-	{NO_POSSIBLE_WAY, "There's no way between start and end!\n"},
-	{NO_START_END, "There's no start/end room!\n"},
-	{NO_TUBES, "There's no tubes!\n"},
-	{NO_ROOMS, "There's no rooms!\n"},
-	{NO_ANTS, "There's no ants!\n"},
-	{SAME_WAYS, "Found several identical tubes.\n"},
-	{TUBE_ERROR, "Wrong tube definition.\n"},
-	{NO_UNIQ, "Found several rooms with identical names.\n"},
-	{TOO_MUCH, "Too much input rooms.\n"},
-	{ROOM_ERROR, "Wrong room definition.\n"},
-	{ANTS_ERROR, "Wrong ants definition.\n"},
-	{WRONG_CMD, "Wrong command lines.\n"},
-	{GNL_ERROR, "Reading input stream return error.\n"}
+	{ERRSTATE, "unknown error"},
+	{NO_POSSIBLE_WAY, "There's no way between start and end!"},
+	{NO_START_END, "There's no start/end room!"},
+	{NO_TUBES, "There's no tubes!"},
+	{NO_ROOMS, "There's no rooms!"},
+	{NO_ANTS, "There's no ants!"},
+	{SAME_WAYS, "Found several identical tubes."},
+	{TUBE_ERROR, "Wrong tube definition."},
+	{NO_UNIQ, "Found several rooms with identical names."},
+	{TOO_MUCH, "Too much input rooms."},
+	{ROOM_ERROR, "Wrong room definition."},
+	{ANTS_ERROR, "Wrong ants definition."},
+	{WRONG_CMD, "Wrong command lines."},
+	{GNL_ERROR, "Reading input stream return error."}
 };
 
 void				print_input_error(t_uint ret)
@@ -42,7 +42,7 @@ void				print_input_error(t_uint ret)
 
 	i = (sizeof(g_errlist) / sizeof(t_err));
 	while (i-- > 0 )
-		if (g_errlist[i].error_code | ret)
+		if (g_errlist[i].error_code & ret)
 		{
 			err_str = g_errlist[i].error_string;
 			break ;

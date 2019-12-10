@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:36:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 11:50:35 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 11:57:55 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 /*
 **	NO_ERROR is a mask for delete or stay only error code in var
 */
-# define NO_ERROR			((1 << 5) - 1)
+# define NO_ERROR			((1 << 6) - 1)
 
 # define ERRSTATE			(1 << 6)
 
