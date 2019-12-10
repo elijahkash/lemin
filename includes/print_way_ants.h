@@ -6,7 +6,7 @@
 /*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:46:00 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/10 15:20:08 by hmathew          ###   ########.fr       */
+/*   Updated: 2019/12/10 17:35:58 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,7 @@
 # include "farm.h"
 # include "libft.h"
 
-/*
-**	if (ant_name == -1) then room dont have ant
-*/
-typedef struct	s_print_room
-{
-	int			name;
-	int 		ant_name;
-}				t_print_room;
-
-/*
-**	need_go - the number of ants that must run along the way
-*/
-typedef struct	s_print_way
-{
-	t_print_room		*rooms;
-	int			need_go;
-}				t_print_way;
-
-
-typedef struct	s_print_farm
-{
-
-}				t_print_farm;
-
+# define NO_ANT -1
 
 void	print_result(t_enum_ways *restrict combs, t_farm *restrict farm);
 

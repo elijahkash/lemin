@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   farm.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 13:44:36 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/10 17:28:25 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,6 +307,7 @@ int					dnbr_cmp(const void *number_1, const void *number_2);
 typedef struct		s_way
 {
 	t_uint *restrict	nodes;
+	t_uint				*ants_names;
 	t_uint				len;
 	long long			ants;
 }					t_way;
