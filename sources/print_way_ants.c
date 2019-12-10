@@ -6,7 +6,7 @@
 /*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:01:41 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/10 20:43:09 by hmathew          ###   ########.fr       */
+/*   Updated: 2019/12/10 20:51:12 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 /*
 **	create array ants_names in t_enum_ways & fill him a NO_ANT values
 */
+
 void	init_ways_antsnames(t_enum_ways *restrict eways)
 {
 	t_uint i;
@@ -39,6 +40,7 @@ void	init_ways_antsnames(t_enum_ways *restrict eways)
 /*
 **	Print ant's moves in the way
 */
+
 void	print_move_in_way(t_way *way, t_farm *restrict farm, int *new_ant_name)
 {
 	int j;
@@ -50,7 +52,8 @@ void	print_move_in_way(t_way *way, t_farm *restrict farm, int *new_ant_name)
 		{
 			if (j != (int)way->len - 1)
 			{
-				ft_printf("L%d-%s ", way->ants_names[j], *(char **)vect(&(farm->names), way->nodes[j + 1]));
+				ft_printf("L%d-%s ", way->ants_names[j],
+					*(char **)vect(&(farm->names), way->nodes[j + 1]));
 				way->ants_names[j + 1] = way->ants_names[j];
 			}
 			way->ants_names[j] = NO_ANT;
@@ -60,13 +63,15 @@ void	print_move_in_way(t_way *way, t_farm *restrict farm, int *new_ant_name)
 	{
 		way->ants_names[0] = ++(*new_ant_name);
 		way->ants--;
-		ft_printf("L%d-%s ", (*new_ant_name), *(char **)vect(&(farm->names), way->nodes[0]));
+		ft_printf("L%d-%s ", (*new_ant_name),
+			*(char **)vect(&(farm->names), way->nodes[0]));
 	}
 }
 
 /*
 **	Print ant's moves
 */
+
 void	print_moves(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
 	int i;
@@ -89,8 +94,9 @@ void	print_moves(t_enum_ways *restrict eways, t_farm *restrict farm)
 
 void	print_ways(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
-	ft_printf("Ways count = %d\n", eways->count);
 	t_darr	test;
+
+	ft_printf("Ways count = %d\n", eways->count);
 	darr_init(&test, 4, 256);
 	for (t_uint j = 0; j < eways->count; j++)
 	{
@@ -112,11 +118,21 @@ void	print_ways(t_enum_ways *restrict eways, t_farm *restrict farm)
 	ft_printf("\n");
 }
 
+#ifdef DEBUG
+
 void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
-	#ifdef DEBUG
 	print_ways(eways, farm);
-	#endif
 	print_moves(eways, farm);
 	return ;
 }
+
+#else
+
+void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
+{
+	print_moves(eways, farm);
+	return ;
+}
+
+#endif
