@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 18:11:16 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/11 17:38:26 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,30 @@ static void		reverse_new_way(t_graph *restrict graph)
 {
 	t_uint				cur_iter;
 	t_uint				cur_bfs_level;
-	t_connect *restrict	src_to_dst;
-	t_connect *restrict	dst_to_src;
 	t_iter				iter;
 	t_full_connect		connect;
-	t_node *restrict	ptr;
+	t_node *restrict	node;
 
-	cur_iter = graph->end;
-	cur_bfs_level = graph_node(graph, graph->end)->bfs_level;
+	node = graph_node(graph, (cur_iter = graph->end));
+	cur_bfs_level = node->bfs_level;
 	while (cur_bfs_level-- > 0)
 	{
-		iter_init(&iter, graph->nodes[cur_iter], ITER_ALL);
-		while ((src_to_dst = iter_next(&iter)))
+		iter_init(&iter, node, ITER_ALL);
+		while ((connect.src_to_dst = iter_next(&iter)))
 		{
-			ptr = graph_node(graph, src_to_dst->dst);
-			dst_to_src = graph_connect(graph, src_to_dst->dst, cur_iter);
-			if (ptr->bfs_level == cur_bfs_level &&
-				(dst_to_src->state != CONNECT_FORBIDDEN) &&
-				(ptr->separate == 0 || ptr->marked_out ||
-				dst_to_src->state == CONNECT_NEGATIVE))
+			node = graph_node(graph, connect.src_to_dst->dst);
+			connect.dst_to_src = graph_connect(node, cur_iter);
+			if ((node->bfs_level == cur_bfs_level) &&
+				(connect.dst_to_src->state != CONNECT_FORBIDDEN) &&
+				(node->separate == 0 || node->marked_out ||
+				connect.dst_to_src->state == CONNECT_NEGATIVE))
 				break ;
 		}
-		connect.dst_to_src = dst_to_src;
-		connect.src_to_dst = src_to_dst;
 		cur_iter = connect.src_to_dst->dst;
 		full_connect_reverse(connect);
-		node_reverse(graph_node(graph, cur_iter));
+		node_reverse(node);
 	}
-	node_reverse(graph_node(graph, graph->start));
+	node_reverse(node);
 }
 
 void			add_nodes(t_uint item, t_graph *restrict graph,
@@ -57,12 +53,12 @@ void			add_nodes(t_uint item, t_graph *restrict graph,
 	t_node *restrict		node;
 	t_uint					bfs_level;
 
-	bfs_level = graph_node(graph, item)->bfs_level + 1;
-	iter_init(&iter, graph->nodes[item], ITER_BY_NODE);
+	node = graph_node(graph, item);
+	bfs_level = node->bfs_level + 1;
+	iter_init(&iter, node, ITER_BY_NODE);
 	while ((connect = iter_next(&iter)))
 	{
-		node = graph_node(graph, connect->dst);
-		if (node->marked == 0)
+		if ((node = graph_node(graph, connect->dst))->marked == 0)
 		{
 			deq_push_back(marked, ft_z(connect->dst));
 			mark_node(node, connect, bfs_level);
@@ -74,22 +70,24 @@ static int		find_new_way(t_graph *restrict graph)
 {
 	t_deq	marked;
 	int		res;
+	t_node	*end_node;
 
+	graph_clear_state(graph);
 	deq_init(&marked, sizeof(t_uint), 128);
 	deq_push_back(&marked, &(graph->start));
-	graph_node(graph, graph->start)->marked = 1; //TODO: optimise
-	graph_node(graph, graph->start)->bfs_level = 0;
+	end_node = graph_node(graph, graph->start);
+	end_node->marked = 1;
+	end_node->bfs_level = 0;
+	end_node = graph_node(graph, graph->end);
 	while (marked.curlen)
 	{
 		add_nodes(*(t_uint *)deq_pop_front(&marked), graph, &marked);
-		if (graph_node(graph, graph->end)->marked)
+		if (end_node->marked)
 			break ;
 	}
 	deq_del(&marked);
-	if (graph_node(graph, graph->end)->marked)
+	if ((res = end_node->marked))
 		reverse_new_way(graph);
-	res = (graph_node(graph, graph->end)->marked) ? 1 : 0;
-	graph_clear_state(graph);
 	return (res);
 }
 
@@ -124,10 +122,7 @@ static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
 	{
 		way.curlen = 0;
 		find_way(&way, tmp->dst, graph);
-		res->ways[i].len = way.curlen;
-		//TODO: init
-		res->ways[i].nodes = ft_malloc(sizeof(t_uint) * way.curlen);
-		ft_memcpy(res->ways[i].nodes, way.mem, sizeof(t_uint) * way.curlen);
+		way_init(res->ways + i, way.mem, way.curlen);
 		i++;
 	}
 	ft_qsort(res->ways, res->count, sizeof(t_way), comp_way_by_len);

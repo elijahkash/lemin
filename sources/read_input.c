@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 18:12:01 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/11 17:35:36 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ static t_uint		handle_line(char *restrict line, t_farm *restrict farm)
 {
 	static t_uint state = ANTS;
 
-	if (!ft_strncmp(line, "##", 2))
+	if (line[0] == '#' && line[1] == '#')
 		state = handle_cmd(state, line, farm);
 	else if (*line == '#')
 		return (0);

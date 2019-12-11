@@ -23,6 +23,7 @@
 		"read_input.h": "c",
 		"ft_memory_manager.h": "c",
 		"libft.h": "c",
-		"print_way_ants.h": "c"
+		"print_way_ants.h": "c",
+		"ft_outbuff.h": "c"
 	}
 }

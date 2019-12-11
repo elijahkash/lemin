@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   farm.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 20:39:38 by hmathew          ###   ########.fr       */
+/*   Updated: 2019/12/11 16:06:14 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <libft.h>
 
 /*
-** TODO: restrict inline macros
+** //TODO: restrict inline macros
 */
 
 /*
@@ -157,7 +157,7 @@ void					graph_del(t_graph *graph);
 void					graph_add_connect(t_graph *graph, t_uint src,
 											t_uint dst);
 t_node					*graph_node(t_graph *graph, t_uint index);
-t_connect				*graph_connect(t_graph *graph, t_uint src, t_uint dst);
+t_connect				*graph_connect(t_node *restrict src, t_uint dst);
 t_connect				*graph_node_connects(t_node *node);
 void					graph_clear_state(t_graph *graph);
 void					mark_node(t_node *node, t_connect *connect,

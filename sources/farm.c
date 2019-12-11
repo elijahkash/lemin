@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 18:13:51 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/11 17:45:35 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ int						graph_init(t_graph *restrict graph,
 	graph->mem = ft_malloc(sizeof(t_node) * graph->size +
 							sizeof(t_connect) * farm->connects.curlen * 2);
 	graph_fill(graph, farm, node_connects);
-	graph_clear_state(graph);
 	graph->start = vect_bin_find(&(farm->names),
 					ft_p(vect(&(farm->chars), farm->start)), ft_scmp) - 1;
 	graph->end = vect_bin_find(&(farm->names),
@@ -206,14 +205,10 @@ static t_connect		*graph_connect_find(t_connect *restrict connects,
 	return (tmp ? NULL : connects + bot);
 }
 
-inline t_connect		*graph_connect(t_graph *restrict graph,
-										t_uint src, t_uint dst)
+inline t_connect		*graph_connect(t_node *restrict src, t_uint dst)
 {
-	t_node	*restrict node;
-
-	node = graph->nodes[src];
-	return (graph_connect_find(((t_connect *)(node + 1)),
-								node->count_connects, dst));
+	return (graph_connect_find(((t_connect *)(src + 1)),
+								src->count_connects, dst));
 }
 
 void					graph_clear_state(t_graph *restrict graph)
@@ -369,12 +364,16 @@ void					way_init(t_way *restrict way, t_uint *restrict arr,
 {
 	way->ants = 0;
 	way->len = len;
-	way->nodes = ft_memcpy(ft_malloc(sizeof(t_uint) * len), arr, len);
+	way->ants_names = NULL;
+	way->nodes = ft_memcpy(ft_malloc(sizeof(t_uint) * len), arr,
+							sizeof(t_uint) * len);
 }
 
 inline void				way_del(t_way way)
 {
 	ft_free(way.nodes);
+	if (way.ants_names)
+		ft_free(way.ants_names);
 }
 
 inline int				comp_way_by_len(const void *restrict way1,
