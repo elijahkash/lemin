@@ -11,4 +11,5 @@ mars*
 res_*
 gen
 generator.c
-*grind.out*
+callgrind.out*
+massif.out*

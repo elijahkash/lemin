@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/11 17:35:36 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/11 21:27:15 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ t_uint				read_input(t_farm *restrict farm)
 	t_uint	ret;
 	char	*line;
 
-	while ((gnl_ret = ft_get_next_line(0, &line)))
+	while ((gnl_ret = ft_fast_input_gnl(&line)))
 	{
 		if (gnl_ret < 0 || !line)
 		{

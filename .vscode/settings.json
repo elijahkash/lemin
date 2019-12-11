@@ -24,6 +24,8 @@
 		"ft_memory_manager.h": "c",
 		"libft.h": "c",
 		"print_way_ants.h": "c",
-		"ft_outbuff.h": "c"
+		"ft_outbuff.h": "c",
+		"ft_fast_stream_gnl.h": "c",
+		"ft_fast_input_gnl.h": "c"
 	}
 }
