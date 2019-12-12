@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/11 21:27:15 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/12 15:14:34 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,10 +164,12 @@ static t_uint		handle_line(char *restrict line, t_farm *restrict farm)
 
 t_uint				read_input(t_farm *restrict farm)
 {
-	int		gnl_ret;
-	t_uint	ret;
-	char	*line;
+	int			gnl_ret;
+	t_uint		ret;
+	char		*line;
+	t_outbuff	*buff;
 
+	buff = ft_get_outbuff_item(FD_STDOUT);
 	while ((gnl_ret = ft_fast_input_gnl(&line)))
 	{
 		if (gnl_ret < 0 || !line)
@@ -176,8 +178,8 @@ t_uint				read_input(t_farm *restrict farm)
 			return (GNL_ERROR);
 		}
 		ret = handle_line(line, farm);
-		ft_buf_add(FD_STDOUT, line, ft_strlen(line));
-		ft_buf_add(FD_STDOUT, "\n", 1);
+		ft_buff_add_to_outbuff(buff, line, ft_strlen(line));
+		ft_buff_add_to_outbuff(buff, "\n", 1);
 		ft_free(line);
 		if (ret)
 			return (ret);
