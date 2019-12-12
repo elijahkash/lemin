@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/11 16:06:14 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/12 17:49:07 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,6 +304,7 @@ int						dnbr_cmp(const void *number_1, const void *number_2);
 
 /*
 **	ants - this is the number of ants that will go this way.
+** //TODO: type ants_names
 */
 typedef struct			s_way
 {
@@ -326,6 +327,7 @@ int						comp_way_by_len(const void *way1, const void *way2);
 typedef struct			s_enum_ways
 {
 	t_way *restrict		ways;
+	t_uint *restrict	nodes_mem;
 	t_uint				count;
 	long long			moves;
 }						t_enum_ways;

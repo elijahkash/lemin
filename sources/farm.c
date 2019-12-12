@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/11 17:45:35 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/12 17:49:14 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,21 +359,18 @@ inline int				dnbr_cmp(const void *number_1,
 ** =============================================================================
 */
 
-void					way_init(t_way *restrict way, t_uint *restrict arr,
+inline void				way_init(t_way *restrict way, t_uint *restrict arr,
 									t_uint len)
 {
 	way->ants = 0;
 	way->len = len;
 	way->ants_names = NULL;
-	way->nodes = ft_memcpy(ft_malloc(sizeof(t_uint) * len), arr,
-							sizeof(t_uint) * len);
+	way->nodes = arr;
 }
 
 inline void				way_del(t_way way)
 {
-	ft_free(way.nodes);
-	if (way.ants_names)
-		ft_free(way.ants_names);
+	ft_free(way.ants_names);
 }
 
 inline int				comp_way_by_len(const void *restrict way1,
@@ -393,16 +390,23 @@ void					enum_ways_init(t_enum_ways *restrict combs,
 {
 	combs->moves = 0;
 	combs->count = count;
+	combs->nodes_mem = NULL;
 	combs->ways = (t_way *)ft_malloc(sizeof(t_way *) * count);
 }
 
 void					enum_ways_del(t_enum_ways *restrict combs)
 {
-	while (combs->count)
-		way_del(combs->ways[--(combs->count)]);
-	combs->moves = 0;
+	if (combs->count && combs->ways[0].ants_names)
+	{
+		while (combs->count)
+			way_del(combs->ways[--(combs->count)]);
+	}
+	if (combs->nodes_mem)
+		ft_free(combs->nodes_mem);
 	if (combs->ways)
 		ft_free(combs->ways);
+	combs->moves = 0;
+	combs->nodes_mem = NULL;
 	combs->ways = NULL;
 }
 

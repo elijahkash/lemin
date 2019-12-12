@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/11 17:38:26 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/12 17:49:26 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,19 @@ static int		find_new_way(t_graph *restrict graph)
 	return (res);
 }
 
+static void		form_res(t_enum_ways *restrict res, t_vect *restrict way)
+{
+	t_uint	i;
+
+	i = 0;
+	res->nodes_mem = way->mem;
+	while (i < res->count)
+	{
+		res->ways[i].nodes = vect(way, (size_t)res->ways[i].nodes);
+		i++;
+	}
+}
+
 static void		find_way(t_vect *restrict way, t_uint first_node,
 							t_graph *restrict graph)
 {
@@ -113,18 +126,22 @@ static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
 	t_iter				iter[1];
 	t_connect *restrict	tmp;
 	t_vect				way;
+	size_t				way_index;
 
+	way_index = 0;
 	vect_init(&way, sizeof(t_uint), 256);
 	i = 0;
 	res->ways = ft_malloc(sizeof(t_way) * res->count);
 	iter_init(iter, graph->nodes[graph->start], ITER_FORBIDDEN);
 	while ((tmp = iter_next(iter)))
 	{
-		way.curlen = 0;
 		find_way(&way, tmp->dst, graph);
-		way_init(res->ways + i, way.mem, way.curlen);
+		way_init(res->ways + i, (t_uint *)way_index, way.curlen - way_index);
+		way_index = way.curlen;
 		i++;
 	}
+	vect_shrink(&way, 0);
+	form_res(res, &way);
 	ft_qsort(res->ways, res->count, sizeof(t_way), comp_way_by_len);
 }
 

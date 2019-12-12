@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/11 13:59:05 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/12 17:49:53 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,4 @@ void				lemin(void)
 	return ;
 }
 
-//TODO: remalloc result on 1 memory for fast??????
 //TODO: breakpoint in solve ?
