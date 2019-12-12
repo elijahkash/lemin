@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    .gitignore                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created:                     by mtrisha           #+#    #+#              #
+#    Updated:                     by mtrisha          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 .DS_Store
 *.o
 *.dSYM
@@ -9,7 +21,5 @@ lem-in
 test*
 mars*
 res_*
-gen
-generator.c
-callgrind.out*
+*grind.out*
 massif.out*
