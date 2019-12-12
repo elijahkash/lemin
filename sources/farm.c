@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/12 17:49:14 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/12 18:53:16 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,7 +272,7 @@ t_connect				*(*g_iter_func[])(t_iter *restrict iter) = {
 	iter_next_forbidden
 };
 
-void					iter_init(t_iter *restrict iter, t_node *restrict node,
+t_iter					*iter_init(t_iter *restrict iter, t_node *restrict node,
 								t_uint type)
 {
 	iter->count_connects = node->count_connects;
@@ -282,6 +282,7 @@ void					iter_init(t_iter *restrict iter, t_node *restrict node,
 		iter->func = node->marked_in ? ITER_NEGATIVE : ITER_ALLOWED;
 	else
 		iter->func = type;
+	return (iter);
 }
 
 inline t_connect		*iter_next(t_iter *restrict iter)
@@ -410,38 +411,47 @@ void					enum_ways_del(t_enum_ways *restrict combs)
 	combs->ways = NULL;
 }
 
+static void				fill_borders(t_uint *borders,
+										t_enum_ways *restrict combs)
+{
+	t_uint	i;
+	t_uint	j;
+	t_uint	len;
+
+	len = combs->count;
+	i = 0;
+	while (i < len)
+	{
+		borders[i] = 0;
+		j = 0;
+		while (j < i)
+		{
+			borders[i] += (combs->ways[i].len - combs->ways[j].len);
+			j++;
+		}
+		i++;
+	}
+}
+
 long long				count_moves(t_enum_ways *restrict combs, long long ants)
 {
-	long long	k = 0;
-	long long	tmp = 0;
+	long long	cur_count;
+	long long	tmp;
 	t_uint		way;
-	t_uint		border[combs->count];
+	t_uint		borders[combs->count];
 
+	fill_borders(borders, combs);
 	way = combs->count;
-	if (way == 1)
-	{
-		combs->ways[0].ants = ants;
-		combs->moves = ants + combs->ways[0].len - 1;
-		return (combs->moves);
-	}
-	for (t_uint i = 0; i < way; i++)
-	{
-		border[i] = 0;
-		for (t_uint j = 0; j < i; j++)
-			border[i] += (combs->ways[i].len - combs->ways[j].len);
-	}
+	cur_count = 0;
 	while (way > 0)
-	{
-		if (ants - (way - 1) > border[way - 1])
+		if (ants - (way - 1) > borders[way - 1])
 		{
-			tmp = (ants - (way - 1) - border[way - 1]) / way;
+			tmp = (ants - (way - 1) - borders[way - 1]) / way;
 			tmp += (tmp) ? 0 : 1;
-			k += tmp;
+			cur_count += tmp;
 			ants -= (way * tmp);
 		}
 		else
-			combs->ways[--way].ants = k;
-	}
-	combs->moves = combs->ways[0].ants + combs->ways[0].len - 1;
-	return (combs->moves);
+			combs->ways[--way].ants = cur_count;
+	return ((combs->moves = combs->ways[0].ants + combs->ways[0].len - 1));
 }

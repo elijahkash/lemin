@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/12 17:49:26 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/12 18:55:11 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,18 @@ static void		reverse_new_way(t_graph *restrict graph)
 	t_full_connect		connect;
 	t_node *restrict	node;
 
-	node = graph_node(graph, (cur_iter = graph->end));
+	cur_iter = graph->end;
+	node = graph_node(graph, cur_iter);
 	cur_bfs_level = node->bfs_level;
-	while (cur_bfs_level-- > 0)
+	while (cur_bfs_level-- > (0 & (int)iter_init(&iter, node, ITER_ALL)))
 	{
-		iter_init(&iter, node, ITER_ALL);
 		while ((connect.src_to_dst = iter_next(&iter)))
 		{
 			node = graph_node(graph, connect.src_to_dst->dst);
 			connect.dst_to_src = graph_connect(node, cur_iter);
-			if ((node->bfs_level == cur_bfs_level) &&
-				(connect.dst_to_src->state != CONNECT_FORBIDDEN) &&
-				(node->separate == 0 || node->marked_out ||
-				connect.dst_to_src->state == CONNECT_NEGATIVE))
+			if (node->bfs_level == cur_bfs_level && connect.dst_to_src->state
+			!= CONNECT_FORBIDDEN && (node->separate == 0 || node->marked_out ||
+			connect.dst_to_src->state == CONNECT_NEGATIVE))
 				break ;
 		}
 		cur_iter = connect.src_to_dst->dst;

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/12 17:49:07 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/12 18:53:11 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ typedef struct			s_graph_iterator
 	t_uint				func;
 }						t_iter;
 
-void					iter_init(t_iter *iter, t_node *node, t_uint type);
+t_iter					*iter_init(t_iter *iter, t_node *node, t_uint type);
 t_connect				*iter_next(t_iter *iter);
 
 /*
