@@ -6,7 +6,7 @@
 #    By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/19 15:35:23 by mtrisha           #+#    #+#              #
-#    Updated: 2019/12/10 17:32:05 by mtrisha          ###   ########.fr        #
+#    Updated: 2019/12/13 15:48:53 by mtrisha          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ LIBRARY = ft
 LIBHEADER = includes/libft.h
 LIBDIR = ./libft/
 LIB = $(LIBDIR)lib$(LIBRARY).a
+DEBUGLIB = $(LIBDIR)lib$(LIBRARY).a
 ADDLIB = -L $(LIBDIR) -l$(LIBRARY)
 
 SRCDIR = ./sources/
@@ -77,6 +78,8 @@ fclean: makelib
 	rm -rf $(OBJ)
 	rm -rf $(OBJDIR).depend
 	rm -rf $(OBJDIR).depend.bak
+
+debug:
 
 debug: all
 

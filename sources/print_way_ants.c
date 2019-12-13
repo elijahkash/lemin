@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_way_ants.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:01:41 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/10 20:51:12 by hmathew          ###   ########.fr       */
+/*   Updated: 2019/12/11 22:08:17 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,12 @@ void	print_ways(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
 	t_darr	test;
 
-	ft_printf("Ways count = %d\n", eways->count);
+	ft_printf("Ways count = %d\nMoves = %lu\n", eways->count, eways->moves);
 	darr_init(&test, 4, 256);
 	for (t_uint j = 0; j < eways->count; j++)
 	{
+		ft_printf("len = %lu\tants = %lld\t", eways->ways[j].len,
+												eways->ways[j].ants);
 		ft_printf("[%s]", *(char **)vect(&(farm->names), farm->graph.start));
 		for(t_uint i = 0; i < eways->ways[j].len; i++)
 		{
@@ -131,7 +133,9 @@ void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
 
 void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
+	t_uint tmp = eways->moves;
 	print_moves(eways, farm);
+	ft_printf("Ways count = %d\nMoves = %lu\n", eways->count, tmp);
 	return ;
 }
 
