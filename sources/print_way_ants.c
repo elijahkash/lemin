@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:01:41 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/11 22:08:17 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/14 13:19:27 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,11 @@ void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
 
 void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
-	t_uint tmp = eways->moves;
+	t_uint tmp;
+
+	tmp = eways->moves;
+	ft_printf("# Ways count = %d\n# Moves = %lu\n", eways->count, tmp);
 	print_moves(eways, farm);
-	ft_printf("Ways count = %d\nMoves = %lu\n", eways->count, tmp);
 	return ;
 }
 

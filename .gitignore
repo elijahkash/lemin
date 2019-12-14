@@ -11,16 +11,11 @@
 # **************************************************************************** #
 
 .DS_Store
-*.o
 *.dSYM
-*.a
-.depend
-.depend.bak
 lem-in
-tmp
+lem-in.debug
+/tmp
+/test_maps
 
-test*
-mars*
-res_*
 *grind.out*
 massif.out*

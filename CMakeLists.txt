@@ -18,6 +18,7 @@ project(lemin)
 set(BUILD_FLAGS "-O3 -Wall -Wextra -Werror")
 set(DEBUG_FLAGS "-g3 -Wall -Wextra")
 set(DST_NAME lem-in)
+set(DEBUG_NAME lem-in.debug)
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/sources/)
 set(INC_DIR ${PROJECT_SOURCE_DIR}/includes/)
 set(LIBFT_DIR ${PROJECT_SOURCE_DIR}/libft/)
@@ -54,11 +55,12 @@ add_executable(debug EXCLUDE_FROM_ALL ${LEMIN_SOURCES})
 target_include_directories(debug PUBLIC ${LIBFT_DIR}includes/)
 target_include_directories(debug PUBLIC ${INC_DIRS})
 target_link_directories(debug PUBLIC ${LIBFT_DIR})
-target_link_libraries(debug ft)
+target_link_libraries(debug ftdebug)
 set_target_properties(debug PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}
-		OUTPUT_NAME ${DST_NAME}
-		COMPILE_FLAGS ${DEBUG_FLAGS})
+		OUTPUT_NAME ${DEBUG_NAME}
+		COMPILE_FLAGS ${DEBUG_FLAGS}
+		COMPILE_DEFINITIONS DEBUG)
 
 add_dependencies(debug libftdebug)
 

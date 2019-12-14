@@ -5,24 +5,12 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "(lldb) Launch",
+			"name": "(lldb) Launch debug",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/lem-in",
+			"program": "${workspaceFolder}/lem-in.debug",
 			"args": [],
-			"stopAtEntry": false,
-			"cwd": "${workspaceFolder}",
-			"environment": [],
-			"externalConsole": true,
-			"MIMode": "lldb"
-		},
-		{
-			"name": "(lldb) Launch with make",
-			"type": "cppdbg",
-			"request": "launch",
-			"program": "${workspaceFolder}/lem-in",
-			"args": [],
-			"stopAtEntry": false,
+			"stopAtEntry": true,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": true,
