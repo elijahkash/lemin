@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/14 16:29:17 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/14 20:09:26 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,16 @@ static void		reverse_new_way(t_graph *restrict graph)
 	node->separate = 0;
 }
 
-void			add_nodes(t_uint item, t_graph *restrict graph,
-							t_deq *restrict marked)
+void			add_nodes(t_graph *restrict graph, t_deq *restrict marked,
+													t_deq *restrict remark)
 {
 	t_iter					iter;
 	t_connect *restrict		connect;
 	t_node *restrict		node;
 	t_uint					bfs_level;
+	t_dnbr					tmp;
 
-	node = graph_node(graph, item);
+	node = graph_node(graph, *(t_uint *)deq_pop_front(marked));
 	bfs_level = node->bfs_level + 1;
 	iter_init(&iter, node, ITER_BY_NODE);
 	while ((connect = iter_next(&iter)))
@@ -60,7 +61,13 @@ void			add_nodes(t_uint item, t_graph *restrict graph,
 		if ((node = graph_node(graph, connect->dst))->marked == 0)
 		{
 			deq_push_back(marked, ft_z(connect->dst));
-			mark_node(node, connect, bfs_level);
+			graph_mark_node(node, connect->state, bfs_level);
+		}
+		else if (node->marked_in && connect->state == CONNECT_NEGATIVE)
+		{
+			tmp.a = connect->dst;
+			tmp.b = bfs_level;
+			deq_push_back(remark, &tmp);
 		}
 	}
 }
@@ -68,26 +75,30 @@ void			add_nodes(t_uint item, t_graph *restrict graph,
 static int		find_new_way(t_graph *restrict graph)
 {
 	t_deq	marked;
-	int		res;
+	t_deq	remark;
 	t_node	*end_node;
+	t_dnbr	tmp;
 
 	graph_clear_state(graph);
 	deq_init(&marked, sizeof(t_uint), 128);
+	deq_init(&remark, sizeof(t_dnbr), 32);
 	deq_push_back(&marked, &(graph->start));
-	end_node = graph_node(graph, graph->start);
-	end_node->marked = 1;
-	end_node->bfs_level = 0;
+	graph_mark_node(graph_node(graph, graph->start), 0, 0);
 	end_node = graph_node(graph, graph->end);
-	while (marked.curlen)
+	while (TRUE)
 	{
-		add_nodes(*(t_uint *)deq_pop_front(&marked), graph, &marked);
-		if (end_node->marked)
+		while (end_node->marked == 0 && marked.curlen)
+			add_nodes(graph, &marked, &remark);
+		if (end_node->marked || remark.curlen == 0)
 			break ;
+		tmp = *((t_dnbr *)deq_pop_front(&remark));
+		deq_push_front(&marked, &(tmp.a));
+		graph_mark_node(graph_node(graph, tmp.a), CONNECT_NEGATIVE, tmp.b);
 	}
 	deq_del(&marked);
-	if ((res = end_node->marked))
-		reverse_new_way(graph);
-	return (res);
+	deq_del(&remark);
+	(end_node->marked) ? reverse_new_way(graph) : 0;
+	return (end_node->marked);
 }
 
 static void		form_res(t_enum_ways *restrict res, t_vect *restrict way)

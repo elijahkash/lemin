@@ -26,6 +26,7 @@
 		"print_way_ants.h": "c",
 		"ft_outbuff.h": "c",
 		"ft_fast_stream_gnl.h": "c",
-		"ft_fast_input_gnl.h": "c"
+		"ft_fast_input_gnl.h": "c",
+		"farm.h": "c"
 	}
 }

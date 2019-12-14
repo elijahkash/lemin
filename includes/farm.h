@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/12 18:53:11 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/14 19:58:45 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ t_node					*graph_node(t_graph *graph, t_uint index);
 t_connect				*graph_connect(t_node *restrict src, t_uint dst);
 t_connect				*graph_node_connects(t_node *node);
 void					graph_clear_state(t_graph *graph);
-void					mark_node(t_node *node, t_connect *connect,
+void					graph_mark_node(t_node *node, t_uint connect_state,
 									t_uint bfs_level);
 
 /*

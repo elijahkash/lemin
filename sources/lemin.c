@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/14 16:29:34 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/14 20:07:40 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void				lemin(void)
 	return ;
 }
 
+//TODO: init values (+ deq etc)
 //TODO: OWERFLOW ANTS?
 //TODO: breakpoint in solve ?
 
