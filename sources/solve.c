@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/14 20:09:26 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/14 20:13:46 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,7 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 			k < graph_node(graph, graph->end)->count_connects &&
 			find_new_way(graph))
 	{
-		k++;
-		tmp.count = k;
+		tmp.count = ++k;
 		find_ways(&tmp, graph);
 		count_moves(&tmp, ants);
 		if (tmp.moves <= min_moves)
@@ -181,7 +180,7 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 		else
 			enum_ways_del(&tmp);
 		if (tmp.moves > min_moves)
-		 	break ;
+			break ;
 	}
 	return (0);
 }
