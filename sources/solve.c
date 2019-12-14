@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/12 18:55:11 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/14 16:29:17 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void		reverse_new_way(t_graph *restrict graph)
 		full_connect_reverse(connect);
 		node_reverse(node);
 	}
-	node_reverse(node);
+	node->separate = 0;
 }
 
 void			add_nodes(t_uint item, t_graph *restrict graph,
@@ -152,14 +152,16 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 	t_enum_ways	tmp;
 
 	k = 0;
-	min_moves = 0;
-	while (find_new_way(graph))
+	min_moves = __INT64_MAX__;
+	while (k < graph_node(graph, graph->start)->count_connects &&
+			k < graph_node(graph, graph->end)->count_connects &&
+			find_new_way(graph))
 	{
 		k++;
 		tmp.count = k;
 		find_ways(&tmp, graph);
 		count_moves(&tmp, ants);
-		if (k == 1 || tmp.moves < min_moves)
+		if (tmp.moves <= min_moves)
 		{
 			min_moves = tmp.moves;
 			enum_ways_del(result);
@@ -167,6 +169,8 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 		}
 		else
 			enum_ways_del(&tmp);
+		if (tmp.moves > min_moves)
+		 	break ;
 	}
 	return (0);
 }
