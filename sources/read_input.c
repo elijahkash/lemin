@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/12 15:14:34 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/15 13:56:11 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static t_uint		is_room(char *restrict line)
 	line = ft_skip_atoi(line);
 	line += (*line == ' ') ? 1 : 0;
 	line = ft_skip_atoi(line);
+	line = ft_skip_atoi(line);
 	return (*line ? 0 : 1);
 }
 
@@ -96,7 +97,7 @@ static t_uint		read_room(t_uint state, char *restrict line,
 	size_t count;
 
 	count = ft_ccwords(line, ' ');
-	if (count == 3 && is_room(line))
+	if ((count == 3 || count == 4) && is_room(line))
 	{
 		vect_add(&(farm->names), ft_z(farm->chars.curlen));
 		farm->start = (state & START) ? farm->chars.curlen : farm->start;
