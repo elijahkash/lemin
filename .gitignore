@@ -12,10 +12,13 @@
 
 .DS_Store
 *.dSYM
-lem-in
-lem-in.debug
+lem-in*
 /tmp
 /test_maps
 
+/images
+visu
+
+res
 *grind.out*
 massif.out*

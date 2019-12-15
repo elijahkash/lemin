@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/14 20:13:46 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/15 15:19:05 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ static int		find_new_way(t_graph *restrict graph)
 	t_dnbr	tmp;
 
 	graph_clear_state(graph);
-	deq_init(&marked, sizeof(t_uint), 128);
-	deq_init(&remark, sizeof(t_dnbr), 32);
+	deq_init(&marked, sizeof(t_uint), 256);
+	deq_init(&remark, sizeof(t_dnbr), 128);
 	deq_push_back(&marked, &(graph->start));
 	graph_mark_node(graph_node(graph, graph->start), 0, 0);
 	end_node = graph_node(graph, graph->end);
