@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/14 20:07:40 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/15 14:12:57 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,4 @@ void				lemin(void)
 	return ;
 }
 
-//TODO: init values (+ deq etc)
 //TODO: OWERFLOW ANTS?
-//TODO: breakpoint in solve ?
-
-/*
-	t_uint	connect_dst;
-	t_uint	connect_state;
-	t_uint	node_con;
-	t_uint	node_marked;
-	t_uint	node_sep;
-	t_uint	node_in;
-	t_uint	node_out;
-	t_uint	node_bfs;
-
-	node_con = node->count_connects;
-	node_marked = node->marked;
-	node_sep = node->separate;
-	node_in = node->marked_in;
-	node_out = node->marked_out;
-	node_bfs = node->bfs_level;
-
-	connect_dst = connect->dst;
-	connect_state = connect->state;
-*/
