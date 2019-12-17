@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/14 19:58:50 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/17 17:39:10 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void					node_reverse(t_node *restrict node)
 		node->separate = 1;
 }
 
-inline void				graph_mark_node(t_node *node, t_uint connect_state,
-										t_uint bfs_level)
+inline void				node_mark(t_node *node, t_uint connect_state,
+									t_uint bfs_level)
 {
 	node->bfs_level = bfs_level;
 	node->marked = 1;
@@ -71,6 +71,7 @@ void					full_connect_reverse(t_full_connect connect)
 		connect.src_to_dst->state = CONNECT_NEGATIVE;
 		connect.dst_to_src->state = CONNECT_FORBIDDEN;
 	}
+	node_reverse(connect.dst);
 }
 
 /*

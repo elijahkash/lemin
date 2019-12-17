@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/14 19:58:45 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/17 17:38:53 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct			s_node
 }						t_node;
 
 void					node_reverse(t_node *node);
+void					node_mark(t_node *node, t_uint connect_state,
+									t_uint bfs_level);
 
 /*
 ** =============================================================================
@@ -96,6 +98,8 @@ typedef struct			s_connect
 */
 typedef struct			s_full_connect
 {
+	t_node *restrict	src;
+	t_node *restrict	dst;
 	t_connect *restrict	src_to_dst;
 	t_connect *restrict	dst_to_src;
 }						t_full_connect;
@@ -160,8 +164,6 @@ t_node					*graph_node(t_graph *graph, t_uint index);
 t_connect				*graph_connect(t_node *restrict src, t_uint dst);
 t_connect				*graph_node_connects(t_node *node);
 void					graph_clear_state(t_graph *graph);
-void					graph_mark_node(t_node *node, t_uint connect_state,
-									t_uint bfs_level);
 
 /*
 ** =============================================================================

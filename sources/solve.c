@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/15 15:19:05 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/17 17:48:27 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,28 @@ static void		reverse_new_way(t_graph *restrict graph)
 	t_uint				cur_iter;
 	t_uint				cur_bfs_level;
 	t_iter				iter;
-	t_full_connect		connect;
-	t_node *restrict	node;
+	t_full_connect		itm;
 
 	cur_iter = graph->end;
-	node = graph_node(graph, cur_iter);
-	cur_bfs_level = node->bfs_level;
-	while (cur_bfs_level-- > (0 & (int)iter_init(&iter, node, ITER_ALL)))
+	itm.src = graph_node(graph, cur_iter);
+	cur_bfs_level = itm.src->bfs_level;
+	while (cur_bfs_level-- > 0)
 	{
-		while ((connect.src_to_dst = iter_next(&iter)))
+		iter_init(&iter, itm.src, ITER_ALL);
+		while ((itm.src_to_dst = iter_next(&iter)))
 		{
-			node = graph_node(graph, connect.src_to_dst->dst);
-			connect.dst_to_src = graph_connect(node, cur_iter);
-			if (node->bfs_level == cur_bfs_level && connect.dst_to_src->state
-			!= CONNECT_FORBIDDEN && (node->separate == 0 || node->marked_out ||
-			connect.dst_to_src->state == CONNECT_NEGATIVE))
+			itm.dst = graph_node(graph, itm.src_to_dst->dst);
+			itm.dst_to_src = graph_connect(itm.dst, cur_iter);
+			if (itm.dst->bfs_level == cur_bfs_level && itm.dst_to_src->state
+			!= CONNECT_FORBIDDEN && (itm.dst->separate == 0 ||
+			itm.dst->marked_out || itm.dst_to_src->state == CONNECT_NEGATIVE))
 				break ;
 		}
-		cur_iter = connect.src_to_dst->dst;
-		full_connect_reverse(connect);
-		node_reverse(node);
+		cur_iter = itm.src_to_dst->dst;
+		itm.src = itm.dst;
+		full_connect_reverse(itm);
 	}
-	node->separate = 0;
+	itm.dst->separate = 0;
 }
 
 void			add_nodes(t_graph *restrict graph, t_deq *restrict marked,
@@ -61,7 +61,7 @@ void			add_nodes(t_graph *restrict graph, t_deq *restrict marked,
 		if ((node = graph_node(graph, connect->dst))->marked == 0)
 		{
 			deq_push_back(marked, ft_z(connect->dst));
-			graph_mark_node(node, connect->state, bfs_level);
+			node_mark(node, connect->state, bfs_level);
 		}
 		else if (node->marked_in && connect->state == CONNECT_NEGATIVE)
 		{
@@ -83,7 +83,7 @@ static int		find_new_way(t_graph *restrict graph)
 	deq_init(&marked, sizeof(t_uint), 256);
 	deq_init(&remark, sizeof(t_dnbr), 128);
 	deq_push_back(&marked, &(graph->start));
-	graph_mark_node(graph_node(graph, graph->start), 0, 0);
+	node_mark(graph_node(graph, graph->start), 0, 0);
 	end_node = graph_node(graph, graph->end);
 	while (TRUE)
 	{
@@ -93,7 +93,7 @@ static int		find_new_way(t_graph *restrict graph)
 			break ;
 		tmp = *((t_dnbr *)deq_pop_front(&remark));
 		deq_push_front(&marked, &(tmp.a));
-		graph_mark_node(graph_node(graph, tmp.a), CONNECT_NEGATIVE, tmp.b);
+		node_mark(graph_node(graph, tmp.a), CONNECT_NEGATIVE, tmp.b);
 	}
 	deq_del(&marked);
 	deq_del(&remark);
