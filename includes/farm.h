@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   farm.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/18 15:08:52 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/18 23:43:22 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,6 +315,8 @@ typedef struct			s_way
 {
 	t_uint *restrict	nodes;
 	int					*ants_names;
+	int					last_ant;
+	int					first_ant;
 	t_uint				len;
 	long long			ants;
 }						t_way;

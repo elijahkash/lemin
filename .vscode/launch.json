@@ -9,7 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/lem-in.debug",
-			"args": [],
+			"args": [""],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],

@@ -1,0 +1,80 @@
+objects/main.o: sources/main.c libft/includes/libft.h \
+libft/includes/ft_libft_mod.h libft/includes/ft_libc.h \
+libft/includes/ft_memory_manager.h libft/includes/ft_dyn_arr.h \
+libft/includes/ft_vector.h libft/includes/ft_deq.h \
+libft/includes/ft_error.h libft/includes/ft_sort.h \
+libft/includes/ft_printf.h libft/includes/ft_outbuff.h \
+libft/includes/ft_outbuff_dst.h libft/includes/ft_eval.h \
+libft/includes/ft_cmp.h libft/includes/ft_bit_macro.h \
+  libft/includes/ft_tstr.h libft/includes/ft_list.h \
+libft/includes/ft_options.h libft/includes/ft_get_next_line.h \
+  libft/includes/ft_diff_utils.h includes/lemin.h
+objects/farm.o: sources/farm.c includes/farm.h libft/includes/libft.h \
+libft/includes/ft_libft_mod.h libft/includes/ft_libc.h \
+libft/includes/ft_memory_manager.h libft/includes/ft_dyn_arr.h \
+libft/includes/ft_vector.h libft/includes/ft_deq.h \
+libft/includes/ft_error.h libft/includes/ft_sort.h \
+libft/includes/ft_printf.h libft/includes/ft_outbuff.h \
+libft/includes/ft_outbuff_dst.h libft/includes/ft_eval.h \
+libft/includes/ft_cmp.h libft/includes/ft_bit_macro.h \
+  libft/includes/ft_tstr.h libft/includes/ft_list.h \
+libft/includes/ft_options.h libft/includes/ft_get_next_line.h \
+libft/includes/ft_diff_utils.h includes/input_errors.h
+objects/lemin.o: sources/lemin.c includes/lemin.h includes/farm.h \
+libft/includes/libft.h libft/includes/ft_libft_mod.h \
+libft/includes/ft_libc.h libft/includes/ft_memory_manager.h \
+libft/includes/ft_dyn_arr.h libft/includes/ft_vector.h \
+libft/includes/ft_deq.h libft/includes/ft_error.h \
+libft/includes/ft_sort.h libft/includes/ft_printf.h \
+libft/includes/ft_outbuff.h libft/includes/ft_outbuff_dst.h \
+  libft/includes/ft_eval.h libft/includes/ft_cmp.h \
+libft/includes/ft_bit_macro.h libft/includes/ft_tstr.h \
+libft/includes/ft_list.h libft/includes/ft_options.h \
+  libft/includes/ft_get_next_line.h libft/includes/ft_diff_utils.h \
+includes/read_input.h includes/input_errors.h includes/solve.h
+objects/read_input.o: sources/read_input.c includes/read_input.h includes/farm.h \
+libft/includes/libft.h libft/includes/ft_libft_mod.h \
+libft/includes/ft_libc.h libft/includes/ft_memory_manager.h \
+libft/includes/ft_dyn_arr.h libft/includes/ft_vector.h \
+libft/includes/ft_deq.h libft/includes/ft_error.h \
+libft/includes/ft_sort.h libft/includes/ft_printf.h \
+libft/includes/ft_outbuff.h libft/includes/ft_outbuff_dst.h \
+  libft/includes/ft_eval.h libft/includes/ft_cmp.h \
+libft/includes/ft_bit_macro.h libft/includes/ft_tstr.h \
+libft/includes/ft_list.h libft/includes/ft_options.h \
+  libft/includes/ft_get_next_line.h libft/includes/ft_diff_utils.h \
+includes/input_errors.h
+objects/solve.o: sources/solve.c includes/solve.h includes/farm.h \
+libft/includes/libft.h libft/includes/ft_libft_mod.h \
+libft/includes/ft_libc.h libft/includes/ft_memory_manager.h \
+libft/includes/ft_dyn_arr.h libft/includes/ft_vector.h \
+libft/includes/ft_deq.h libft/includes/ft_error.h \
+libft/includes/ft_sort.h libft/includes/ft_printf.h \
+libft/includes/ft_outbuff.h libft/includes/ft_outbuff_dst.h \
+  libft/includes/ft_eval.h libft/includes/ft_cmp.h \
+libft/includes/ft_bit_macro.h libft/includes/ft_tstr.h \
+libft/includes/ft_list.h libft/includes/ft_options.h \
+  libft/includes/ft_get_next_line.h libft/includes/ft_diff_utils.h
+objects/print_way_ants.o: sources/print_way_ants.c includes/farm.h \
+libft/includes/libft.h libft/includes/ft_libft_mod.h \
+libft/includes/ft_libc.h libft/includes/ft_memory_manager.h \
+libft/includes/ft_dyn_arr.h libft/includes/ft_vector.h \
+libft/includes/ft_deq.h libft/includes/ft_error.h \
+libft/includes/ft_sort.h libft/includes/ft_printf.h \
+libft/includes/ft_outbuff.h libft/includes/ft_outbuff_dst.h \
+  libft/includes/ft_eval.h libft/includes/ft_cmp.h \
+libft/includes/ft_bit_macro.h libft/includes/ft_tstr.h \
+libft/includes/ft_list.h libft/includes/ft_options.h \
+  libft/includes/ft_get_next_line.h libft/includes/ft_diff_utils.h \
+  includes/print_way_ants.h
+objects/input_errors.o: sources/input_errors.c includes/input_errors.h \
+libft/includes/libft.h libft/includes/ft_libft_mod.h \
+libft/includes/ft_libc.h libft/includes/ft_memory_manager.h \
+libft/includes/ft_dyn_arr.h libft/includes/ft_vector.h \
+libft/includes/ft_deq.h libft/includes/ft_error.h \
+libft/includes/ft_sort.h libft/includes/ft_printf.h \
+libft/includes/ft_outbuff.h libft/includes/ft_outbuff_dst.h \
+  libft/includes/ft_eval.h libft/includes/ft_cmp.h \
+libft/includes/ft_bit_macro.h libft/includes/ft_tstr.h \
+libft/includes/ft_list.h libft/includes/ft_options.h \
+  libft/includes/ft_get_next_line.h libft/includes/ft_diff_utils.h

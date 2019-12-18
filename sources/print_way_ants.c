@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_way_ants.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:01:41 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/14 13:19:27 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/18 23:56:47 by hmathew          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	init_ways_antsnames(t_enum_ways *restrict eways)
 	while (i < eways->count)
 	{
 		eways->ways[i].ants_names = ft_malloc(sizeof(int) * eways->ways[i].len);
+		eways->ways[i].last_ant = NO_ANT;
 		j = 0;
 		while (j < eways->ways[i].len)
 		{
@@ -45,22 +46,22 @@ void	print_move_in_way(t_way *way, t_farm *restrict farm, int *new_ant_name)
 {
 	int j;
 
-	j = way->len;
-	while (--j >= 0)
+	j = way->last_ant + 1;
+	while (--j >= 0 && way->ants_names[j] != NO_ANT)
 	{
-		if (way->ants_names[j] != NO_ANT)
+		if (j != (int)way->len - 1)
 		{
-			if (j != (int)way->len - 1)
-			{
-				ft_printf("L%d-%s ", way->ants_names[j],
-					*(char **)vect(&(farm->names), way->nodes[j + 1]));
-				way->ants_names[j + 1] = way->ants_names[j];
-			}
-			way->ants_names[j] = NO_ANT;
+			ft_printf("L%d-%s ", way->ants_names[j],
+					  *(char **)vect(&(farm->names), way->nodes[j + 1]));
+			way->ants_names[j + 1] = way->ants_names[j];
+			way->last_ant = (way->last_ant < j + 1) ? j + 1 : way->last_ant;
 		}
+		way->ants_names[j] = NO_ANT;
 	}
 	if (way->ants)
 	{
+		if (way->last_ant == NO_ANT)
+			way->last_ant = 0;
 		way->ants_names[0] = ++(*new_ant_name);
 		way->ants--;
 		ft_printf("L%d-%s ", (*new_ant_name),
