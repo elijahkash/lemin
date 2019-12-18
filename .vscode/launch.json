@@ -10,7 +10,7 @@
 			"request": "launch",
 			"program": "${workspaceFolder}/lem-in.debug",
 			"args": [],
-			"stopAtEntry": true,
+			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": true,

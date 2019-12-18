@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/17 17:39:10 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/18 15:09:50 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,9 @@ inline void				node_mark(t_node *node, t_uint connect_state,
 	if (node->separate)
 	{
 		if (connect_state == CONNECT_NEGATIVE)
-		{
-			node->marked_in = 0;
-			node->marked_out = 1;
-		}
+			node->marked_sep = MARKED_OUT;
 		else
-			node->marked_in = 1;
+			node->marked_sep = MARKED_IN;
 	}
 }
 
@@ -223,8 +220,6 @@ void					graph_clear_state(t_graph *restrict graph)
 	while (i < graph->size)
 	{
 		graph->nodes[i]->marked = 0;
-		graph->nodes[i]->marked_in = 0;
-		graph->nodes[i]->marked_out = 0;
 		graph->nodes[i]->bfs_level = 0;
 		i++;
 	}
@@ -283,7 +278,8 @@ t_iter					*iter_init(t_iter *restrict iter, t_node *restrict node,
 	iter->i = 0;
 	iter->connects = graph_node_connects(node);
 	if (type == ITER_BY_NODE)
-		iter->func = node->marked_in ? ITER_NEGATIVE : ITER_ALLOWED;
+		iter->func = (node->separate && node->marked_sep == MARKED_IN) ?
+						ITER_NEGATIVE : ITER_ALLOWED;
 	else
 		iter->func = type;
 	return (iter);

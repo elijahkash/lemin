@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/17 17:38:53 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/18 15:08:52 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 **	In fact, if graph have <= 16383 node, we can use __uint16_t !!!!!
 */
 typedef __uint32_t		t_uint;
+typedef __int32_t		t_int;
 
 /*
 ** From here on will be assumed that our ant's farm can't consist from more than
@@ -54,10 +55,12 @@ typedef struct			s_node
 	t_uint				count_connects : 30;
 	t_uint				marked : 1;
 	t_uint				separate : 1;
-	t_uint				marked_in : 1;
-	t_uint				marked_out : 1;
+	t_uint				marked_sep : 1; //TODO: recomment
 	t_uint				bfs_level : 30;
 }						t_node;
+
+# define MARKED_IN		0
+# define MARKED_OUT		1
 
 void					node_reverse(t_node *node);
 void					node_mark(t_node *node, t_uint connect_state,

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/17 17:48:27 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/18 15:17:52 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static void		reverse_new_way(t_graph *restrict graph)
 			itm.dst_to_src = graph_connect(itm.dst, cur_iter);
 			if (itm.dst->bfs_level == cur_bfs_level && itm.dst_to_src->state
 			!= CONNECT_FORBIDDEN && (itm.dst->separate == 0 ||
-			itm.dst->marked_out || itm.dst_to_src->state == CONNECT_NEGATIVE))
+			itm.dst->marked_sep == MARKED_OUT ||
+			itm.dst_to_src->state == CONNECT_NEGATIVE))
 				break ;
 		}
 		cur_iter = itm.src_to_dst->dst;
@@ -63,7 +64,8 @@ void			add_nodes(t_graph *restrict graph, t_deq *restrict marked,
 			deq_push_back(marked, ft_z(connect->dst));
 			node_mark(node, connect->state, bfs_level);
 		}
-		else if (node->marked_in && connect->state == CONNECT_NEGATIVE)
+		else if (node->separate && node->marked_sep == MARKED_IN &&
+					connect->state == CONNECT_NEGATIVE)
 		{
 			tmp.a = connect->dst;
 			tmp.b = bfs_level;
