@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/21 21:02:35 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/21 21:28:53 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ static void		reverse_new_way(t_graph *restrict graph)
 	while (cur_item != graph->start)
 	{
 		item.dst = graph_node(graph, item.src->parent);
-		item.src_to_dst = graph_connect(item.src, item.src->parent);
-		item.dst_to_src = graph_connect(item.dst, cur_item);
+		item.src_dst = graph_connect(item.src, item.src->parent);
+		item.dst_src = graph_connect(item.dst, cur_item);
 		if (item.dst->separate && item.dst->marked_sep == MARKED_OUT &&
-			item.src_to_dst->state == CONNECT_BASE_STATE
-			/*&& item.src_to_dst->dst != graph->end*/)
+			item.src_dst->state == CONNECT_BASE_STATE
+			/*&& item.src_dst->dst != graph->end*/)
 		{
 			iter_init(iter, item.dst, ITER_FORBIDDEN);
 			item.dst->parent = iter_next(iter)->dst;
@@ -47,45 +47,35 @@ void			add_nodes(t_graph *restrict graph, t_vect *restrict marked)
 	t_iter					iter[1];
 	t_node_info				src;
 	t_full_connect			item;
-	t_int					new_weight;
 	t_node_info				tmp;
 
 	src = *(t_node_info *)vect_pop_i(marked, 0);
 	item.src = graph_node(graph, src.self);
 	item.src->in_deq = 0;
 	iter_init(iter, item.src, ITER_BY_NODE);
-	while ((item.src_to_dst = iter_next(iter)))
+	while ((item.src_dst = iter_next(iter)))
 	{
-		new_weight = src.weight + (item.src_to_dst->state == CONNECT_BASE_STATE
-								? 1 : -1);
-		item.dst = graph_node(graph, item.src_to_dst->dst);
-		tmp.self = item.src_to_dst->dst;
-		tmp.weight = new_weight;
+		item.dst = graph_node(graph, item.src_dst->dst);
+		tmp.weight = src.weight + (item.src_dst->state == CONNECT_BASE_STATE ?
+									1 : -1);
+		tmp.self = item.src_dst->dst;
 		if (item.dst->marked == 0)
 		{
 			vect_add(marked, &tmp);
 			item.dst->in_deq = 1;
-			node_mark(item.dst, item.src_to_dst->state, new_weight, src.self);
+			node_mark(item.dst, item.src_dst->state, tmp.weight, src.self);
 		}
 		else if (item.dst->separate && item.dst->marked_sep == MARKED_IN &&
-					item.src_to_dst->state == CONNECT_NEGATIVE)
+				item.src_dst->state == CONNECT_NEGATIVE)
 		{
-			if (item.dst->weight > new_weight)
-				node_mark(item.dst, item.src_to_dst->state, new_weight, src.self);
-			else
-				item.dst->marked_sep = MARKED_OUT;
+			(item.dst->weight <= tmp.weight) ?
+				(item.dst->marked_sep = MARKED_OUT) :
+				node_mark(item.dst, item.src_dst->state, tmp.weight, src.self);
 			if (item.dst->in_deq == 0)
-			{
-				item.dst->in_deq = 1;
 				vect_add(marked, &tmp);
-			}
+			item.dst->in_deq = 1;
 		}
 	}
-}
-
-int				node_cmp(const void *a, const void *b)
-{
-	return (((t_node_info *)a)->weight - ((t_node_info *)b)->weight);
 }
 
 static int		find_new_way(t_graph *restrict graph)
@@ -100,7 +90,7 @@ static int		find_new_way(t_graph *restrict graph)
 	while (end_node->marked == 0 && marked.curlen)
 	{
 		add_nodes(graph, &marked);
-		vect_sort(&marked, node_cmp, ft_qsort);
+		vect_sort(&marked, node_info_cmp, ft_qsort);
 	}
 	vect_del(&marked);
 	(end_node->marked) ? reverse_new_way(graph) : 0;

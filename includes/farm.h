@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/21 20:52:41 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/21 21:18:53 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ typedef struct			s_node_info
 
 void					node_mark(t_node *node, t_uint connect_state,
 									t_int weight, t_uint parent);
-
+// TODO: int?
+int						node_info_cmp(const void *a, const void *b);
 /*
 ** =============================================================================
 ** =============================================================================
@@ -112,8 +113,8 @@ typedef struct			s_full_connect
 {
 	t_node *restrict	src;
 	t_node *restrict	dst;
-	t_connect *restrict	src_to_dst;
-	t_connect *restrict	dst_to_src;
+	t_connect *restrict	src_dst;
+	t_connect *restrict	dst_src;
 }						t_full_connect;
 
 void					full_connect_reverse(t_full_connect connect);

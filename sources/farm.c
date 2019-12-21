@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/21 20:31:30 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/21 21:31:02 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ inline void				node_mark(t_node *node, t_uint connect_state,
 	}
 }
 
+int						node_info_cmp(const void *a, const void *b)
+{
+	return (((t_node_info *)a)->weight - ((t_node_info *)b)->weight);
+}
+
 /*
 ** =============================================================================
 ** =============================================================================
@@ -44,17 +49,17 @@ inline void				node_mark(t_node *node, t_uint connect_state,
 
 void					full_connect_reverse(t_full_connect connect)
 {
-	if (connect.src_to_dst->state == CONNECT_FORBIDDEN ||
-		connect.src_to_dst->state == CONNECT_NEGATIVE)
+	if (connect.src_dst->state == CONNECT_FORBIDDEN ||
+		connect.src_dst->state == CONNECT_NEGATIVE)
 	{
-		connect.src_to_dst->state = CONNECT_BASE_STATE;
-		connect.dst_to_src->state = CONNECT_BASE_STATE;
+		connect.src_dst->state = CONNECT_BASE_STATE;
+		connect.dst_src->state = CONNECT_BASE_STATE;
 		connect.dst->separate = 0;
 	}
 	else
 	{
-		connect.src_to_dst->state = CONNECT_NEGATIVE;
-		connect.dst_to_src->state = CONNECT_FORBIDDEN;
+		connect.src_dst->state = CONNECT_NEGATIVE;
+		connect.dst_src->state = CONNECT_FORBIDDEN;
 		connect.src->separate = 1;
 		connect.dst->separate = 1;
 	}
@@ -166,6 +171,7 @@ void					graph_add_connect(t_graph *restrict graph,
 	node = graph->nodes[src];
 	con = ((t_connect *)(node + 1)) + (node->count_connects)++;
 	con->dst = dst;
+	con->state = CONNECT_BASE_STATE;
 }
 
 static t_connect		*graph_connect_find(t_connect *restrict connects,
