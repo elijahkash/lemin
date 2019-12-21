@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/18 15:17:52 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/21 21:02:35 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,88 +17,92 @@
 
 static void		reverse_new_way(t_graph *restrict graph)
 {
-	t_uint				cur_iter;
-	t_uint				cur_bfs_level;
-	t_iter				iter;
-	t_full_connect		itm;
+	t_uint				cur_item;
+	t_full_connect		item;
+	t_iter				iter[1];
 
-	cur_iter = graph->end;
-	itm.src = graph_node(graph, cur_iter);
-	cur_bfs_level = itm.src->bfs_level;
-	while (cur_bfs_level-- > 0)
+	cur_item = graph->end;
+	item.src = graph_node(graph, cur_item);
+	while (cur_item != graph->start)
 	{
-		iter_init(&iter, itm.src, ITER_ALL);
-		while ((itm.src_to_dst = iter_next(&iter)))
+		item.dst = graph_node(graph, item.src->parent);
+		item.src_to_dst = graph_connect(item.src, item.src->parent);
+		item.dst_to_src = graph_connect(item.dst, cur_item);
+		if (item.dst->separate && item.dst->marked_sep == MARKED_OUT &&
+			item.src_to_dst->state == CONNECT_BASE_STATE
+			/*&& item.src_to_dst->dst != graph->end*/)
 		{
-			itm.dst = graph_node(graph, itm.src_to_dst->dst);
-			itm.dst_to_src = graph_connect(itm.dst, cur_iter);
-			if (itm.dst->bfs_level == cur_bfs_level && itm.dst_to_src->state
-			!= CONNECT_FORBIDDEN && (itm.dst->separate == 0 ||
-			itm.dst->marked_sep == MARKED_OUT ||
-			itm.dst_to_src->state == CONNECT_NEGATIVE))
-				break ;
+			iter_init(iter, item.dst, ITER_FORBIDDEN);
+			item.dst->parent = iter_next(iter)->dst;
 		}
-		cur_iter = itm.src_to_dst->dst;
-		itm.src = itm.dst;
-		full_connect_reverse(itm);
+		full_connect_reverse(item);
+		cur_item = item.src->parent;
+		item.src = item.dst;
 	}
-	itm.dst->separate = 0;
+	item.src->separate = 0;
 }
 
-void			add_nodes(t_graph *restrict graph, t_deq *restrict marked,
-													t_deq *restrict remark)
+void			add_nodes(t_graph *restrict graph, t_vect *restrict marked)
 {
-	t_iter					iter;
-	t_connect *restrict		connect;
-	t_node *restrict		node;
-	t_uint					bfs_level;
-	t_dnbr					tmp;
+	t_iter					iter[1];
+	t_node_info				src;
+	t_full_connect			item;
+	t_int					new_weight;
+	t_node_info				tmp;
 
-	node = graph_node(graph, *(t_uint *)deq_pop_front(marked));
-	bfs_level = node->bfs_level + 1;
-	iter_init(&iter, node, ITER_BY_NODE);
-	while ((connect = iter_next(&iter)))
+	src = *(t_node_info *)vect_pop_i(marked, 0);
+	item.src = graph_node(graph, src.self);
+	item.src->in_deq = 0;
+	iter_init(iter, item.src, ITER_BY_NODE);
+	while ((item.src_to_dst = iter_next(iter)))
 	{
-		if ((node = graph_node(graph, connect->dst))->marked == 0)
+		new_weight = src.weight + (item.src_to_dst->state == CONNECT_BASE_STATE
+								? 1 : -1);
+		item.dst = graph_node(graph, item.src_to_dst->dst);
+		tmp.self = item.src_to_dst->dst;
+		tmp.weight = new_weight;
+		if (item.dst->marked == 0)
 		{
-			deq_push_back(marked, ft_z(connect->dst));
-			node_mark(node, connect->state, bfs_level);
+			vect_add(marked, &tmp);
+			item.dst->in_deq = 1;
+			node_mark(item.dst, item.src_to_dst->state, new_weight, src.self);
 		}
-		else if (node->separate && node->marked_sep == MARKED_IN &&
-					connect->state == CONNECT_NEGATIVE)
+		else if (item.dst->separate && item.dst->marked_sep == MARKED_IN &&
+					item.src_to_dst->state == CONNECT_NEGATIVE)
 		{
-			tmp.a = connect->dst;
-			tmp.b = bfs_level;
-			deq_push_back(remark, &tmp);
+			if (item.dst->weight > new_weight)
+				node_mark(item.dst, item.src_to_dst->state, new_weight, src.self);
+			else
+				item.dst->marked_sep = MARKED_OUT;
+			if (item.dst->in_deq == 0)
+			{
+				item.dst->in_deq = 1;
+				vect_add(marked, &tmp);
+			}
 		}
 	}
+}
+
+int				node_cmp(const void *a, const void *b)
+{
+	return (((t_node_info *)a)->weight - ((t_node_info *)b)->weight);
 }
 
 static int		find_new_way(t_graph *restrict graph)
 {
-	t_deq	marked;
-	t_deq	remark;
+	t_vect	marked;
 	t_node	*end_node;
-	t_dnbr	tmp;
 
-	graph_clear_state(graph);
-	deq_init(&marked, sizeof(t_uint), 256);
-	deq_init(&remark, sizeof(t_dnbr), 128);
-	deq_push_back(&marked, &(graph->start));
-	node_mark(graph_node(graph, graph->start), 0, 0);
+	vect_init(&marked, sizeof(t_node_info), 256);
+	vect_add(&marked, &(graph->start));
+	node_mark(graph_node(graph, graph->start), 0, 0, 0);
 	end_node = graph_node(graph, graph->end);
-	while (TRUE)
+	while (end_node->marked == 0 && marked.curlen)
 	{
-		while (end_node->marked == 0 && marked.curlen)
-			add_nodes(graph, &marked, &remark);
-		if (end_node->marked || remark.curlen == 0)
-			break ;
-		tmp = *((t_dnbr *)deq_pop_front(&remark));
-		deq_push_front(&marked, &(tmp.a));
-		node_mark(graph_node(graph, tmp.a), CONNECT_NEGATIVE, tmp.b);
+		add_nodes(graph, &marked);
+		vect_sort(&marked, node_cmp, ft_qsort);
 	}
-	deq_del(&marked);
-	deq_del(&remark);
+	vect_del(&marked);
 	(end_node->marked) ? reverse_new_way(graph) : 0;
 	return (end_node->marked);
 }
@@ -160,17 +164,16 @@ static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
 int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 						long long ants)
 {
-	t_uint		k;
 	long long	min_moves;
 	t_enum_ways	tmp;
+	t_uint		max_count;
 
-	k = 0;
+	max_count = graph_node(graph, graph->end)->count_connects;
+	tmp.count = 0;
 	min_moves = __INT64_MAX__;
-	while (k < graph_node(graph, graph->start)->count_connects &&
-			k < graph_node(graph, graph->end)->count_connects &&
-			find_new_way(graph))
+	while (find_new_way(graph))
 	{
-		tmp.count = ++k;
+		tmp.count++;
 		find_ways(&tmp, graph);
 		count_moves(&tmp, ants);
 		if (tmp.moves <= min_moves)
@@ -181,8 +184,9 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 		}
 		else
 			enum_ways_del(&tmp);
-		if (tmp.moves > min_moves)
+		if ((tmp.moves > min_moves) || (tmp.count == max_count))
 			break ;
+		graph_clear_state(graph);
 	}
 	return (0);
 }

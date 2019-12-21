@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   farm.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmathew <hmathew@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/18 23:43:22 by hmathew          ###   ########.fr       */
+/*   Updated: 2019/12/21 20:52:41 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef __int32_t		t_int;
 */
 
 /*
+** value of marked_sep matter only if separate == 1
+** marked_sep can be MARKED_IN or MARKED_OUT
 ** Look here for understanding 'separate' and 'marked_in/out' statements
 ** http://www.macfreek.nl/memory/Disjoint_Path_Finding
 */
@@ -54,17 +56,24 @@ typedef struct			s_node
 {
 	t_uint				count_connects : 30;
 	t_uint				marked : 1;
+	t_uint				in_deq : 1;
 	t_uint				separate : 1;
-	t_uint				marked_sep : 1; //TODO: recomment
-	t_uint				bfs_level : 30;
+	t_uint				marked_sep : 1;
+	t_uint				parent : 30;
+	t_int				weight : 31;
 }						t_node;
 
 # define MARKED_IN		0
 # define MARKED_OUT		1
 
-void					node_reverse(t_node *node);
+typedef struct			s_node_info
+{
+	t_uint				self;
+	t_int				weight;
+}						t_node_info;
+
 void					node_mark(t_node *node, t_uint connect_state,
-									t_uint bfs_level);
+									t_int weight, t_uint parent);
 
 /*
 ** =============================================================================

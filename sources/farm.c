@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/18 15:09:50 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/21 20:31:30 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,12 @@
 ** =============================================================================
 */
 
-void					node_reverse(t_node *restrict node)
-{
-	t_iter	iter;
-
-	if (node->separate)
-	{
-		iter_init(&iter, node, ITER_NEGATIVE);
-		if (iter_next(&iter) == NULL)
-			node->separate = 0;
-	}
-	else
-		node->separate = 1;
-}
-
 inline void				node_mark(t_node *node, t_uint connect_state,
-									t_uint bfs_level)
+									t_int weight, t_uint parent)
 {
-	node->bfs_level = bfs_level;
+	node->weight = weight;
 	node->marked = 1;
+	node->parent = parent;
 	if (node->separate)
 	{
 		if (connect_state == CONNECT_NEGATIVE)
@@ -62,13 +49,15 @@ void					full_connect_reverse(t_full_connect connect)
 	{
 		connect.src_to_dst->state = CONNECT_BASE_STATE;
 		connect.dst_to_src->state = CONNECT_BASE_STATE;
+		connect.dst->separate = 0;
 	}
 	else
 	{
 		connect.src_to_dst->state = CONNECT_NEGATIVE;
 		connect.dst_to_src->state = CONNECT_FORBIDDEN;
+		connect.src->separate = 1;
+		connect.dst->separate = 1;
 	}
-	node_reverse(connect.dst);
 }
 
 /*
@@ -115,7 +104,6 @@ static void				graph_fill(t_graph *restrict graph,
 	while (i < graph->size)
 	{
 		graph->nodes[i] = current_pos;
-		((t_node *)current_pos)->count_connects = 0;
 		current_pos += sizeof(t_node) + sizeof(t_connect) * node_connects[i];
 		i++;
 	}
@@ -140,7 +128,7 @@ int						graph_init(t_graph *restrict graph,
 	if (count_node_connects(farm, node_connects))
 		return (SAME_WAYS);
 	graph->nodes = ft_malloc(sizeof(t_node *) * graph->size);
-	graph->mem = ft_malloc(sizeof(t_node) * graph->size +
+	graph->mem = ft_memalloc(sizeof(t_node) * graph->size +
 							sizeof(t_connect) * farm->connects.curlen * 2);
 	graph_fill(graph, farm, node_connects);
 	graph->start = vect_bin_find(&(farm->names),
@@ -178,7 +166,6 @@ void					graph_add_connect(t_graph *restrict graph,
 	node = graph->nodes[src];
 	con = ((t_connect *)(node + 1)) + (node->count_connects)++;
 	con->dst = dst;
-	con->state = CONNECT_BASE_STATE;
 }
 
 static t_connect		*graph_connect_find(t_connect *restrict connects,
@@ -220,9 +207,13 @@ void					graph_clear_state(t_graph *restrict graph)
 	while (i < graph->size)
 	{
 		graph->nodes[i]->marked = 0;
-		graph->nodes[i]->bfs_level = 0;
+		graph->nodes[i]->weight = 0;
+		graph->nodes[i]->parent = 0;
+		graph->nodes[i]->in_deq = 0;
 		i++;
 	}
+	graph->nodes[graph->start]->separate = 0;
+	graph->nodes[graph->end]->separate = 0;
 }
 
 /*

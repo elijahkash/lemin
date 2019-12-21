@@ -27,6 +27,7 @@
 		"ft_outbuff.h": "c",
 		"ft_fast_stream_gnl.h": "c",
 		"ft_fast_input_gnl.h": "c",
-		"farm.h": "c"
+		"farm.h": "c",
+		"ft_deq.h": "c"
 	}
 }
