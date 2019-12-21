@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/21 21:47:33 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/21 22:12:22 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void			add_nodes(t_graph *restrict graph, t_vect *restrict marked)
 			k++;
 		}
 	}
+	//TODO: я сортирую первичные веса. а если они изменятся в условии выше?
 	if (k)
 		vect_sort(marked, node_info_cmp_rev, ft_qsort);
 }
