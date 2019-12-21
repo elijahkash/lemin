@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/21 21:31:02 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/21 21:46:50 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** =============================================================================
 */
 
-inline void				node_mark(t_node *node, t_uint connect_state,
+inline void				node_mark(t_node *node, t_int connect_state,
 									t_int weight, t_uint parent)
 {
 	node->weight = weight;
@@ -39,6 +39,11 @@ inline void				node_mark(t_node *node, t_uint connect_state,
 int						node_info_cmp(const void *a, const void *b)
 {
 	return (((t_node_info *)a)->weight - ((t_node_info *)b)->weight);
+}
+
+int						node_info_cmp_rev(const void *a, const void *b)
+{
+	return (((t_node_info *)b)->weight - ((t_node_info *)a)->weight);
 }
 
 /*

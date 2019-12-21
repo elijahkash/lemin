@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/21 21:18:53 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/21 21:46:35 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,11 @@ typedef struct			s_node_info
 	t_int				weight;
 }						t_node_info;
 
-void					node_mark(t_node *node, t_uint connect_state,
+void					node_mark(t_node *node, t_int connect_state,
 									t_int weight, t_uint parent);
 // TODO: int?
 int						node_info_cmp(const void *a, const void *b);
+int						node_info_cmp_rev(const void *a, const void *b);
 /*
 ** =============================================================================
 ** =============================================================================
@@ -85,7 +86,7 @@ int						node_info_cmp(const void *a, const void *b);
 typedef struct			s_connect
 {
 	t_uint				dst : 30;
-	t_uint				state : 2;
+	t_int				state : 2;
 }						t_connect;
 
 /*
@@ -94,9 +95,9 @@ typedef struct			s_connect
 ** directions, both directions (and negative, and forbidden) turn into
 ** normal ways (marked as BASE_STATE).
 */
-# define CONNECT_BASE_STATE	0
-# define CONNECT_NEGATIVE	1
-# define CONNECT_FORBIDDEN	2
+# define CONNECT_BASE_STATE	1
+# define CONNECT_NEGATIVE	-1
+# define CONNECT_FORBIDDEN	0
 
 /*
 ** =============================================================================
