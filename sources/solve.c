@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/21 22:12:22 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/22 17:20:13 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,26 @@
 
 #include <farm.h>
 #include <libft.h>
+
+static void		find_new_parent(t_node *restrict node, t_graph *restrict graph)
+{
+	t_int				min_weight;
+	t_connect *restrict connect;
+	t_int				new_wt;
+	t_iter				iter[1];
+	t_uint				res;
+
+	min_weight = __INT32_MAX__;
+	res = node->parent;
+	iter_init(iter, node, ITER_POSITIVE);
+	while ((connect = iter_next(iter)))
+		if ((new_wt = graph_node(graph, connect->dst)->weight) < min_weight)
+		{
+			min_weight = new_wt;
+			res = connect->dst;
+		}
+	node->parent = res;
+}
 
 static void		reverse_new_way(t_graph *restrict graph)
 {
@@ -28,12 +48,11 @@ static void		reverse_new_way(t_graph *restrict graph)
 		item.dst = graph_node(graph, item.src->parent);
 		item.src_dst = graph_connect(item.src, item.src->parent);
 		item.dst_src = graph_connect(item.dst, cur_item);
-		if (item.dst->separate && item.dst->marked_sep == MARKED_OUT &&
-			item.src_dst->state == CONNECT_BASE_STATE)
-		{
-			iter_init(iter, item.dst, ITER_FORBIDDEN);
-			item.dst->parent = iter_next(iter)->dst;
-		}
+		(item.dst->separate && item.dst->marked_sep == MARKED_OUT &&
+			item.src_dst->state == CONNECT_BASE_STATE) ? (item.dst->parent =
+			iter_next(iter_init(iter, item.dst, ITER_FORBIDDEN))->dst) : 0;
+		(item.dst->in_new_way) ? find_new_parent(item.dst, graph) : 0;
+		item.dst->in_new_way = 1;
 		full_connect_reverse(item);
 		cur_item = item.src->parent;
 		item.src = item.dst;
@@ -51,7 +70,7 @@ void			add_nodes(t_graph *restrict graph, t_vect *restrict marked)
 
 	src = *(t_node_info *)vect_pop(marked);
 	item.src = graph_node(graph, src.self);
-	item.src->in_deq = 0;
+	item.src->in_queue = 0;
 	iter_init(iter, item.src, ITER_BY_NODE);
 	while ((item.src_dst = iter_next(iter)))
 	{
@@ -61,7 +80,7 @@ void			add_nodes(t_graph *restrict graph, t_vect *restrict marked)
 		if (item.dst->marked == 0)
 		{
 			vect_add(marked, &tmp);
-			item.dst->in_deq = 1;
+			item.dst->in_queue = 1;
 			k++;
 			node_mark(item.dst, item.src_dst->state, tmp.weight, src.self);
 		}
@@ -70,9 +89,18 @@ void			add_nodes(t_graph *restrict graph, t_vect *restrict marked)
 		{
 			item.dst->weight <= tmp.weight ? (item.dst->marked_sep = MARKED_OUT)
 			: node_mark(item.dst, item.src_dst->state, tmp.weight, src.self);
-			if (item.dst->in_deq == 0)
+			if (item.dst->in_queue == 0)
 				vect_add(marked, &tmp);
-			item.dst->in_deq = 1;
+			else
+			{
+				for (t_uint i = 0; i < marked->curlen; i++)
+				{
+					if (((t_node_info *)vect(marked, i))->self == tmp.self)
+						((t_node_info *)vect(marked, i))->weight = tmp.weight;
+				}
+			}
+
+			item.dst->in_queue = 1;
 			k++;
 		}
 	}
@@ -152,15 +180,15 @@ static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
 }
 
 int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
-						long long ants)
+						t_uint ants)
 {
-	long long	min_moves;
+	t_uint		min_moves;
 	t_enum_ways	tmp;
 	t_uint		max_count;
 
 	max_count = graph_node(graph, graph->end)->count_connects;
 	tmp.count = 0;
-	min_moves = __INT64_MAX__;
+	min_moves = __UINT32_MAX__;
 	while (find_new_way(graph))
 	{
 		tmp.count++;

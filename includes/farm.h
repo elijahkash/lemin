@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/21 21:46:35 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/22 17:05:02 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 # define FARM_H
 
 # include <libft.h>
-
-/*
-** //TODO: restrict inline macros
-*/
 
 /*
 **	In fact, if graph have <= 16383 node, we can use __uint16_t !!!!!
@@ -54,13 +50,14 @@ typedef __int32_t		t_int;
 */
 typedef struct			s_node
 {
-	t_uint				count_connects : 30;
-	t_uint				marked : 1;
-	t_uint				in_deq : 1;
-	t_uint				separate : 1;
-	t_uint				marked_sep : 1;
-	t_uint				parent : 30;
-	t_int				weight : 31;
+	t_uint				count_connects	: 30;
+	t_uint				marked			: 1;
+	t_uint				in_queue		: 1;
+	t_uint				separate		: 1;
+	t_uint				marked_sep		: 1;
+	t_uint				parent			: 30;
+	t_int				weight			: 31;
+	t_uint				in_new_way		: 1;
 }						t_node;
 
 # define MARKED_IN		0
@@ -74,9 +71,12 @@ typedef struct			s_node_info
 
 void					node_mark(t_node *node, t_int connect_state,
 									t_int weight, t_uint parent);
-// TODO: int?
+/*
+** // TODO: not safety on systems with 16-bit int
+*/
 int						node_info_cmp(const void *a, const void *b);
 int						node_info_cmp_rev(const void *a, const void *b);
+
 /*
 ** =============================================================================
 ** =============================================================================
@@ -85,8 +85,8 @@ int						node_info_cmp_rev(const void *a, const void *b);
 
 typedef struct			s_connect
 {
-	t_uint				dst : 30;
-	t_int				state : 2;
+	t_uint				dst		: 30;
+	t_int				state	: 2;
 }						t_connect;
 
 /*
@@ -218,7 +218,8 @@ t_connect				*iter_next(t_iter *iter);
 # define ITER_ALLOWED			1
 # define ITER_NEGATIVE			2
 # define ITER_FORBIDDEN			3
-# define ITER_BY_NODE			4
+# define ITER_POSITIVE			4
+# define ITER_BY_NODE			5
 
 /*
 ** =============================================================================
@@ -266,7 +267,7 @@ t_connect				*iter_next(t_iter *iter);
 */
 typedef struct			s_farm
 {
-	long long			ants;
+	t_uint				ants;
 	t_vect				chars;
 	t_vect				names;
 	t_vect				connects;
@@ -320,7 +321,7 @@ int						dnbr_cmp(const void *number_1, const void *number_2);
 
 /*
 **	ants - this is the number of ants that will go this way.
-** //TODO: type ants_names
+** //TODO: type ants_names + force calc + restrict inline
 */
 typedef struct			s_way
 {
@@ -329,7 +330,7 @@ typedef struct			s_way
 	int					last_ant;
 	int					first_ant;
 	t_uint				len;
-	long long			ants;
+	t_uint				ants;
 }						t_way;
 
 void					way_init(t_way *way, t_uint *arr, t_uint len);
@@ -347,7 +348,7 @@ typedef struct			s_enum_ways
 	t_way *restrict		ways;
 	t_uint *restrict	nodes_mem;
 	t_uint				count;
-	long long			moves;
+	t_uint			moves;
 }						t_enum_ways;
 
 void					enum_ways_init(t_enum_ways *combs, t_uint count);
@@ -356,7 +357,7 @@ void					enum_ways_del(t_enum_ways *combs);
 ** for main idea look here (in bottom):
 ** https://github.com/VBrazhnik/Lem_in/wiki/Algorithm
 */
-long long				count_moves(t_enum_ways *combs, long long ants);
+t_uint					count_moves(t_enum_ways *combs, t_uint ants);
 
 void					print_result(t_enum_ways *combs, t_farm *farm);
 

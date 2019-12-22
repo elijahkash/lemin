@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:01:41 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/21 22:08:11 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/22 16:25:12 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_move_in_way(t_way *way, t_farm *restrict farm, int *new_ant_name)
 		if (j != (int)way->len - 1)
 		{
 			ft_printf("L%d-%s ", way->ants_names[j],
-					  *(char **)vect(&(farm->names), way->nodes[j + 1]));
+					*(char **)vect(&(farm->names), way->nodes[j + 1]));
 			way->ants_names[j + 1] = way->ants_names[j];
 			way->last_ant = (way->last_ant < j + 1) ? j + 1 : way->last_ant;
 		}

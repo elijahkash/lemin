@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/15 13:56:11 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/22 16:53:57 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,11 @@ static t_uint		read_room(t_uint state, char *restrict line,
 static t_uint		read_ants(t_uint state, char *restrict line,
 								t_farm *restrict farm)
 {
-	if (state & (START | END) || ft_isdigit_ws(line))
+	if (state & (START | END) || *ft_skip_atoi(line) || ft_strchr(line, '-'))
 		return (state | ERRSTATE | ANTS_ERROR);
-	farm->ants = ft_atoi(line);
+	farm->ants = ft_atoi_l(line);
+	if (ft_strlen(line) > 11 || farm->ants > __UINT32_MAX__)
+		return (state | ERRSTATE | ANTS_ERROR);
 	state &= ~ANTS;
 	state |= ROOMS;
 	farm_init_rooms(farm);

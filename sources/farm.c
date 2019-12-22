@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/21 21:46:50 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/22 17:43:58 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** =============================================================================
 */
 
-inline void				node_mark(t_node *node, t_int connect_state,
+inline void				node_mark(t_node *restrict node, t_int connect_state,
 									t_int weight, t_uint parent)
 {
 	node->weight = weight;
@@ -36,12 +36,12 @@ inline void				node_mark(t_node *node, t_int connect_state,
 	}
 }
 
-int						node_info_cmp(const void *a, const void *b)
+inline int				node_info_cmp(const void *a, const void *b)
 {
 	return (((t_node_info *)a)->weight - ((t_node_info *)b)->weight);
 }
 
-int						node_info_cmp_rev(const void *a, const void *b)
+inline int				node_info_cmp_rev(const void *a, const void *b)
 {
 	return (((t_node_info *)b)->weight - ((t_node_info *)a)->weight);
 }
@@ -52,7 +52,7 @@ int						node_info_cmp_rev(const void *a, const void *b)
 ** =============================================================================
 */
 
-void					full_connect_reverse(t_full_connect connect)
+inline void				full_connect_reverse(t_full_connect connect)
 {
 	if (connect.src_dst->state == CONNECT_FORBIDDEN ||
 		connect.src_dst->state == CONNECT_NEGATIVE)
@@ -79,10 +79,10 @@ void					full_connect_reverse(t_full_connect connect)
 static int				count_node_connects(t_farm *restrict farm,
 											t_uint *restrict node_connects)
 {
-	t_uint	same_connects;
-	t_uint	i;
-	t_dnbr	*tmp;
-	t_uint	len;
+	t_uint				same_connects;
+	t_uint				i;
+	t_dnbr *restrict	tmp;
+	t_uint				len;
 
 	same_connects = 0;
 	i = 0;
@@ -220,7 +220,8 @@ void					graph_clear_state(t_graph *restrict graph)
 		graph->nodes[i]->marked = 0;
 		graph->nodes[i]->weight = 0;
 		graph->nodes[i]->parent = 0;
-		graph->nodes[i]->in_deq = 0;
+		graph->nodes[i]->in_queue = 0;
+		graph->nodes[i]->in_new_way = 0;
 		i++;
 	}
 	graph->nodes[graph->start]->separate = 0;
@@ -266,11 +267,21 @@ static t_connect		*iter_next_forbidden(t_iter *restrict iter)
 	return (tmp);
 }
 
+static t_connect		*iter_next_positive(t_iter *restrict iter)
+{
+	t_connect	*restrict tmp;
+
+	while ((tmp = iter_next_all(iter)) && (tmp->state != CONNECT_BASE_STATE))
+		continue ;
+	return (tmp);
+}
+
 t_connect				*(*g_iter_func[])(t_iter *restrict iter) = {
 	iter_next_all,
 	iter_next_allowed,
 	iter_next_negative,
-	iter_next_forbidden
+	iter_next_forbidden,
+	iter_next_positive
 };
 
 t_iter					*iter_init(t_iter *restrict iter, t_node *restrict node,
@@ -413,7 +424,7 @@ void					enum_ways_del(t_enum_ways *restrict combs)
 	combs->ways = NULL;
 }
 
-static void				fill_borders(t_uint *borders,
+static void				fill_borders(t_uint *restrict borders,
 										t_enum_ways *restrict combs)
 {
 	t_uint	i;
@@ -435,10 +446,10 @@ static void				fill_borders(t_uint *borders,
 	}
 }
 
-long long				count_moves(t_enum_ways *restrict combs, long long ants)
+t_uint					count_moves(t_enum_ways *restrict combs, t_uint ants)
 {
-	long long	cur_count;
-	long long	tmp;
+	t_uint		cur_count;
+	t_uint		tmp;
 	t_uint		way;
 	t_uint		borders[combs->count];
 
@@ -446,7 +457,7 @@ long long				count_moves(t_enum_ways *restrict combs, long long ants)
 	way = combs->count;
 	cur_count = 0;
 	while (way > 0)
-		if (ants - (way - 1) > borders[way - 1])
+		if ((__int64_t)ants - (way - 1) > borders[way - 1])
 		{
 			tmp = (ants - (way - 1) - borders[way - 1]) / way;
 			tmp += (tmp) ? 0 : 1;

@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/15 14:12:57 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/22 16:54:34 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,3 @@ void				lemin(void)
 	farm_del(farm);
 	return ;
 }
-
-//TODO: OWERFLOW ANTS?
