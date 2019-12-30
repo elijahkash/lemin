@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/30 16:08:40 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/30 20:11:38 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,8 @@ static void		find_way(t_vect *restrict way, t_uint first_node,
 	}
 }
 
-static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
+static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph,
+							t_uint ways_count)
 {
 	t_uint				i;
 	t_iter				iter[1];
@@ -232,7 +233,7 @@ static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph)
 	way_index = 0;
 	vect_init(&way, sizeof(t_uint), 256);
 	i = 0;
-	res->ways = ft_malloc(sizeof(t_way) * res->count);
+	enum_ways_init(res, ways_count);
 	iter_init(iter, graph->nodes[graph->start], ITER_FORBIDDEN);
 	while ((tmp = iter_next(iter)))
 	{
@@ -252,14 +253,16 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 	t_uint		min_moves;
 	t_enum_ways	tmp;
 	t_uint		max_count;
+	t_uint		cur_ways;
 
 	max_count = graph_node(graph, graph->end)->count_connects;
-	tmp.count = 0;
+	cur_ways = 0;
 	min_moves = __UINT32_MAX__;
 	while (find_new_way(graph))
 	{
-		tmp.count++;
-		find_ways(&tmp, graph);
+		// tmp.count++;
+		cur_ways++;
+		find_ways(&tmp, graph, cur_ways);
 		count_moves(&tmp, ants);
 		if (tmp.moves <= min_moves)
 		{
@@ -269,7 +272,7 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 		}
 		else
 			enum_ways_del(&tmp);
-		if ((tmp.moves > min_moves) || (tmp.count == max_count))
+		if ((tmp.moves > min_moves) || (cur_ways == max_count))
 			break ;
 		graph_clear_state(graph);
 	}

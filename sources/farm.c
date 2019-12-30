@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 13:18:12 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/22 17:43:58 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/30 20:10:28 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,11 +382,6 @@ inline void				way_init(t_way *restrict way, t_uint *restrict arr,
 	way->nodes = arr;
 }
 
-inline void				way_del(t_way way)
-{
-	ft_free(way.ants_names);
-}
-
 inline int				comp_way_by_len(const void *restrict way1,
 										const void *restrict way2)
 {
@@ -405,21 +400,26 @@ void					enum_ways_init(t_enum_ways *restrict combs,
 	combs->moves = 0;
 	combs->count = count;
 	combs->nodes_mem = NULL;
-	combs->ways = (t_way *)ft_malloc(sizeof(t_way *) * count);
+	combs->ants_mem = NULL;
+	combs->ways = (t_way *)ft_malloc(sizeof(t_way) * count);
 }
 
 void					enum_ways_del(t_enum_ways *restrict combs)
 {
-	if (combs->count && combs->ways[0].ants_names)
-	{
-		while (combs->count)
-			way_del(combs->ways[--(combs->count)]);
-	}
+	// if (combs->count && combs->ways[0].ants_names)
+	// {
+	// 	while (combs->count)
+	// 		way_del(combs->ways[--(combs->count)]);
+	// }
 	if (combs->nodes_mem)
 		ft_free(combs->nodes_mem);
 	if (combs->ways)
 		ft_free(combs->ways);
+	if (combs->ants_mem)
+		ft_free(combs->ants_mem);
 	combs->moves = 0;
+	combs->count = 0;
+	combs->ants_mem = NULL;
 	combs->nodes_mem = NULL;
 	combs->ways = NULL;
 }

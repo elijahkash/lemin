@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:01:41 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/22 16:25:12 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/30 20:06:34 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,82 +14,80 @@
 #include "libft.h"
 #include "print_way_ants.h"
 
-/*
-**	create array ants_names in t_enum_ways & fill him a NO_ANT values
-*/
-
 void	init_ways_antsnames(t_enum_ways *restrict eways)
 {
-	t_uint i;
-	t_uint j;
+	t_uint	i;
+	t_uint	size;
 
-	i = 0;
-	while (i < eways->count)
+	i = (t_uint)-1;
+	size = 0;
+	while (++i < eways->count)
+		size += eways->ways[i].len;
+	eways->ants_mem = ft_memalloc(sizeof(t_uint) * size);
+	i = (t_uint)-1;
+	size = 0;
+	while (++i < eways->count)
 	{
-		eways->ways[i].ants_names = ft_malloc(sizeof(int) * eways->ways[i].len);
-		eways->ways[i].last_ant = NO_ANT;
-		j = 0;
-		while (j < eways->ways[i].len)
-		{
-			eways->ways[i].ants_names[j] = NO_ANT;
-			j++;
-		}
-		i++;
+		eways->ways[i].first_ant = 0;
+		eways->ways[i].ants_on_way = 0;
+		eways->ways[i].ants_names = eways->ants_mem + size/* * sizeof(t_uint)*/;
+		size += eways->ways[i].len;
 	}
 }
 
-/*
-**	Print ant's moves in the way
-*/
-
-void	print_move_in_way(t_way *way, t_farm *restrict farm, int *new_ant_name)
+void	print_ant_move(t_int ant_name, char *room_name, t_outbuff *outbuff)
 {
-	int j;
+	char	nbr[11];
 
-	j = way->last_ant + 1;
-	while (--j >= 0 && way->ants_names[j] != NO_ANT)
-	{
-		if (j != (int)way->len - 1)
-		{
-			ft_printf("L%d-%s ", way->ants_names[j],
-					*(char **)vect(&(farm->names), way->nodes[j + 1]));
-			way->ants_names[j + 1] = way->ants_names[j];
-			way->last_ant = (way->last_ant < j + 1) ? j + 1 : way->last_ant;
-		}
-		way->ants_names[j] = NO_ANT;
-	}
+	ft_getunbr_goodbase(ant_name, "0123456789", 10, nbr);
+	ft_buff_add_to_outbuff(outbuff, "L", 1);
+	ft_buff_add_to_outbuff(outbuff, nbr, ft_strlen(nbr));
+	ft_buff_add_to_outbuff(outbuff, "-", 1);
+	ft_buff_add_to_outbuff(outbuff, room_name, ft_strlen(room_name));
+	ft_buff_add_to_outbuff(outbuff, " ", 1);
+}
+
+void	print_move_in_way(t_way *restrict way, t_farm *restrict farm,
+							t_uint *new_ant_name, t_outbuff *outbuff)
+{
+	t_int	i;
+
+	if (way->ants_on_way == 0 && way->ants == 0)
+		return ;
+	ft_memmove(&(way->ants_names[way->first_ant + 1]),
+		&(way->ants_names[way->first_ant]), way->ants_on_way * sizeof(t_uint));
+	i = way->first_ant + way->ants_on_way + 1;
+	while (--i > way->first_ant)
+		print_ant_move(way->ants_names[i],
+						*(char **)vect(&(farm->names), way->nodes[i]), outbuff);
+	way->first_ant++;
+	(way->first_ant + way->ants_on_way == way->len) ? way->ants_on_way-- : 0;
 	if (way->ants)
 	{
-		if (way->last_ant == NO_ANT)
-			way->last_ant = 0;
 		way->ants_names[0] = ++(*new_ant_name);
 		way->ants--;
-		ft_printf("L%d-%s ", (*new_ant_name),
-			*(char **)vect(&(farm->names), way->nodes[0]));
+		way->ants_on_way++;
+		way->first_ant = 0;
+		print_ant_move(way->ants_names[0],
+						*(char **)vect(&(farm->names), way->nodes[0]), outbuff);
 	}
 }
-
-/*
-**	Print ant's moves
-*/
 
 void	print_moves(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
-	int i;
-	int new_ant_name;
+	t_uint		i;
+	t_uint		new_ant_name;
+	t_outbuff	*outbuff;
 
+	outbuff = ft_get_outbuff_item(1);
 	init_ways_antsnames(eways);
 	new_ant_name = 0;
-	while (eways->moves)
+	while (eways->moves--)
 	{
-		i = 0;
-		while (i < (int)eways->count)
-		{
-			print_move_in_way(&(eways->ways[i]), farm, &new_ant_name);
-			i++;
-		}
-		eways->moves--;
-		ft_printf("\n");
+		i = (t_uint)-1;
+		while (++i < eways->count)
+			print_move_in_way(&(eways->ways[i]), farm, &new_ant_name, outbuff);
+		ft_buff_add_to_outbuff(outbuff, "\n", 1);
 	}
 }
 
@@ -125,7 +123,7 @@ void	print_ways(t_enum_ways *restrict eways, t_farm *restrict farm)
 
 void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
-	print_ways(eways, farm);
+//	print_ways(eways, farm);
 	print_moves(eways, farm);
 	return ;
 }
