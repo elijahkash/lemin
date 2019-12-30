@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 16:17:25 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/30 20:11:38 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/30 20:48:09 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ static void		find_ways(t_enum_ways *restrict res, t_graph *restrict graph,
 	ft_qsort(res->ways, res->count, sizeof(t_way), comp_way_by_len);
 }
 
-int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
+void				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 						t_uint ants)
 {
 	t_uint		min_moves;
@@ -260,7 +260,6 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 	min_moves = __UINT32_MAX__;
 	while (find_new_way(graph))
 	{
-		// tmp.count++;
 		cur_ways++;
 		find_ways(&tmp, graph, cur_ways);
 		count_moves(&tmp, ants);
@@ -276,5 +275,4 @@ int				solve(t_enum_ways *restrict result, t_graph *restrict graph,
 			break ;
 		graph_clear_state(graph);
 	}
-	return (0);
 }

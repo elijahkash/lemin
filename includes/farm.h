@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/30 20:16:35 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/30 21:02:16 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,6 @@ typedef struct			s_node_info
 
 void					node_mark(t_node *node, t_int connect_state,
 									t_int weight, t_uint parent);
-/*
-** // TODO: not safety on systems with 16-bit int
-** NOT USE
-*/
-int						node_info_cmp(const void *a, const void *b);
-int						node_info_cmp_rev(const void *a, const void *b);
 
 /*
 ** =============================================================================
@@ -323,7 +317,6 @@ int						dnbr_cmp(const void *number_1, const void *number_2);
 
 /*
 **	ants - this is the number of ants that will go this way.
-** //TODO: type ants_names + force calc + restrict inline
 */
 typedef struct			s_way
 {

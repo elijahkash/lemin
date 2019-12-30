@@ -6,15 +6,15 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/10 14:01:41 by hmathew           #+#    #+#             */
-/*   Updated: 2019/12/30 20:06:34 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/30 21:02:38 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "farm.h"
-#include "libft.h"
-#include "print_way_ants.h"
+#include <farm.h>
 
-void	init_ways_antsnames(t_enum_ways *restrict eways)
+#include <libft.h>
+
+static void		init_ways_antsnames(t_enum_ways *restrict eways)
 {
 	t_uint	i;
 	t_uint	size;
@@ -30,12 +30,13 @@ void	init_ways_antsnames(t_enum_ways *restrict eways)
 	{
 		eways->ways[i].first_ant = 0;
 		eways->ways[i].ants_on_way = 0;
-		eways->ways[i].ants_names = eways->ants_mem + size/* * sizeof(t_uint)*/;
+		eways->ways[i].ants_names = eways->ants_mem + size;
 		size += eways->ways[i].len;
 	}
 }
 
-void	print_ant_move(t_int ant_name, char *room_name, t_outbuff *outbuff)
+static void		print_ant_move(t_int ant_name, char *restrict room_name,
+								t_outbuff *restrict outbuff)
 {
 	char	nbr[11];
 
@@ -47,8 +48,8 @@ void	print_ant_move(t_int ant_name, char *room_name, t_outbuff *outbuff)
 	ft_buff_add_to_outbuff(outbuff, " ", 1);
 }
 
-void	print_move_in_way(t_way *restrict way, t_farm *restrict farm,
-							t_uint *new_ant_name, t_outbuff *outbuff)
+static void		print_move_in_way(t_way *restrict way, t_farm *restrict farm,
+					t_uint *restrict new_ant_name, t_outbuff *restrict outbuff)
 {
 	t_int	i;
 
@@ -73,12 +74,14 @@ void	print_move_in_way(t_way *restrict way, t_farm *restrict farm,
 	}
 }
 
-void	print_moves(t_enum_ways *restrict eways, t_farm *restrict farm)
+void			print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
 {
 	t_uint		i;
 	t_uint		new_ant_name;
 	t_outbuff	*outbuff;
 
+	ft_printf("#> Ways count = %d\n#> Moves = %lu\n",
+				eways->count, eways->moves);
 	outbuff = ft_get_outbuff_item(1);
 	init_ways_antsnames(eways);
 	new_ant_name = 0;
@@ -90,54 +93,3 @@ void	print_moves(t_enum_ways *restrict eways, t_farm *restrict farm)
 		ft_buff_add_to_outbuff(outbuff, "\n", 1);
 	}
 }
-
-void	print_ways(t_enum_ways *restrict eways, t_farm *restrict farm)
-{
-	t_darr	test;
-
-	ft_printf("#Ways count = %d\n#Moves = %lu\n", eways->count, eways->moves);
-	darr_init(&test, 4, 256);
-	for (t_uint j = 0; j < eways->count; j++)
-	{
-		ft_printf("#len = %lu\tants = %lld\t", eways->ways[j].len,
-												eways->ways[j].ants);
-		ft_printf("[%s]", *(char **)vect(&(farm->names), farm->graph.start));
-		for(t_uint i = 0; i < eways->ways[j].len; i++)
-		{
-			ft_printf("->[%s]", *(char **)vect(&(farm->names),
-				eways->ways[j].nodes[i]));
-			if (eways->ways[j].nodes[i] != farm->graph.end)
-			{
-				for(int k = 0; k < (int)darr_l(test); k++)
-					if (eways->ways[j].nodes[i] == *(t_uint *)darr(test, k))
-						ft_printf("*");
-			}
-			darr_add(test, &(eways->ways[j].nodes[i]));
-		}
-		ft_printf("\n");
-	}
-	ft_printf("#\n");
-}
-
-#ifdef DEBUG
-
-void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
-{
-//	print_ways(eways, farm);
-	print_moves(eways, farm);
-	return ;
-}
-
-#else
-
-void	print_result(t_enum_ways *restrict eways, t_farm *restrict farm)
-{
-	t_uint tmp;
-
-	tmp = eways->moves;
-	ft_printf("# Ways count = %d\n# Moves = %lu\n", eways->count, tmp);
-	print_moves(eways, farm);
-	return ;
-}
-
-#endif
