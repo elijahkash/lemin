@@ -29,6 +29,9 @@
 		"ft_fast_input_gnl.h": "c",
 		"farm.h": "c",
 		"ft_deq.h": "c",
-		"solve.h": "c"
+		"solve.h": "c",
+		"ft_list_on_arr.h": "c",
+		"ios": "c",
+		"ft_tstr.h": "c"
 	}
 }

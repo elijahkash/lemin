@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/04 20:34:05 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/22 17:05:02 by mtrisha          ###   ########.fr       */
+/*   Updated: 2019/12/30 14:35:04 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct			s_node
 
 typedef struct			s_node_info
 {
+	t_node				*ptr;
 	t_uint				self;
 	t_int				weight;
 }						t_node_info;
