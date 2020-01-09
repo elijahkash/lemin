@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/22 16:53:57 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/09 11:56:09 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static t_uint		is_uniq_names(t_vect *restrict names)
 	size_t	size;
 
 	is_error = 0;
+	if (names->curlen == 0)
+		return (1);
 	size = names->curlen - 1;
 	i = 0;
 	while (i < size)
@@ -110,11 +112,11 @@ static t_uint		read_room(t_uint state, char *restrict line,
 	{
 		vect_shrink(&(farm->names), 0);
 		vect_shrink(&(farm->chars), 0);
-		form_rooms(farm);
+		farm->names.curlen ? form_rooms(farm) : (state |= ERRSTATE | NO_ROOMS);
 		vect_sort(&(farm->names), ft_scmp, ft_qsort);
-		state = is_uniq_names(&(farm->names)) ?
+		state = (is_uniq_names(&(farm->names))) ?
 				(state & ~ROOMS) | TUBES : (state | ERRSTATE | NO_UNIQ);
-		farm_init_connects(farm);
+		((state & ERRSTATE) == 0) ? farm_init_connects(farm) : 0;
 	}
 	else
 		state |= ERRSTATE | ROOM_ERROR;
@@ -160,7 +162,7 @@ static t_uint		handle_line(char *restrict line, t_farm *restrict farm)
 	else if (state & ROOMS)
 		state = (farm->names.curlen == MAX_NODES) ? (ERRSTATE | TOO_MUCH) :
 				read_room(state, line, farm);
-	if (!(state & ERRSTATE) && state & TUBES)
+	if (((state & ERRSTATE) == 0) && state & TUBES)
 		state = read_tube(state, line, farm);
 	return ((state & ~NO_ERROR));
 }
