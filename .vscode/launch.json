@@ -15,7 +15,7 @@
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "lldb",
-			"setupCommands": [{"text": "settings set target.input-path ${workspaceFolder}/test_maps/pylone_1000_10_10_35_35_3_z_remake"}],
+			"setupCommands": [{"text": "settings set target.input-path ${workspaceFolder}/test_maps/test1"}],
 			"preLaunchTask": "make debug"
 		}
 	]

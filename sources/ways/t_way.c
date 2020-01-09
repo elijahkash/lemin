@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solve.h                                            :+:      :+:    :+:   */
+/*   t_way.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/09 15:11:34 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/30 20:48:18 by mtrisha          ###   ########.fr       */
+/*   Created: 2020/01/09 15:02:14 by mtrisha           #+#    #+#             */
+/*   Updated: 2020/01/09 15:02:42 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOLVE_H
-# define SOLVE_H
+#include <ways.h>
 
-# include <farm.h>
+inline void				way_init(t_way *restrict way, t_uint *restrict arr,
+									t_uint len)
+{
+	way->ants = 0;
+	way->len = len;
+	way->ants_names = NULL;
+	way->nodes = arr;
+}
 
-void		solve(t_enum_ways *result, t_graph *graph, t_uint ants);
-
-#endif
+inline int				comp_way_by_len(const void *restrict way1,
+										const void *restrict way2)
+{
+	return (((t_way *)way1)->len - ((t_way *)way2)->len);
+}

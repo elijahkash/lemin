@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_input.h                                       :+:      :+:    :+:   */
+/*   restore_ways.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/09 12:54:24 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 11:15:16 by mtrisha          ###   ########.fr       */
+/*   Created: 2020/01/09 14:01:22 by mtrisha           #+#    #+#             */
+/*   Updated: 2020/01/09 15:31:22 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef READ_INPUT_H
-# define READ_INPUT_H
+#ifndef RESTORE_WAYS_H
+# define RESTORE_WAYS_H
 
-# include <farm.h>
+# include <graph.h>
+# include <ways.h>
 
-t_uint		read_input(t_farm *restrict farm);
+void	restore_ways(t_enum_ways *res, t_graph *graph, t_uint ways_count);
 
 #endif

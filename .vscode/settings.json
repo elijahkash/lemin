@@ -32,6 +32,9 @@
 		"solve.h": "c",
 		"ft_list_on_arr.h": "c",
 		"ios": "c",
-		"ft_tstr.h": "c"
+		"ft_tstr.h": "c",
+		"ft_diff_utils.h": "c",
+		"stdlib.h": "c",
+		"restore_ways.h": "c"
 	}
 }

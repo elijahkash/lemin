@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:10:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/30 20:16:49 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/09 15:07:01 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <input_errors.h>
 #include <solve.h>
 
-int					detect_errors(t_uint ret, t_farm *farm)
+static int			detect_errors(t_uint ret, t_farm *farm)
 {
 	if (farm->ants == 0)
 		ret |= NO_ANTS;
