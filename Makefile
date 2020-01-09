@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile_cmake                                     :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/13 16:02:18 by mtrisha           #+#    #+#              #
-#    Updated: 2019/12/14 13:02:09 by mtrisha          ###   ########.fr        #
+#    Updated: 2020/01/09 16:21:03 by mtrisha          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ fclean:
 	$(MAKE) -C $(LIBDIR) fclean
 	rm -r -f $(CMAKEDIR)
 	rm -r -f $(NAME)
+	rm -r -f $(NAME).debug
 
 re: fclean
 	$(MAKE) all
