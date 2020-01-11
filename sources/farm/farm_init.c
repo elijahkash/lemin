@@ -6,7 +6,7 @@
 /*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:26:59 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 15:27:39 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/11 09:37:22 by mtrisha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 void					farm_init(t_farm *restrict farm)
 {
-	farm->ants = 0;
+	ft_bzero(farm, sizeof(t_farm));
 	farm->start = FARM_INIT_SE_VALUES;
 	farm->end = FARM_INIT_SE_VALUES;
-	farm->connects.mem = NULL;
-	farm->chars.mem = NULL;
-	farm->graph.mem = NULL;
 }
 
 void					farm_init_rooms(t_farm *restrict farm)
