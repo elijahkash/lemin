@@ -6,7 +6,7 @@
 #    By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/13 16:02:18 by mtrisha           #+#    #+#              #
-#    Updated: 2020/01/09 16:21:03 by mtrisha          ###   ########.fr        #
+#    Updated: 2020/01/14 20:22:57 by mtrisha          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,12 +34,14 @@ $(CMAKEDIR)Makefile:
 clean:
 	$(MAKE) -C $(LIBDIR) clean
 	rm -r -f $(CMAKEDIR)
+	rm -r -f *.dSYM
 
 fclean:
 	$(MAKE) -C $(LIBDIR) fclean
 	rm -r -f $(CMAKEDIR)
 	rm -r -f $(NAME)
 	rm -r -f $(NAME).debug
+	rm -r -f *.dSYM
 
 re: fclean
 	$(MAKE) all
