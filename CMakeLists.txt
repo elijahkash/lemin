@@ -14,6 +14,7 @@ cmake_minimum_required(VERSION 3.15.3)
 
 project(lemin)
 
+
 set(BUILD_FLAGS "-O3 -Wall -Wextra -Werror")
 set(DEBUG_FLAGS "-g3 -Wall -Wextra")
 set(DST_NAME lem-in)
@@ -22,21 +23,13 @@ set(SRC_DIR ${PROJECT_SOURCE_DIR}/sources/)
 set(INC_DIR ${PROJECT_SOURCE_DIR}/includes/)
 set(LIBFT_DIR ${PROJECT_SOURCE_DIR}/libft/)
 
-MACRO(INCLUDE_DIRS return_list)
-	FILE(GLOB_RECURSE new_list ${INC_DIR}*.h)
-	SET(dir_list "")
-	FOREACH(file_path ${new_list})
-		GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
-		SET(dir_list ${dir_list} ${dir_path})
-	ENDFOREACH()
-	LIST(REMOVE_DUPLICATES dir_list)
-	SET(${return_list} ${dir_list})
-ENDMACRO()
-set(INC_DIRS ./)
-INCLUDE_DIRS(INC_DIRS)
 FILE(GLOB_RECURSE LEMIN_SOURCES ${SRC_DIR}*.c)
 
 add_subdirectory(${LIBFT_DIR})
+
+set(INC_DIRS ./)
+INCLUDE_DIRS(INC_DIRS)
+
 
 add_executable(${DST_NAME} ${LEMIN_SOURCES})
 target_include_directories(${DST_NAME} PUBLIC ${LIBFT_DIR}includes/)
