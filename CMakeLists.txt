@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    .CMakeLists.txt                                    :+:      :+:    :+:    #
+#    CMakeLists.txt                                     :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+         #
+#    By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created:                     by mtrisha           #+#    #+#              #
-#    Updated:                     by mtrisha          ###   ########.fr        #
+#    Updated:                     by Kashnitskiy      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

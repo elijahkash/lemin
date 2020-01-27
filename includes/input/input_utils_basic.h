@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_utils_basic.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 12:55:41 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 15:44:49 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:06:41 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

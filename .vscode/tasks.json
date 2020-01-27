@@ -8,8 +8,17 @@
 			"type": "shell",
 			"command": "make",
 			"args": [
-				"debug",
-			],
+				"debug"
+			]
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "make",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
 		}
 	]
 }

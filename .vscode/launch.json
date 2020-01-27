@@ -15,7 +15,7 @@
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "lldb",
-			"setupCommands": [{"text": "settings set target.input-path ${workspaceFolder}/test_maps/test1"}],
+			"setupCommands": [{"text": "settings set target.input-path ${workspaceFolder}/test_maps/test_spec"}],
 			"preLaunchTask": "make debug"
 		}
 	]

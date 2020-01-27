@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   farm_del.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:28:11 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 15:28:27 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:07:13 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

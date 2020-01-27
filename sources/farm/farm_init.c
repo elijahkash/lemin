@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   farm_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:26:59 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/11 09:37:22 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:07:14 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

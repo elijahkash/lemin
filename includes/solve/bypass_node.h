@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bypass_node.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 14:07:02 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 15:31:27 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:06:23 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_errors.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 15:36:20 by mtrisha           #+#    #+#             */
-/*   Updated: 2019/12/10 17:34:29 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:06:42 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+         #
+#    By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/13 16:02:18 by mtrisha           #+#    #+#              #
-#    Updated: 2020/01/14 20:22:57 by mtrisha          ###   ########.fr        #
+#    Updated: 2020/01/27 17:03:18 by Kashnitskiy      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

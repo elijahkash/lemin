@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_enum_ways.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:03:27 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 15:03:59 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:06:58 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

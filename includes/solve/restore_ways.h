@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   restore_ways.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 14:01:22 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 15:31:22 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:06:22 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

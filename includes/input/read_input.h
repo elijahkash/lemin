@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:54:24 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 13:08:59 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:06:38 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_utils_supp.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 12:59:14 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 14:25:49 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:07:07 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

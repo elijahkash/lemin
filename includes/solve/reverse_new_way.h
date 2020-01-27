@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reverse_new_way.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 14:20:38 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 15:31:16 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:06:20 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

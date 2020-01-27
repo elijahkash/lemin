@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graph_access.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 15:37:18 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 15:39:16 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:07:12 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

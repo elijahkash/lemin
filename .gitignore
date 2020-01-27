@@ -3,23 +3,22 @@
 #                                                         :::      ::::::::    #
 #    .gitignore                                         :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+         #
+#    By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created:                     by mtrisha           #+#    #+#              #
-#    Updated:                     by mtrisha          ###   ########.fr        #
+#    Updated:                     by Kashnitskiy      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .DS_Store
-*.dSYM
-lem-in*
+.vscode/settings.json
+
 /tmp
+lem-in
+lem-in.debug
 /test_maps
-
-generator
-/images
-visu
-
 res
-*grind.out*
-massif.out*
+
+# This is for valgrind
+*.dSYM
+*.out.*
