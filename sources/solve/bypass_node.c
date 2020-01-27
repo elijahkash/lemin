@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bypass_node.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrisha <mtrisha@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 14:06:34 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/09 14:11:05 by mtrisha          ###   ########.fr       */
+/*   Updated: 2020/01/27 16:41:21 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,7 @@ static void			check_node(t_alst *restrict marked, t_node_info src,
 		(item.dst->in_queue == 0) ? insert_in_queue(marked, tmp) :
 			change_weight(marked, item.src_dst->dst, tmp.weight);
 	}
-	else if (item.dst->separate == 0 && item.src->separate &&
-			item.dst->weight > (tmp.weight = src.weight + item.src_dst->state))
+	else if (item.dst->weight > (tmp.weight = src.weight + item.src_dst->state))
 	{
 		tmp.ptr = item.dst;
 		tmp.self = item.src_dst->dst;
