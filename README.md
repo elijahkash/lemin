@@ -1,7 +1,7 @@
 # *LEMIN*
 'School 42' good algorithmic project.  Optimized graph and minimum-cost flow (disjoint path finding).
 
-[This is the subject.](/docs/lem-in.en.pdf)
+[This is the subject.](https://www.google.com/search?q=ecole+42+subjects&oq=ecole+42+subjects) (Sorry for Google, but by law, I can't upload tasks.)
 
 ### More detailed description [posted on wiki](https://github.com/elijahkash/lemin/wiki)
 
@@ -53,7 +53,7 @@ For real nice and useful visualisation look [here](https://github.com/SemRunner/
 
 If you are part of the **_42_** society, you now all about the *_norminette_* and you may skip this part.
 Otherwise, you may discover some strange `code` and /file_structure in this project.
-This is becouse all project in **_42_** must be written in [accordance with the NORM](/docs/norme.en.pdf).
+This is becouse all project in **_42_** must be written in [accordance with the NORM](https://www.google.com/search?q=ecole+42+subjects&oq=ecole+42+subjects) (Again, sorry for Google, but by law, I can't upload tasks.).
 
 Here are the point that most affect the code:
 - You cannot have more than 5 function-definitions in a `.c` file.
@@ -62,4 +62,3 @@ We have programm called `norminette`. It check every project. If it found an err
 
 ## License
 - See the [LICENSE](./LICENSE) file for license rights and limitations (MIT).
-- All rights to files in [/docs](/docs) belong to [ECOLE 42](https://www.42.fr/)
