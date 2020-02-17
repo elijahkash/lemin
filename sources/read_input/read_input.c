@@ -6,7 +6,7 @@
 /*   By: Kashnitskiy <elijahkash.code@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/09 12:56:19 by mtrisha           #+#    #+#             */
-/*   Updated: 2020/01/27 17:07:07 by Kashnitskiy      ###   ########.fr       */
+/*   Updated: 2020/02/17 10:48:44 by Kashnitskiy      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ static t_uint		handle_line(char *restrict line, t_farm *restrict farm)
 	static t_uint state = ANTS;
 
 	if (line[0] == '#' && line[1] == '#')
+	{
 		state = handle_cmd(state, line, farm);
+		return (state & ~NO_ERROR);
+	}
 	else if (*line == '#')
 		return (0);
 	else if (state & ANTS)
