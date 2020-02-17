@@ -1,5 +1,5 @@
 # *LEMIN*
-'School 42' project. Optimized graph and minimum-cost flow.
+'School 42' good algorithmic project.  Optimized graph and minimum-cost flow (disjoint path finding).
 
 [This is the subject.](/docs/lem-in.en.pdf)
 
